@@ -1,28 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8"/>
-<title>
-</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Quicksand:wght@300..700&amp;display=swap" rel="stylesheet"/><link href="css/main-4.css" rel="stylesheet"/>
-<link href="css/main-2.css" rel="stylesheet"/><link href="css/internal-styles.css" rel="stylesheet"/><style>/* Default fonts: Playfair Display for headings, Quicksand for body (change_default_fonts.py) */
-body, html, .viamagusPageSettings, .viamagusPageSettings .viamagus-container { font-family: 'Quicksand', sans-serif; }
-h1, h2, h3, h4, h5, h6,
-.viamagus-heading1, .viamagus-heading2, .viamagus-heading3, .viamagus-section-heading { font-family: 'Playfair Display', serif; }</style>
-<script o="" src="js/404.js" type="text/javascript">
-</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found | Potbelly Audio</title>
+  <meta name="description" content="The page you're looking for could not be found. Return to Potbelly Audio homepage.">
+
+  <link rel="icon" href="/imgs/favicon-32.png" type="image/png">
+  <link rel="stylesheet" href="/css/main.css">
+  <style>
+    .error-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+    }
+    .error-code {
+      font-size: 6rem;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: var(--space-md);
+    }
+    .error-message {
+      font-size: 1.5rem;
+      margin-bottom: var(--space-lg);
+    }
+  </style>
 </head>
+
 <body>
-<div class="container-fluid viamagus-errorpage">
-<h1 class="errorpage404">
-    404
-   </h1>
-<h2 class="errorpageheader">
-    Page Not Found
-   </h2>
-<a class="btn btn-large" href="home.html">
-    Return to homepage
-   </a>
-</div>
+  <header>
+    <div class="header-content">
+      <div class="brand">
+        <a href="/" aria-label="Potbelly Audio - Home">
+          <img src="/imgs/logo-horizontal.webp" alt="Potbelly Audio" width="180" height="40">
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="light error-section">
+      <div class="container">
+        <div class="error-code">404</div>
+        <h1>Page Not Found</h1>
+        <p class="error-message">We couldn't find the page you're looking for.</p>
+        <p>It might have been moved or deleted. Please return to the homepage.</p>
+        <div style="margin-top: var(--space-lg);">
+          <a href="/" class="btn btn-primary">Back to Home</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Potbelly Audio</h3>
+          <p>Professional audio production and dubbing.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/services/">Services</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="/contact/">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Potbelly Audio. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
