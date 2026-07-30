@@ -435,9 +435,19 @@ nav a:focus-visible {
   border: none;
   border-radius: var(--border-radius);
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all 0.25s ease;
   text-decoration: none;
   white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.btn:active {
+  box-shadow: var(--shadow-sm);
+  transform: scale(0.98);
 }
 
 .btn:focus-visible {
@@ -453,8 +463,11 @@ nav a:focus-visible {
 
 .btn-primary:hover {
   background-color: var(--charcoal-light);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:active {
+  background-color: var(--charcoal);
 }
 
 /* Primary button - dark background (uses white text on dark bg) */
@@ -465,8 +478,11 @@ nav a:focus-visible {
 
 .btn-primary-dark:hover {
   background-color: var(--charcoal-light);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-primary-dark:active {
+  background-color: var(--charcoal);
 }
 
 /* Secondary button */
@@ -474,11 +490,17 @@ nav a:focus-visible {
   background-color: transparent;
   color: var(--on-dark);
   border: 2px solid var(--on-dark-accent);
+  box-shadow: none;
 }
 
 .btn-secondary:hover {
-  background-color: rgba(232, 201, 160, 0.1);
+  background-color: rgba(232, 201, 160, 0.15);
   border-color: var(--golden-light);
+  box-shadow: 0 0 0 1px var(--golden-light);
+}
+
+.btn-secondary:active {
+  background-color: rgba(232, 201, 160, 0.25);
 }
 
 /* ============================================
