@@ -1,25 +1,13 @@
 {
   "name": "Potbelly Audio",
-  "short_name": "Potbelly Audio",
-  "description": "Professional audio production, dubbing, and localization for Japanese, Korean, and Indian markets",
+  "short_name": "Potbelly",
+  "description": "Mumbai audio and localisation company. Dubbing, voiceovers, translation and localisation.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFFFFF",
-  "theme_color": "#D4A574",
-  "orientation": "portrait-primary",
+  "background_color": "#14120F",
+  "theme_color": "#14120F",
   "icons": [
-    {
-      "src": "/imgs/favicon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/imgs/favicon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
-  "categories": ["business", "media"]
+    { "src": "/imgs/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/imgs/favicon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
 }

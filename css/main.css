@@ -1,765 +1,192 @@
-/* Potbelly Audio - Main Stylesheet
-   Semantic HTML5, hand-built CSS, self-hosted fonts
-   Design: Fraunces (headings) + Poppins (body)
-   Palette: Golden accent + Charcoal + Warm cream
-   Standards: WCAG 2.1 AA, no external CDN, mobile-first */
+/* ==========================================================================
+   Potbelly Audio, rebuild v2
+   One stylesheet. Design tokens then base then components then sections.
+   Palette derived from the real logo (hue 47) and audited by computation:
+   see docs/art-direction-v2.md for the ratio table.
+   ========================================================================== */
 
-/* ============================================
-   1. FONT FACES (Self-hosted, woff2)
-   ============================================ */
+/* ---------- Fonts (self-hosted, latin subset, Fontsource) ---------------- */
 
 @font-face {
-  font-family: 'Fraunces';
-  src: url('../fonts/fraunces-400.woff2') format('woff2');
+  font-family: "Bricolage Grotesque";
+  src: url("../fonts/bricolage-grotesque-400.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
-  font-family: 'Fraunces';
-  src: url('../fonts/fraunces-600.woff2') format('woff2');
+  font-family: "Bricolage Grotesque";
+  src: url("../fonts/bricolage-grotesque-600.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
-  font-family: 'Fraunces';
-  src: url('../fonts/fraunces-700.woff2') format('woff2');
+  font-family: "Bricolage Grotesque";
+  src: url("../fonts/bricolage-grotesque-700.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
-  font-family: 'Poppins';
-  src: url('../fonts/poppins-400.woff2') format('woff2');
+  font-family: "Manrope";
+  src: url("../fonts/manrope-400.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
-  font-family: 'Poppins';
-  src: url('../fonts/poppins-500.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Poppins';
-  src: url('../fonts/poppins-600.woff2') format('woff2');
+  font-family: "Manrope";
+  src: url("../fonts/manrope-600.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
-/* ============================================
-   2. DESIGN TOKENS (CSS Custom Properties)
-   ============================================ */
+/* ---------- Tokens ------------------------------------------------------- */
 
 :root {
-  /* Colors - Palette (WCAG 2.1 AA audited) */
-  --golden-accent: #8B6F47;
-  --golden-light: #D4A574;
-  --golden-dark: #6B5637;
-  --charcoal: #2A2A2A;
-  --charcoal-light: #4A4A4A;
-  --cream-bg: #FAF8F3;
-  --cream-alt: #F5F1E8;
-  --white: #FFFFFF;
-  --text-dark: #1A1A1A;
-  --text-muted: #666666;
-  --border-light: #E8E5DC;
+  /* dark surfaces, the primary canvas */
+  --canvas: #14120f;
+  --surface: #1f1c19;
+  --surface-2: #2d2924;
+  --on-dark: #f3f1ec;
+  --on-dark-mut: #c5bfb5;
+  --accent-dark: #e4c358;
+  --rule-dark: #403930;
 
-  /* Semantic color pairs (WCAG AA verified) */
-  --surface: #FFFFFF;
-  --surface-alt: #FAF8F3;
-  --on-surface: #1A1A1A;
-  --on-surface-muted: #666666;
+  /* light surfaces, relief sections */
+  --cream: #f8f7f1;
+  --cream-2: #f1ede4;
+  --ink: #221c16;
+  --ink-mut: #655c53;
+  --accent-lite: #805d0a;
+  --rule-lite: #e3ded3;
 
-  --dark-bg: #2A2A2A;
-  --on-dark: #FFFFFF;
-  --on-dark-accent: #E8C9A0;
-  --on-dark-muted: #CCCCCC;
+  --white: #ffffff;
 
-  /* Typography */
-  --font-heading: 'Fraunces', serif;
-  --font-body: 'Poppins', sans-serif;
+  /* type */
+  --font-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Manrope", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-native: ui-sans-serif, system-ui, "Noto Sans", sans-serif;
 
-  /* Type scale (clamp for fluid sizing) */
-  --h1: clamp(2rem, 5vw, 3.5rem);
-  --h2: clamp(1.75rem, 4vw, 2.5rem);
-  --h3: clamp(1.25rem, 3vw, 1.75rem);
-  --body: clamp(0.95rem, 1.2vw, 1.125rem);
-  --small: 0.875rem;
+  --h1: clamp(2.5rem, 6vw, 4.25rem);
+  --h2: clamp(1.85rem, 4vw, 2.75rem);
+  --h3: clamp(1.15rem, 2vw, 1.4rem);
+  --body: clamp(1rem, 1.1vw, 1.125rem);
+  --small: 0.9375rem;
+  --eyebrow: 0.78rem;
 
-  /* Spacing */
-  --space-xs: 0.5rem;
-  --space-sm: 1rem;
-  --space-md: 1.5rem;
-  --space-lg: 2rem;
-  --space-xl: 3rem;
-  --space-2xl: 4rem;
+  /* space */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4.5rem;
+  --s-9: 7rem;
 
-  /* Layout */
-  --max-width: 1200px;
-  --container-padding: var(--space-lg);
-
-  /* Borders & Shadows */
-  --border-radius: 0.5rem;
-  --border-radius-lg: 1rem;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
-
-  /* Transitions */
-  --transition: all 0.3s ease;
-  --transition-fast: all 0.15s ease;
+  --radius-chip: 4px;
+  --radius-card: 10px;
+  --measure: 66ch;
+  --shell: 1200px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  :root {
-    --transition: none;
-    --transition-fast: none;
-  }
-}
+/* ---------- Base --------------------------------------------------------- */
 
-/* ============================================
-   3. RESET & BASE STYLES
-   ============================================ */
-
-* {
-  margin: 0;
-  padding: 0;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
+  /* the sticky header must not cover an anchored heading */
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--on-dark);
   font-family: var(--font-body);
   font-size: var(--body);
   line-height: 1.6;
-  color: var(--on-surface);
-  background-color: var(--surface);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  line-height: 1.3;
-  margin-top: var(--space-lg);
-  margin-bottom: var(--space-md);
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  margin: 0;
+  text-wrap: balance;
 }
 
 h1 {
   font-size: var(--h1);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
 }
 
 h2 {
   font-size: var(--h2);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.018em;
 }
 
 h3 {
   font-size: var(--h3);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.008em;
 }
 
 p {
-  margin-bottom: var(--space-md);
+  margin: 0 0 var(--s-4);
+  max-width: var(--measure);
 }
 
-a {
-  color: var(--golden-accent);
-  text-decoration: none;
-  transition: var(--transition-fast);
+p:last-child {
+  margin-bottom: 0;
 }
 
-a:hover {
-  color: var(--charcoal);
-  text-decoration: underline;
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-section.alt a {
-  color: var(--charcoal);
-}
-
-section.alt a:hover {
-  color: var(--golden-accent);
-}
-
-section.alt .btn-primary {
-  color: var(--white) !important;
-  background-color: var(--charcoal) !important;
-}
-
-section.alt .btn-primary:hover {
-  background-color: var(--charcoal-light) !important;
-}
-
-a:focus-visible {
-  outline: 2px solid var(--golden-accent);
-  outline-offset: 2px;
-}
-
-img {
+img,
+svg {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-/* Lists */
-ul, ol {
-  margin-left: var(--space-lg);
-  margin-bottom: var(--space-md);
+a {
+  color: var(--accent-dark);
+  text-underline-offset: 0.2em;
 }
 
-li {
-  margin-bottom: var(--space-sm);
-}
-
-/* ============================================
-   4. LAYOUT & CONTAINER
-   ============================================ */
-
-.container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 0 var(--container-padding);
-}
-
-main {
-  display: block;
-}
-
-/* Skip to main content link */
-.skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: var(--dark-bg);
-  color: var(--on-dark);
-  padding: var(--space-sm) var(--space-md);
-  text-decoration: none;
-  z-index: 100;
-}
-
-.skip-link:focus {
-  top: 0;
-}
-
-/* ============================================
-   5. HEADER & NAVIGATION
-   ============================================ */
-
-header {
-  position: sticky;
-  top: 0;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border-light);
-  z-index: 50;
-  box-shadow: var(--shadow-sm);
-}
-
-.header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-md) var(--container-padding);
-  max-width: var(--max-width);
-  margin: 0 auto;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-}
-
-.brand img {
-  height: 40px;
-  width: auto;
-}
-
-.brand-text {
-  font-family: var(--font-heading);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--charcoal);
-}
-
-/* Navigation */
-nav ul {
-  display: flex;
-  gap: var(--space-lg);
-  list-style: none;
-  margin: 0;
-}
-
-nav a {
-  color: var(--charcoal);
-  font-weight: 500;
-  padding: var(--space-sm) var(--space-xs);
-  border-bottom: 2px solid transparent;
-  transition: var(--transition-fast);
-}
-
-nav a:hover,
-nav a[aria-current="page"] {
-  color: var(--golden-accent);
-  border-bottom-color: var(--golden-accent);
-}
-
-nav a:focus-visible {
-  outline: 2px solid var(--golden-accent);
-  outline-offset: 4px;
-}
-
-/* Mobile menu toggle */
-.menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: var(--space-sm);
-  font-size: 1.5rem;
-  color: var(--charcoal);
-}
-
-.menu-toggle:focus-visible {
-  outline: 2px solid var(--golden-accent);
-  outline-offset: 2px;
-}
-
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: block;
-  }
-
-  nav {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border-light);
-    max-height: 0;
-    overflow: hidden;
-    transition: var(--transition);
-  }
-
-  nav.active {
-    max-height: 400px;
-  }
-
-  nav ul {
-    flex-direction: column;
-    gap: 0;
-    padding: var(--space-lg) var(--container-padding);
-  }
-
-  nav a {
-    display: block;
-    padding: var(--space-md) 0;
-    border-bottom: 1px solid var(--border-light);
-  }
-}
-
-/* ============================================
-   6. HERO SECTION
-   ============================================ */
-
-.hero {
-  position: relative;
-  min-height: 600px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background-color: var(--charcoal);
+a:hover {
   color: var(--on-dark);
 }
 
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url('../imgs/hero.webp');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  opacity: 0.4;
-  z-index: 1;
+:focus-visible {
+  outline: 2px solid var(--accent-dark);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  max-width: 700px;
-  padding: var(--space-lg);
-}
-
-.hero h1 {
-  color: var(--on-dark);
-  margin-bottom: var(--space-md);
-}
-
-.hero .tagline {
-  font-size: 1.25rem;
-  color: var(--on-dark-accent);
-  margin-bottom: var(--space-xl);
-  font-weight: 300;
-}
-
-/* ============================================
-   7. BUTTONS & LINKS
-   ============================================ */
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-md) var(--space-lg);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: all 0.25s ease;
-  text-decoration: none;
-  white-space: nowrap;
-  box-shadow: var(--shadow-sm);
-}
-
-.btn:hover {
-  box-shadow: var(--shadow-md);
-}
-
-.btn:active {
-  box-shadow: var(--shadow-sm);
-  transform: scale(0.98);
-}
-
-.btn:focus-visible {
-  outline: 2px solid var(--golden-accent);
-  outline-offset: 2px;
-}
-
-/* Primary button - light background (charcoal bg for contrast) */
-.btn-primary {
-  background-color: var(--charcoal);
-  color: var(--white);
-}
-
-.btn-primary:hover {
-  background-color: var(--charcoal-light);
-  box-shadow: var(--shadow-lg);
-}
-
-.btn-primary:active {
-  background-color: var(--charcoal);
-}
-
-/* Primary button - dark background (uses white text on dark bg) */
-.btn-primary-dark {
-  background-color: var(--charcoal);
-  color: var(--white);
-}
-
-.btn-primary-dark:hover {
-  background-color: var(--charcoal-light);
-  box-shadow: var(--shadow-lg);
-}
-
-.btn-primary-dark:active {
-  background-color: var(--charcoal);
-}
-
-/* Secondary button */
-.btn-secondary {
-  background-color: transparent;
-  color: var(--on-dark);
-  border: 2px solid var(--on-dark-accent);
-  box-shadow: none;
-}
-
-.btn-secondary:hover {
-  background-color: rgba(232, 201, 160, 0.15);
-  border-color: var(--golden-light);
-  box-shadow: 0 0 0 1px var(--golden-light);
-}
-
-.btn-secondary:active {
-  background-color: rgba(232, 201, 160, 0.25);
-}
-
-/* ============================================
-   8. SECTIONS & CONTENT BLOCKS
-   ============================================ */
-
-section {
-  padding: var(--space-2xl) var(--container-padding);
-}
-
-section.light {
-  background-color: var(--surface);
-  color: var(--on-surface);
-}
-
-section.alt {
-  background-color: var(--surface-alt);
-  color: var(--on-surface);
-}
-
-section.dark {
-  background-color: var(--dark-bg);
-  color: var(--on-dark);
-}
-
-section h2 {
-  color: inherit;
-}
-
-section.dark h2 {
-  color: var(--on-dark);
-}
-
-section.dark a {
-  color: var(--on-dark-accent);
-}
-
-section.dark a:hover {
-  color: var(--golden-light);
-}
-
-/* Grid layout for service cards, etc. */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--space-lg);
-  margin-top: var(--space-lg);
-}
-
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border-light);
-  border-radius: var(--border-radius-lg);
-  padding: var(--space-lg);
-  transition: var(--transition);
-  box-shadow: var(--shadow-sm);
-}
-
-.card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-4px);
-}
-
-section.dark .card {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-color: rgba(232, 201, 160, 0.2);
-  color: var(--on-dark);
-}
-
-section.dark .card h3 {
-  color: var(--on-dark-accent);
-}
-
-/* ============================================
-   9. FORMS & INPUTS
-   ============================================ */
-
-form {
-  max-width: 600px;
-  margin: var(--space-lg) auto;
-}
-
-.form-group {
-  margin-bottom: var(--space-lg);
-}
-
-label {
-  display: block;
-  font-weight: 500;
-  margin-bottom: var(--space-sm);
-  color: var(--on-surface);
-}
-
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-textarea,
-select {
-  width: 100%;
-  padding: var(--space-sm) var(--space-md);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  border: 1px solid var(--border-light);
-  border-radius: var(--border-radius);
-  background-color: var(--surface);
-  color: var(--text-dark);
-  transition: var(--transition-fast);
-}
-
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="tel"]:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: var(--golden-accent);
-  box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
-}
-
-textarea {
-  resize: vertical;
-  min-height: 120px;
-}
-
-/* ============================================
-   10. FOOTER
-   ============================================ */
-
-footer {
-  background-color: var(--charcoal);
-  color: var(--on-dark);
-  padding: var(--space-2xl) var(--container-padding);
-  margin-top: var(--space-2xl);
-}
-
-.footer-logo {
-  text-align: center;
-  margin-bottom: var(--space-xl);
-}
-
-.footer-logo img {
-  width: 80px;
-  height: 80px;
-  filter: brightness(1.1);
-  transition: var(--transition);
-}
-
-.footer-logo img:hover {
-  filter: brightness(1.3);
-  transform: scale(1.05);
-}
-
-.footer-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--space-xl);
-  max-width: var(--max-width);
-  margin: 0 auto;
-  margin-bottom: var(--space-xl);
-}
-
-.footer-section h3 {
-  color: var(--on-dark);
-  margin-bottom: var(--space-md);
-}
-
-.footer-section ul {
-  list-style: none;
-  margin: 0;
-}
-
-.footer-section a {
-  color: var(--on-dark-accent);
-}
-
-.footer-section a:hover {
-  color: var(--golden-light);
-}
-
-.footer-bottom {
-  text-align: center;
-  padding-top: var(--space-lg);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: var(--small);
-  color: var(--on-dark-muted);
-}
-
-/* ============================================
-   10.5 HERO OVERLAY & FOUNDER SECTION
-   ============================================ */
-
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1;
-}
-
-.founder-content {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: var(--space-xl);
-  align-items: start;
-  margin-top: var(--space-lg);
-}
-
-.founder-image {
-  width: 100%;
-  max-width: 300px;
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-lg);
-}
-
-.founder-text h3 {
-  font-size: var(--h3);
-  margin-top: 0;
-}
-
-.founder-text p {
-  color: var(--on-surface);
-}
-
-/* Clients grid */
-.clients-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-lg);
-  margin-top: var(--space-lg);
-}
-
-.client-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-lg);
-  background: var(--surface);
-  border: 1px solid var(--border-light);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-sm);
-  transition: var(--transition);
-  min-height: 150px;
-}
-
-.client-logo:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-
-.client-logo img {
-  max-height: 120px;
-  width: auto;
-}
-
-/* ============================================
-   11. UTILITY CLASSES
-   ============================================ */
 
 .sr-only {
   position: absolute;
@@ -770,155 +197,858 @@ footer {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
-  border-width: 0;
+  border: 0;
   opacity: 0;
 }
 
-.text-center {
-  text-align: center;
+.skip-link {
+  position: absolute;
+  left: var(--s-4);
+  top: -100%;
+  z-index: 100;
+  background: var(--accent-dark);
+  color: var(--canvas);
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--radius-chip);
+  font-weight: 600;
+  text-decoration: none;
 }
 
-.text-muted {
-  color: var(--on-surface-muted);
+.skip-link:focus {
+  top: var(--s-4);
+  color: var(--canvas);
 }
 
-.mb-lg {
-  margin-bottom: var(--space-lg);
+.shell {
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
 }
 
-.mt-lg {
-  margin-top: var(--space-lg);
+.eyebrow {
+  font-size: var(--eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+  margin: 0 0 var(--s-3);
 }
 
-.no-wrap {
-  white-space: nowrap;
+/* ---------- Signature: the level meter ----------------------------------- */
+
+.meter {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 22px;
 }
 
-/* ============================================
-   12. RESPONSIVE DESIGN
-   ============================================ */
+.meter i {
+  display: block;
+  width: 5px;
+  background: var(--rule-dark);
+}
 
-@media (max-width: 768px) {
-  :root {
-    --container-padding: var(--space-md);
-    --space-2xl: 2.5rem;
-  }
+.meter i:nth-child(1) {
+  height: 7px;
+  background: var(--accent-dark);
+}
+.meter i:nth-child(2) {
+  height: 11px;
+  background: var(--accent-dark);
+}
+.meter i:nth-child(3) {
+  height: 16px;
+  background: var(--accent-dark);
+}
+.meter i:nth-child(4) {
+  height: 22px;
+  background: var(--accent-dark);
+}
+.meter i:nth-child(5) {
+  height: 16px;
+}
+.meter i:nth-child(6) {
+  height: 11px;
+}
+.meter i:nth-child(7) {
+  height: 7px;
+}
 
-  section {
-    padding: var(--space-xl) var(--container-padding);
-  }
+.meter .line {
+  flex: 1;
+  height: 1px;
+  background: var(--rule-dark);
+}
 
-  .hero {
-    min-height: 400px;
-  }
+.section--light .meter i {
+  background: var(--rule-lite);
+}
 
-  .grid {
-    grid-template-columns: 1fr;
-  }
+.section--light .meter i:nth-child(-n + 4) {
+  background: var(--accent-lite);
+}
 
-  .founder-content {
-    grid-template-columns: 1fr;
-  }
+.section--light .meter .line {
+  background: var(--rule-lite);
+}
 
-  .founder-image {
-    max-width: 100%;
-  }
+/* ---------- Header ------------------------------------------------------- */
 
-  .clients-grid {
-    grid-template-columns: 1fr;
-  }
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(20, 18, 15, 0.94);
+  border-bottom: 1px solid var(--rule-dark);
+  backdrop-filter: blur(8px);
+}
 
-  .footer-content {
-    grid-template-columns: 1fr;
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  min-height: 4.5rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  background: var(--cream);
+  border: 1px solid var(--rule-lite);
+  border-radius: var(--radius-chip);
+  padding: 6px 10px;
+  margin-right: auto;
+  flex: none;
+}
+
+.brand img {
+  height: 34px;
+  width: auto;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+}
+
+.nav a:not(.btn) {
+  color: var(--on-dark);
+  text-decoration: none;
+  font-size: var(--small);
+  font-weight: 600;
+  padding: var(--s-2) 0;
+  display: inline-block;
+}
+
+.nav a:not(.btn):hover,
+.nav a:not(.btn)[aria-current="page"],
+.nav a:not(.btn)[aria-current="true"] {
+  color: var(--accent-dark);
+}
+
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: none;
+  border: 1px solid var(--rule-dark);
+  border-radius: var(--radius-chip);
+  color: var(--on-dark);
+  cursor: pointer;
+}
+
+.nav-toggle svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* ---------- Buttons ------------------------------------------------------ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: 48px;
+  padding: var(--s-3) var(--s-5);
+  border-radius: var(--radius-chip);
+  border: 1px solid transparent;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--small);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--accent-dark);
+  color: var(--canvas);
+}
+
+.btn-primary:hover {
+  background: var(--on-dark);
+  color: var(--canvas);
+}
+
+.btn-secondary {
+  border-color: var(--rule-dark);
+  color: var(--on-dark);
+  background: none;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-dark);
+  color: var(--accent-dark);
+}
+
+.section--light .btn-primary {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.section--light .btn-primary:hover {
+  background: var(--accent-lite);
+  color: var(--white);
+}
+
+.section--light .btn-secondary {
+  border-color: var(--rule-lite);
+  color: var(--ink);
+}
+
+.section--light .btn-secondary:hover {
+  border-color: var(--accent-lite);
+  color: var(--accent-lite);
+}
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  margin-top: var(--s-6);
+}
+
+/* ---------- Sections ----------------------------------------------------- */
+
+.section {
+  padding-block: var(--s-8);
+}
+
+@media (min-width: 60rem) {
+  .section {
+    padding-block: var(--s-9);
   }
 }
 
-/* ============================================
-   13. ACCESSIBILITY
-   ============================================ */
+.section--light {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.section--light h1,
+.section--light h2,
+.section--light h3 {
+  color: var(--ink);
+}
+
+.section--light .eyebrow {
+  color: var(--accent-lite);
+}
+
+.section--light a:not(.btn) {
+  color: var(--accent-lite);
+}
+
+.section--light a:not(.btn):hover {
+  color: var(--ink);
+}
+
+.section__head {
+  margin-bottom: var(--s-6);
+}
+
+.section__head p:not(.eyebrow) {
+  color: var(--on-dark-mut);
+  margin-top: var(--s-4);
+  font-size: 1.05em;
+}
+
+.section--light .section__head p:not(.eyebrow) {
+  color: var(--ink-mut);
+}
+
+.divider {
+  padding-block: var(--s-2);
+}
+
+/* ---------- Hero --------------------------------------------------------- */
+
+.hero {
+  padding-block: clamp(3.5rem, 10vw, 7.5rem);
+  position: relative;
+}
+
+.hero h1 {
+  max-width: 20ch;
+}
+
+.hero__lede {
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  color: var(--on-dark-mut);
+  max-width: 52ch;
+  margin-top: var(--s-5);
+}
+
+.hero .meter {
+  margin-bottom: var(--s-6);
+}
+
+/* ---------- Card grids --------------------------------------------------- */
+
+.grid {
+  display: grid;
+  gap: var(--s-5);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+
+.grid--tight {
+  gap: var(--s-4) var(--s-5);
+}
+
+.card {
+  border-top: 1px solid var(--rule-dark);
+  padding-top: var(--s-4);
+}
+
+.card p {
+  margin: var(--s-2) 0 0;
+  color: var(--on-dark-mut);
+  font-size: var(--small);
+}
+
+.section--light .card {
+  border-top-color: var(--rule-lite);
+}
+
+.section--light .card p {
+  color: var(--ink-mut);
+}
+
+/* the two proof cards at the end of What We Do read differently on purpose */
+.card--proof {
+  background: var(--surface);
+  border: 1px solid var(--rule-dark);
+  border-radius: var(--radius-card);
+  padding: var(--s-5);
+}
+
+.card--proof h3 {
+  color: var(--accent-dark);
+}
+
+/* segments are a qualifier: the name is the loudest thing in the card */
+.card--segment {
+  background: var(--cream-2);
+  border: 1px solid var(--rule-lite);
+  border-top: 1px solid var(--rule-lite);
+  border-radius: var(--radius-card);
+  padding: var(--s-5);
+}
+
+/* ---------- Band (Taking content to a new market) ------------------------ */
+
+.band {
+  background: var(--surface);
+  border-block: 1px solid var(--rule-dark);
+}
+
+.band__answer {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  letter-spacing: -0.015em;
+  color: var(--accent-dark);
+  margin: var(--s-4) 0 var(--s-5);
+}
+
+.band__close {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  letter-spacing: -0.012em;
+  margin-top: var(--s-5);
+  color: var(--on-dark);
+}
+
+/* ---------- Language chips ----------------------------------------------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  margin-top: var(--s-6);
+}
+
+.chip {
+  background: var(--cream-2);
+  border: 1px solid var(--rule-lite);
+  border-radius: var(--radius-chip);
+  padding: var(--s-3) var(--s-4);
+  line-height: 1.25;
+}
+
+.chip b {
+  display: block;
+  font-weight: 600;
+  font-size: var(--small);
+  color: var(--ink);
+}
+
+.chip span {
+  display: block;
+  font-family: var(--font-native);
+  font-size: 0.9rem;
+  color: var(--ink-mut);
+  margin-top: 2px;
+}
+
+.chips-note {
+  margin-top: var(--s-5);
+  color: var(--ink-mut);
+}
+
+/* ---------- Work grid and video facades ---------------------------------- */
+
+.work-grid {
+  display: grid;
+  gap: var(--s-5);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  margin-top: var(--s-6);
+}
+
+.work {
+  background: var(--surface);
+  border: 1px solid var(--rule-dark);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.work__thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  background: #000000;
+  border: 0;
+  padding: 0;
+  width: 100%;
+  cursor: pointer;
+}
+
+.work__thumb img {
+  /* absolute, not height:100%: a percentage height cannot resolve against a
+     parent sized by aspect-ratio, so the image would keep its own 4:3 ratio
+     and drag the card with it, letterbox bars and all. */
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.78;
+  transition: opacity 0.2s ease;
+}
+
+.work__thumb:hover img {
+  opacity: 1;
+}
+
+.play {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent-dark);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.play svg {
+  width: 20px;
+  height: 22px;
+  margin-left: 3px;
+  fill: var(--canvas);
+}
+
+.work__meta {
+  padding: var(--s-4) var(--s-5) var(--s-5);
+}
+
+.work__meta p {
+  margin: var(--s-1) 0 0;
+  color: var(--on-dark-mut);
+  font-size: var(--small);
+}
+
+.work iframe {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
+/* ---------- Contact ------------------------------------------------------ */
+
+.contact-details {
+  display: grid;
+  gap: var(--s-5);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  margin-top: var(--s-6);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--rule-dark);
+}
+
+.contact-details dt {
+  font-size: var(--eyebrow);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-dark-mut);
+  margin-bottom: var(--s-2);
+}
+
+.contact-details dd {
+  margin: 0;
+  font-size: 1.05em;
+}
+
+.section--light .contact-details {
+  border-top-color: var(--rule-lite);
+}
+
+.section--light .contact-details dt {
+  color: var(--ink-mut);
+}
+
+/* ---------- FAQ ---------------------------------------------------------- */
+
+.faq {
+  margin-top: var(--s-6);
+  max-width: 52rem;
+}
+
+.faq details {
+  border-top: 1px solid var(--rule-dark);
+}
+
+.faq details:last-of-type {
+  border-bottom: 1px solid var(--rule-dark);
+}
+
+.faq summary {
+  cursor: pointer;
+  padding: var(--s-4) 0;
+  list-style: none;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-4);
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq summary h2 {
+  font-size: var(--h3);
+  font-weight: 600;
+  flex: 1;
+}
+
+.faq summary::after {
+  content: "+";
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--accent-dark);
+  flex: none;
+}
+
+.faq details[open] summary::after {
+  content: "\2212";
+}
+
+.faq details p {
+  color: var(--on-dark-mut);
+  padding-bottom: var(--s-5);
+  max-width: 60ch;
+}
+
+/* ---------- Footer ------------------------------------------------------- */
+
+.site-footer {
+  background: var(--surface);
+  border-top: 1px solid var(--rule-dark);
+  padding-block: var(--s-7);
+}
+
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-5);
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+}
+
+.footer-brand .brand {
+  margin-right: 0;
+}
+
+.footer-brand .brand img {
+  height: 40px;
+}
+
+.footer-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+
+.footer-lines p {
+  margin: 0;
+  color: var(--on-dark-mut);
+  font-size: var(--small);
+}
+
+.footer-social {
+  display: flex;
+  gap: var(--s-4);
+  flex-wrap: wrap;
+}
+
+.footer-social a {
+  color: var(--on-dark-mut);
+  font-size: var(--small);
+  text-decoration: none;
+}
+
+.footer-social a:hover {
+  color: var(--accent-dark);
+}
+
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--s-6);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--rule-dark);
+}
+
+.signoff {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.35rem;
+  color: var(--accent-dark);
+  margin: 0;
+}
+
+.copyright {
+  color: var(--on-dark-mut);
+  font-size: var(--small);
+  margin: 0;
+}
+
+/* ---------- Floating WhatsApp button ------------------------------------- */
+/* Renders only when a real WhatsApp number exists. See js/main.js and
+   docs/claims-register.md. Until then the markup is absent, not hidden. */
+
+.wa-float {
+  position: fixed;
+  right: clamp(1rem, 3vw, 1.75rem);
+  bottom: clamp(1rem, 3vw, 1.75rem);
+  z-index: 60;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+.wa-float svg {
+  width: 30px;
+  height: 30px;
+  fill: #0b1f12;
+}
+
+.wa-float:hover {
+  background: #1faa52;
+}
+
+/* the last section clears the button so it never sits on a CTA */
+body:has(.wa-float) .site-footer {
+  padding-bottom: calc(var(--s-7) + 4.5rem);
+}
+
+/* ---------- Page furniture (inner pages) --------------------------------- */
+
+.page-head {
+  padding-block: clamp(3rem, 7vw, 5rem) var(--s-6);
+}
+
+.breadcrumb {
+  font-size: var(--small);
+  color: var(--on-dark-mut);
+  margin-bottom: var(--s-4);
+}
+
+.breadcrumb a {
+  color: var(--on-dark-mut);
+}
+
+.breadcrumb a:hover {
+  color: var(--accent-dark);
+}
+
+/* ---------- Responsive --------------------------------------------------- */
+
+@media (max-width: 54rem) {
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .nav {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--rule-dark);
+    padding: var(--s-3) var(--gutter) var(--s-5);
+  }
+
+  .nav[data-open="true"] {
+    display: flex;
+  }
+
+  .nav a {
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--rule-dark);
+  }
+
+  .nav .btn {
+    margin-top: var(--s-4);
+    border-bottom: 0;
+  }
+
+  .site-header__inner {
+    position: relative;
+  }
+}
+
+@media (max-width: 30rem) {
+  .btn {
+    width: 100%;
+  }
+
+  .btn-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* ---------- Motion and print --------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 }
-
-@media (prefers-color-scheme: dark) {
-  /* Browsers/OS in dark mode can invert if needed */
-}
-
-/* Focus visible for keyboard navigation */
-*:focus-visible {
-  outline: 2px solid var(--golden-accent);
-  outline-offset: 2px;
-}
-
-/* ============================================
-   14. ANIMATIONS
-   ============================================ */
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.slide-in-left {
-  animation: slideInLeft 0.8s ease-out forwards;
-}
-
-.slide-in-right {
-  animation: slideInRight 0.8s ease-out forwards;
-}
-
-/* Intersection observer will add these classes */
-img.animate {
-  opacity: 0;
-}
-
-img.animate.visible {
-  animation: slideInLeft 0.8s ease-out forwards;
-}
-
-section img {
-  transition: var(--transition);
-}
-
-/* ============================================
-   15. PRINT STYLES
-   ============================================ */
 
 @media print {
+  .wa-float,
+  .site-header,
+  .nav-toggle {
+    display: none !important;
+  }
+
   body {
-    background: white;
-    color: black;
+    background: #ffffff;
+    color: #000000;
   }
+}
 
-  a {
-    text-decoration: underline;
-  }
+/* ---------- Layout helpers (replacing inline styles) --------------------- */
 
-  nav,
-  footer {
-    display: none;
-  }
+.section__head .meter + h2,
+.page-head .meter + h1,
+.hero .meter + h1 {
+  margin-top: var(--s-5);
+}
+
+.section--flush {
+  padding-top: 0;
+}
+
+.grid--proof {
+  margin-top: var(--s-6);
+}
+
+.faq-more {
+  margin-top: var(--s-7);
+}
+
+.u-flush {
+  margin-top: 0;
+}
+
+.footer-bottom--bare {
+  margin-top: 0;
+  border-top: 0;
+  padding-top: 0;
+}
+
+/* work cards keep an even bottom edge when a title wraps */
+.work__meta {
+  flex: 1;
+}
+
+/* ---------- Target sizes (WCAG 2.5.8) ----------------------------------- */
+/* standalone links that are not inline in a sentence need a real target */
+
+.contact-details dd a,
+.breadcrumb a,
+.copyright a,
+.footer-social a {
+  display: inline-block;
+  padding-block: 4px;
 }
