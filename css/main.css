@@ -318,7 +318,7 @@
   }
   .site-header__inner {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     max-width: var(--max-width);
     margin: 0 auto;
@@ -381,10 +381,10 @@
     padding: 10px 20px;
     color: var(--color-nav);
     font-size: 14px;
-    font-weight: 100;
+    font-weight: 400;
     letter-spacing: 1px;
   }
-  .nav__link:hover { color: var(--color-accent); }
+  .nav__link:hover { color: var(--color-accent-alt); }
   
   /* Hero (full-bleed background sections) */
   .hero {
