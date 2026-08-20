@@ -318,12 +318,13 @@
   }
   .site-header__inner {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 15px var(--gutter);
   }
+  .brand { flex-shrink: 0; }
   .brand__logo { width: 200px; height: 59px; }
   .logo-chip { display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; transition: background-color 150ms ease; }
   [data-theme="dark"] .logo-chip { background: #f4f4f2; padding: 6px 14px; }
@@ -837,10 +838,19 @@
     .brand__logo { width: 150px; height: 44px; }
     .site-header__right { flex: 1 1 auto; flex-wrap: wrap; justify-content: flex-end; }
     .nav-toggle { display: flex; }
-    .nav { display: none; width: 100%; }
-    .nav.is-open { display: block; }
-    .nav__list { flex-direction: column; align-items: flex-end; width: 100%; }
-    .nav__link { padding: 10px 0; }
+    .nav { display: none; }
+    .nav.is-open {
+      display: block;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      padding: 0 20px 16px;
+      background: var(--color-header-bg);
+      box-shadow: var(--shadow-header);
+    }
+    .nav__list { flex-direction: column; align-items: stretch; width: 100%; }
+    .nav__link { padding: 10px 0; text-align: right; }
     .section-title, .services__intro, .about__grid, .services__grid,
     .contact__info, .contact__logo-wrap,
     .hero__content, .feature-grid, .languages__list, .refer__text,
