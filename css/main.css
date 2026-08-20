@@ -1,6 +1,10 @@
 /* Potbelly Audio -- beta rebuild stylesheet
    Semantic, hand-written CSS matching the look and feel of the live site 1:1. */
 
+@font-face { font-family:"Montserrat"; font-style:normal; font-weight:100; font-display:swap; src:url("../fonts/montserrat-100.woff2") format("woff2"); }
+@font-face { font-family:"Montserrat"; font-style:normal; font-weight:400; font-display:swap; src:url("../fonts/montserrat-400.woff2") format("woff2"); }
+@font-face { font-family:"Montserrat"; font-style:normal; font-weight:700; font-display:swap; src:url("../fonts/montserrat-700.woff2") format("woff2"); }
+
    :root {
     --color-accent: #c97a46;
     --color-accent-alt: #a64a28;
@@ -147,6 +151,29 @@
   a { text-decoration: none; color: inherit; }
   ul { margin: 0; padding: 0; list-style: none; }
   h1, h2, h3, p { margin: 0; }
+
+  :focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+
+  .skip-link {
+    position: absolute;
+    top: -100px;
+    left: 12px;
+    z-index: 1000;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-family: var(--font-base);
+    font-weight: bold;
+    text-decoration: none;
+    transition: top 150ms ease;
+  }
+  .skip-link:focus { top: 12px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+
   .container {
     max-width: var(--max-width);
     margin: 0 auto;
@@ -170,7 +197,10 @@
     border-radius: 0;
     border: 3px solid var(--color-accent);
     color: var(--color-ink);
-    transition: all 200ms ease;
+    box-shadow: 0 4px 0 0 var(--color-accent-alt);
+    transform: translateY(0);
+    transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease,
+      transform 100ms ease, box-shadow 100ms ease;
     cursor: pointer;
   }
   .btn:hover {
@@ -179,39 +209,52 @@
     border-color: var(--color-accent);
   }
   .btn:active {
-    transform: scale(0.96);
-    transition: transform 100ms ease;
+    transform: translateY(4px);
+    box-shadow: 0 0 0 0 var(--color-accent-alt);
+    transition: transform 80ms ease, box-shadow 80ms ease;
   }
   .btn + .btn { margin-left: 12px; }
   .btn--outline {
     background-color: transparent;
     color: #fff;
     border-color: #fff;
+    box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.3);
   }
   .btn--outline:hover {
     background-color: #fff;
     color: var(--color-ink);
     border-color: #fff;
   }
+  .btn--outline:active {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.3);
+  }
   .btn--outline-light {
     background-color: transparent;
     color: #fff;
     border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.3);
   }
   .btn--outline-light:hover {
     background-color: #fff;
     color: var(--color-ink);
     border-color: #fff;
   }
+  .btn--outline-light:active {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.3);
+  }
   .btn--outline-dark {
     background-color: transparent;
     color: var(--color-fg);
     border-color: var(--color-fg);
+    box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.15);
   }
   .btn--outline-dark:hover {
     background-color: var(--color-fg);
     color: var(--color-bg);
     border-color: var(--color-fg);
+  }
+  .btn--outline-dark:active {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.15);
   }
   .section-cta { text-align: center; margin: 30px 0 60px; }
   .section-cta--left { text-align: left; margin: 25px 0 0; }
@@ -358,7 +401,7 @@
     .hero { background-attachment: fixed; }
   }
   .hero--home { min-height: 100vh; }
-  .hero--home::before { background: rgba(0, 0, 0, 0.5); }
+  .hero--home::before { background: rgba(0, 0, 0, 0.58); }
   .hero--collab { min-height: 480px; padding: 60px 0; }
   .hero--collab::before { background: rgba(0, 0, 0, 0.6); }
   .hero--translation { min-height: 480px; padding: 60px 0; }
@@ -724,27 +767,12 @@
   .contact { background: var(--color-bg-alt); padding-bottom: 0; }
   .contact__logo-wrap { text-align: center; padding: 0 var(--gutter) 10px; }
   .contact__logo { width: 200px; height: 59px; margin: 0 auto; }
-  .contact__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px;
-    max-width: var(--max-width);
+  .contact__info {
+    max-width: 360px;
     margin: 0 auto;
     padding: 20px var(--gutter) 40px;
+    text-align: center;
   }
-  .contact__field {
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 10px 4px;
-    height: 2.9em;
-    background: transparent;
-    border: 1px solid var(--color-border);
-    color: var(--color-fg);
-    font-family: var(--font-base);
-    font-size: 14px;
-  }
-  .contact__field:focus { outline: 1px solid var(--color-accent); }
-  textarea.contact__field { height: 8em; resize: vertical; }
   .contact__info-item { margin-bottom: 20px; }
   .contact__info-item p {
     display: flex;
@@ -814,15 +842,14 @@
     .nav__list { flex-direction: column; align-items: flex-end; width: 100%; }
     .nav__link { padding: 10px 0; }
     .section-title, .services__intro, .about__grid, .services__grid,
-    .contact__grid, .contact__logo-wrap,
+    .contact__info, .contact__logo-wrap,
     .hero__content, .feature-grid, .languages__list, .refer__text,
     .refer__list, .contact__intro, .cta-solid { padding-left: 20px; padding-right: 20px; }
   }
 
   @media (max-width: 768px) {
     .hero__title { font-size: 36px; }
-    .about__grid, .contact__grid { grid-template-columns: 1fr; }
-    .contact__grid { gap: 20px; }
+    .about__grid { grid-template-columns: 1fr; }
     .btn + .btn { margin-left: 0; margin-top: 12px; }
   }
 

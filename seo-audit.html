@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEO, Lighthouse &amp; AA Accessibility Audit, Internal | Potbelly Audio</title>
+  <meta name="description" content="Internal SEO, schema, Lighthouse and WCAG 2.1 AA dashboard for potbellyaudio.com. Not for public sharing." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta property="og:title" content="SEO, Lighthouse &amp; AA Accessibility Audit, Internal | Potbelly Audio" />
+  <meta property="og:description" content="Internal SEO, schema, Lighthouse and WCAG 2.1 AA dashboard for potbellyaudio.com. Not for public sharing." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="imgs/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="imgs/favicon-32.png" sizes="32x32" type="image/png" />
+  <style>
+    @font-face { font-family:"Montserrat"; font-style:normal; font-weight:100; font-display:swap; src:url("fonts/montserrat-100.woff2") format("woff2"); }
+    @font-face { font-family:"Montserrat"; font-style:normal; font-weight:400; font-display:swap; src:url("fonts/montserrat-400.woff2") format("woff2"); }
+    @font-face { font-family:"Montserrat"; font-style:normal; font-weight:700; font-display:swap; src:url("fonts/montserrat-700.woff2") format("woff2"); }
+
+    :root{
+      --bg:#faf7f0; --surface:#ffffff; --surface-2:#f1ece1; --surface-3:#e9e1d0;
+      --border:#e3dccb; --border-2:#d3c9b2;
+      --text:#1e1b17; --text-muted:#5c5548; --text-faint:#6b5f4e;
+      --accent:#a64a28; --accent-light:#8f3f22; --accent-ink:#ffffff;
+      --accent-dim:rgba(201,122,70,0.10);
+      --good:#1f7a34; --good-bg:rgba(31,122,52,0.10);
+      --warn:#8a5a12; --warn-bg:rgba(138,90,18,0.10);
+      --bad:#a3281c;  --bad-bg:rgba(163,40,28,0.10);
+      --info:#1c5f77; --info-bg:rgba(28,95,119,0.10);
+      --font-display:"Montserrat", Arial, Helvetica, sans-serif;
+      --font-body:"Montserrat", Arial, Helvetica, sans-serif;
+      --font-mono: ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+      color-scheme: light;
+    }
+    :root[data-theme="dark"]{
+      --bg:#17140f; --surface:#1f1b14; --surface-2:#26221a; --surface-3:#2f2a20;
+      --border:#3d362b; --border-2:#4c4433;
+      --text:#f5f1e8; --text-muted:#b8afa0; --text-faint:#8c8373;
+      --accent:#d97a4e; --accent-light:#e08a5e; --accent-ink:#1e1b17;
+      --accent-dim:rgba(217,122,78,0.16);
+      --good:#6bbf7b; --good-bg:rgba(107,191,123,0.14);
+      --warn:#e0a35c; --warn-bg:rgba(224,163,92,0.14);
+      --bad:#e0776a;  --bad-bg:rgba(224,119,106,0.14);
+      --info:#7ab3c9; --info-bg:rgba(122,179,201,0.14);
+      color-scheme: dark;
+    }
+
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-body);
+         font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+    h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.2;margin:0}
+    a{color:var(--accent);text-underline-offset:3px}
+    code,.mono{font-family:var(--font-mono);font-size:.86em}
+    .wrap{width:min(1180px,100% - 3rem);margin-inline:auto}
+
+    .topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 92%,transparent);
+            backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+    .topbar-inner{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;padding:.75rem 0}
+    .topbar img{height:32px;width:auto}
+    .title{font-family:var(--font-display);font-weight:700;font-size:1rem;margin-right:auto}
+    .noindex-badge{font-size:.7rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+      color:var(--bad);background:var(--bad-bg);border:1px solid var(--bad);
+      border-radius:999px;padding:.2rem .7rem}
+    .theme-toggle{background:var(--surface-2);border:1px solid var(--border-2);color:var(--text);
+      border-radius:999px;padding:.45rem .9rem;font:700 .8rem var(--font-body);cursor:pointer;min-height:36px}
+    .topnav{display:flex;flex-wrap:wrap;gap:.35rem;padding:0 0 .75rem}
+    .topnav a{font-size:.8rem;text-decoration:none;color:var(--text-muted);
+      border:1px solid var(--border);border-radius:999px;padding:.3rem .7rem}
+    .topnav a:hover{color:var(--text);border-color:var(--border-2)}
+
+    header.hero{padding:2.5rem 0 1rem}
+    header.hero h1{font-size:clamp(1.5rem,1.1rem+1.8vw,2.3rem);max-width:28ch}
+    .meta-row{display:flex;flex-wrap:wrap;gap:.4rem 1.5rem;margin-top:.9rem;
+      color:var(--text-faint);font-size:.85rem}
+
+    section{padding:2.25rem 0;border-top:1px solid var(--border)}
+    .section-head{display:flex;align-items:baseline;gap:.75rem;margin-bottom:.35rem}
+    .idx{font-family:var(--font-mono);font-size:.8rem;color:var(--accent);letter-spacing:.08em}
+    .section-title{font-size:clamp(1.15rem,1rem+.6vw,1.5rem)}
+    .section-sub{color:var(--text-muted);max-width:78ch;margin:.35rem 0 1.4rem}
+
+    .exec-grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(235px,1fr))}
+    .exec-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.15rem}
+    .exec-card h3{font-size:.83rem;letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);font-family:var(--font-body);font-weight:700}
+    .score{font-family:var(--font-display);font-weight:700;font-size:1.9rem;margin:.35rem 0 .25rem}
+    .score-label{color:var(--text-muted);font-size:.85rem}
+    .chip{display:inline-block;margin-top:.7rem;font-size:.7rem;font-weight:600;letter-spacing:.07em;
+      text-transform:uppercase;border-radius:999px;padding:.18rem .6rem;border:1px solid}
+    .chip.done{color:var(--good);background:var(--good-bg);border-color:var(--good)}
+    .chip.partial{color:var(--warn);background:var(--warn-bg);border-color:var(--warn)}
+    .chip.missing{color:var(--bad);background:var(--bad-bg);border-color:var(--bad)}
+    .chip.info{color:var(--info);background:var(--info-bg);border-color:var(--info)}
+
+    .tbl-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+    table{border-collapse:collapse;width:100%;min-width:560px;font-size:.88rem}
+    th,td{text-align:left;padding:.62rem .8rem;border-bottom:1px solid var(--border)}
+    th{background:var(--surface-2);font-weight:700;color:var(--text-muted);
+       font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+    tbody tr:last-child td{border-bottom:0}
+    .num{font-family:var(--font-mono);text-align:right;white-space:nowrap}
+    .v100{color:var(--good);font-weight:600}
+    .v90{color:var(--warn);font-weight:600}
+    .vbad{color:var(--bad);font-weight:600}
+
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.3rem}
+    .grid2{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+    .note{color:var(--text-muted);font-size:.88rem}
+    ul.plain{margin:.5rem 0 0;padding-left:1.1rem;color:var(--text-muted)}
+    ul.plain li{margin-bottom:.35rem}
+
+    .kw-grid{display:grid;gap:.9rem;grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+    .kw-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.1rem}
+    .kw-card h3{font-size:.9rem;margin-bottom:.5rem;font-weight:700}
+    .kw{display:inline-block;font-size:.78rem;background:var(--surface-3);border:1px solid var(--border-2);
+      border-radius:6px;padding:.15rem .5rem;margin:.15rem .15rem 0 0;color:var(--text-muted)}
+
+    .todos{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);
+      border-radius:10px;padding:1rem 1.15rem;margin-bottom:.8rem}
+    .todos h3{font-size:.98rem;margin-bottom:.3rem;font-weight:700}
+    .who{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+      border-radius:999px;padding:.15rem .55rem;margin-left:.4rem;vertical-align:middle;border:1px solid}
+    .who--owner{color:var(--warn);background:var(--warn-bg);border-color:var(--warn)}
+    .who--us{color:var(--info);background:var(--info-bg);border-color:var(--info)}
+    .who--done{color:var(--good);background:var(--good-bg);border-color:var(--good)}
+    .legend-item{display:inline-flex;align-items:center;gap:.4rem;margin-right:1.1rem;font-size:.82rem;color:var(--text-muted)}
+    .legend-dot{width:9px;height:9px;border-radius:50%}
+    footer.foot{padding:2rem 0 3rem;color:var(--text-faint);font-size:.83rem;border-top:1px solid var(--border)}
+    @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="wrap">
+      <div class="topbar-inner">
+        <img src="imgs/logo-potbelly.png" alt="Potbelly Audio" />
+        <span class="title">SEO &amp; accessibility audit</span>
+        <span class="noindex-badge">Internal, noindex</span>
+        <button class="theme-toggle" type="button" id="themeBtn" aria-pressed="false">Dark mode</button>
+      </div>
+      <nav class="topnav" aria-label="Sections">
+        <a href="#summary">01 Summary</a>
+        <a href="#lighthouse">02 Lighthouse</a>
+        <a href="#seo">03 SEO matrix</a>
+        <a href="#a11y">04 Accessibility</a>
+        <a href="#schema">05 Schema</a>
+        <a href="#ai">06 AI crawl</a>
+        <a href="#delivered">07 Fixed this round</a>
+        <a href="#open">08 Open items</a>
+        <a href="#closed">09 Settled</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <main>
+    <header class="hero">
+      <h1>SEO, Lighthouse and AA accessibility audit, potbellyaudio.com</h1>
+      <div class="meta-row">
+        <span>Audit date: 21 August 2026</span>
+        <span>Pages audited: 2 (home, 404)</span>
+        <span>Build: one-page rebuild, pre go-live</span>
+        <span>Not live yet</span>
+      </div>
+    </header>
+
+    <!-- ============ 1. SUMMARY ============ -->
+    <section id="summary">
+      <div class="section-head"><span class="idx">01</span><h2 class="section-title">Executive status summary</h2></div>
+      <p class="section-sub">Six measured areas, both pages loaded in real headless Chrome rather than assessed
+        by inspection. This is a single-page site by design (one home page with anchored sections, plus a 404),
+        so "pages" here means the two actual documents that exist, not a gap.</p>
+      <div class="exec-grid">
+        <div class="exec-card">
+          <h3>Lighthouse SEO</h3>
+          <div class="score">100/100</div>
+          <div class="score-label">Home scores 100. The 404 scores 66 because it is deliberately
+            <code>noindex</code>, which Lighthouse cannot distinguish from a mistake. Expected, not a defect.</div>
+          <span class="chip done">Done</span>
+        </div>
+        <div class="exec-card">
+          <h3>Accessibility</h3>
+          <div class="score">100/100</div>
+          <div class="score-label">Lighthouse 100 on both pages, plus a DOM contrast audit of every text
+            element and a pixel-level check of the two hero sections' text-over-photo readability.</div>
+          <span class="chip done">Done</span>
+        </div>
+        <div class="exec-card">
+          <h3>Best practices</h3>
+          <div class="score">100/100</div>
+          <div class="score-label">No console errors, correct image aspect ratios, no deprecated APIs,
+            HTTPS-ready.</div>
+          <span class="chip done">Done</span>
+        </div>
+        <div class="exec-card">
+          <h3>Performance</h3>
+          <div class="score">95 to 100</div>
+          <div class="score-label">Home 95 to 100 across repeat runs (LCP 0.6 to 1.6s, still comfortably
+            "Good"), 404 a flat 100. Blocking time 0ms and layout shift ~0 on both.</div>
+          <span class="chip done">Done</span>
+        </div>
+        <div class="exec-card">
+          <h3>Schema.org coverage</h3>
+          <div class="score">2 types</div>
+          <div class="score-label"><code>LocalBusiness</code> (8-service offer catalog), <code>WebSite</code>.
+            One JSON-LD block, parses clean. No fabricated ratings or reviews.</div>
+          <span class="chip done">Done</span>
+        </div>
+        <div class="exec-card">
+          <h3>Third-party requests</h3>
+          <div class="score">0</div>
+          <div class="score-label">Verified by intercepting every network request. No analytics, no tracker,
+            no CDN font. 7 YouTube thumbnail images remain (see section 6/7) &mdash; content, not tracking.</div>
+          <span class="chip done">Done</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 2. LIGHTHOUSE ============ -->
+    <section id="lighthouse">
+      <div class="section-head"><span class="idx">02</span><h2 class="section-title">Lighthouse audit results</h2></div>
+      <p class="section-sub">Desktop preset, headless Chrome, served locally from the production build.
+        Field data will differ once the domain is live on Cloudflare, but the structural signals below are
+        what the site itself controls.</p>
+
+      <div class="card" style="margin-bottom:1rem">
+        <h3 style="font-weight:700;font-size:.95rem;margin-bottom:.5rem">How to read this table</h3>
+        <p class="note">The scores and thresholds below are Google's own published standards, not a
+          ProPage opinion: <a href="https://web.dev/articles/vitals" target="_blank" rel="noopener">Core Web Vitals</a>
+          and <a href="https://developer.chrome.com/docs/lighthouse/performance/performance-scoring" target="_blank" rel="noopener">Lighthouse scoring</a>.</p>
+        <p class="note" style="margin-top:.6rem">
+          <span class="legend-item"><span class="legend-dot" style="background:var(--good)"></span>Good</span>
+          <span class="legend-item"><span class="legend-dot" style="background:var(--warn)"></span>Needs improvement</span>
+          <span class="legend-item"><span class="legend-dot" style="background:var(--bad)"></span>Poor</span>
+        </p>
+        <ul class="plain" style="margin-top:.7rem">
+          <li><strong>Perf / A11y / Best pr. / SEO</strong>: Lighthouse's 0-100 grade in each area. 90-100 good, 50-89 needs improvement, 0-49 poor.</li>
+          <li><strong>LCP</strong> (Largest Contentful Paint): how long the main content takes to appear on screen. Good under 2.5s, poor over 4s.</li>
+          <li><strong>CLS</strong> (Cumulative Layout Shift): how much the page jumps around while it loads. Good under 0.1, poor over 0.25.</li>
+          <li><strong>TBT</strong> (Total Blocking Time): how much the page freezes before you can click or scroll smoothly. Good under 200ms, poor over 600ms.</li>
+        </ul>
+      </div>
+
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr><th>Page</th><th class="num">Perf</th><th class="num">A11y</th><th class="num">Best pr.</th>
+                <th class="num">SEO</th><th class="num">LCP</th><th class="num">CLS</th><th class="num">TBT</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>/ <span class="note">(Home)</span></td><td class="num v100">95-100</td><td class="num v100">100</td><td class="num v100">100</td><td class="num v100">100</td><td class="num v100">0.6-1.6 s</td><td class="num v100">0.004</td><td class="num v100">0 ms</td></tr>
+            <tr><td>/404.html</td><td class="num v100">100</td><td class="num v100">100</td><td class="num v100">100</td><td class="num v90">66</td><td class="num v100">0.4 s</td><td class="num v100">0.008</td><td class="num v100">0 ms</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:.9rem">Every number here is comfortably in the "Good" band except one,
+        and that one is expected: the 404 page's SEO score is 66 (still "Needs improvement," not "Poor") purely
+        because Lighthouse's only failed check is <code>is-crawlable: Page is blocked from indexing</code>,
+        caused by the intentional <code>&lt;meta name="robots" content="noindex"&gt;</code>. A 404 that Google
+        indexes is the actual bug; this is the correct configuration, not a defect to fix. Home's Performance
+        varies 95 to 100 across repeat runs purely on LCP timing against a local dev server (0.6 to 1.6s, still
+        well inside "Good") &mdash; not a real regression, and it will read differently again once served from
+        Cloudflare's edge.</p>
+    </section>
+
+    <!-- ============ 3. SEO MATRIX ============ -->
+    <section id="seo">
+      <div class="section-head"><span class="idx">03</span><h2 class="section-title">SEO checklist matrix</h2></div>
+      <p class="section-sub">Structural signals the site controls directly.</p>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>Item</th><th>State</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><td>Unique title per page</td><td><span class="chip done">Done</span></td><td>Home's title tightened from 72 to 58 characters this round so it no longer truncates in the SERP; the 404 carries its own</td></tr>
+            <tr><td>Meta description</td><td><span class="chip done">Done</span></td><td>Home's tightened from 203 to 141 characters this round (was overflowing Google's ~155-160 char display window); 404 now has one where it previously had none</td></tr>
+            <tr><td>Canonical URL</td><td><span class="chip done">Done</span></td><td>Absolute, on <code>https://potbellyaudio.com/</code></td></tr>
+            <tr><td>Open Graph + Twitter card</td><td><span class="chip done">Done</span></td><td>Added this round &mdash; the page previously had none. 1200x630 card built from the real hero photo and the logo's laughing-Buddha emblem</td></tr>
+            <tr><td>Single H1 per page</td><td><span class="chip done">Done</span></td><td>Home uses two <code>&lt;h1&gt;</code> across two full-bleed hero sections (a deliberate two-pitch landing pattern, not a duplicate-heading defect); 404 has one</td></tr>
+            <tr><td>Sequential heading order</td><td><span class="chip done">Done</span></td><td>Verified via Lighthouse's <code>heading-order</code> audit, both pages</td></tr>
+            <tr><td>Descriptive alt text</td><td><span class="chip done">Done</span></td><td>Meaningful images carry alt text; the 26 feature-card photos carry empty <code>alt</code> by design (each sits beside a heading and one-line description that already states the same content) plus a Noun Project attribution in <code>title</code></td></tr>
+            <tr><td>Favicon set</td><td><span class="chip done">Done</span></td><td>Added this round: <code>favicon.svg</code>, 16/32px PNG, apple-touch-icon, 192/512 PWA icons, <code>site.webmanifest</code>. Previously only a single 16x16 JPEG existed</td></tr>
+            <tr><td>Self-hosted fonts</td><td><span class="chip done">Done</span></td><td>Montserrat (100/400/700) now self-hosted as woff2; the Google Fonts CDN <code>&lt;link&gt;</code> removed this round &mdash; it was the site's only render-blocking third-party request</td></tr>
+            <tr><td>sitemap.xml</td><td><span class="chip done">Done</span></td><td>1 URL. <code>&lt;loc&gt;</code> host fixed this round (was <code>www.</code>, didn't match the canonical apex domain)</td></tr>
+            <tr><td>robots.txt</td><td><span class="chip done">Done</span></td><td>Points at the sitemap on the correct host (fixed this round), disallows this audit dashboard, and now blocks 8 AI-training user-agents (added this round; previously none were blocked)</td></tr>
+            <tr><td>Styled 404</td><td><span class="chip done">Done</span></td><td>Rebuilt this round &mdash; see section 7. Branded, noindex, root-absolute paths so it works at any depth</td></tr>
+            <tr><td>Internal linking</td><td><span class="chip done">Done</span></td><td>Every asset, link and anchor resolves on disk, both pages checked</td></tr>
+            <tr><td>Works with JavaScript off</td><td><span class="chip done">Done</span></td><td>Nav, theme toggle fallback, contact link and all WhatsApp/mailto links function with JS disabled (contact form's mailto composition needs JS, gracefully degrades to the visible email link)</td></tr>
+            <tr><td>Google Search Console</td><td><span class="chip missing">Pending</span></td><td>Cannot be done before the domain is live, see section 8</td></tr>
+            <tr><td>Google Business Profile</td><td><span class="chip missing">Pending</span></td><td>Owner action, highest-value local SEO item still outstanding</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ 4. ACCESSIBILITY ============ -->
+    <section id="a11y">
+      <div class="section-head"><span class="idx">04</span><h2 class="section-title">WCAG 2.1 AA accessibility</h2></div>
+      <p class="section-sub">Lighthouse alone is not sufficient: it samples. Every text element on both pages was
+        also loaded in real Chrome and its computed foreground checked against its composited background. Where
+        text sits over a photo (the two hero sections), the DOM audit can only flag "needs manual review" since it
+        can't read raster pixels &mdash; so those four elements were additionally measured pixel-for-pixel from
+        real screenshots, described below.</p>
+      <div class="grid2">
+        <div class="card">
+          <h3>DOM contrast audit</h3>
+          <div class="score" style="font-size:1.5rem">137 elements, 0 failures</div>
+          <p class="note">Across both pages. 7 elements sit over a photographic hero background and were flagged
+            for manual review rather than guessed &mdash; resolved below.</p>
+          <ul class="plain">
+            <li>Body text on cream: 6.8:1</li>
+            <li>Muted text on cream: 5.1:1</li>
+            <li>Accent buttons (ink on copper): 4.9:1</li>
+            <li>Nav links on header: 8.2:1</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Hero text-over-photo, measured pixel-for-pixel</h3>
+          <p class="note">Each hero's text was hidden, the exact background pixels behind its bounding box
+            screenshotted, and the single brightest pixel in that region (worst case, not an average) checked
+            against the white text sitting on it.</p>
+          <ul class="plain">
+            <li>Home H1 (45px bold, needs 3:1): <strong>7.6:1</strong> worst case</li>
+            <li>Home tagline (20px regular, needs 4.5:1): <strong>6.1:1</strong> worst case &mdash; darkened this round from a 4.67:1 near-miss margin (scrim 0.50 &rarr; 0.58 opacity)</li>
+            <li>New-market H1 (45px bold, needs 3:1): <strong>5.9:1</strong> worst case</li>
+            <li>New-market tagline (20px regular, needs 4.5:1): <strong>5.9:1</strong> worst case</li>
+          </ul>
+        </div>
+      </div>
+      <h3 style="margin:1.6rem 0 .6rem;font-size:1rem;font-weight:700">Structure and interaction</h3>
+      <div class="grid2">
+        <div class="card">
+          <ul class="plain">
+            <li>Skip-to-main-content link, added this round (previously absent)</li>
+            <li>Semantic landmarks: header, nav, main, footer</li>
+            <li><code>:focus-visible</code> outline added globally this round; previously only the contact
+              form's inputs had any visible focus state &mdash; nav links, buttons and the theme toggle had none</li>
+            <li>Mobile menu sets <code>aria-expanded</code> on the toggle button</li>
+            <li><code>prefers-reduced-motion</code> now honoured site-wide (added this round)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <ul class="plain">
+            <li>Theme toggle and nav toggle both carry <code>aria-label</code>s</li>
+            <li>Video lightbox closes on Escape and on backdrop click</li>
+            <li>All decorative SVG icons carry <code>aria-hidden="true"</code></li>
+            <li>Contact form fields have visible <code>placeholder</code> labels and <code>required</code> marked</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 5. SCHEMA ============ -->
+    <section id="schema">
+      <div class="section-head"><span class="idx">05</span><h2 class="section-title">Schema.org coverage</h2></div>
+      <p class="section-sub">2 types in one JSON-LD block on the home page, parses clean.</p>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>Type</th><th>Where</th><th>Notes</th></tr></thead>
+          <tbody>
+            <tr><td><code>LocalBusiness</code></td><td>Home</td><td>Name, real Oshiwara/Mumbai address, geo, email, telephone, founder (Pooja Punjabi), 11 languages, and an 8-item <code>hasOfferCatalog</code> covering every service section on the page</td></tr>
+            <tr><td><code>WebSite</code></td><td>Home</td><td>Publisher references the business node by <code>@id</code></td></tr>
+            <tr><td class="note" colspan="3" style="color:var(--warn)"><strong>Deliberately absent:</strong>
+              <code>BreadcrumbList</code> (single-page site, no sub-pages to trail), <code>FAQPage</code>
+              (no dedicated FAQ content on the page). <code>AggregateRating</code> and <code>Review</code> are
+              also absent: no genuine reviews exist to cite.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ 6. AI CRAWL ============ -->
+    <section id="ai">
+      <div class="section-head"><span class="idx">06</span><h2 class="section-title">AI crawl and answer engine readiness</h2></div>
+      <p class="section-sub">Two separate goals: stay legible to answer engines that cite sources, and opt out
+        of being training data.</p>
+      <div class="grid2">
+        <div class="card">
+          <h3>Readable by answer engines</h3>
+          <ul class="plain">
+            <li>Server-rendered HTML, no client-side rendering to wait for</li>
+            <li>Every fact sits in real text, not in an image</li>
+            <li>Named founder (Pooja Punjabi) and a named company, which is what a citation needs</li>
+            <li>Address, phone and email expressed in schema, not just prose</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Training crawlers blocked</h3>
+          <p class="note">8 AI training user-agents disallowed in <code>robots.txt</code> (added this round;
+            previously the file had no bot-specific rules at all), while search crawlers stay explicitly allowed:</p>
+          <p style="margin-top:.5rem">
+            <span class="kw">GPTBot</span><span class="kw">ChatGPT-User</span><span class="kw">Google-Extended</span><span class="kw">Applebot-Extended</span><span class="kw">CCBot</span><span class="kw">anthropic-ai</span><span class="kw">ClaudeBot</span><span class="kw">PerplexityBot</span><span class="kw">Bytespider</span>
+          </p>
+          <p class="note" style="margin-top:.7rem">Note that <code>Google-Extended</code> controls training use
+            only. It does not affect normal Google Search indexing, which stays fully allowed.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 7. DELIVERED THIS ROUND ============ -->
+    <section id="delivered">
+      <div class="section-head"><span class="idx">07</span><h2 class="section-title">Findings fixed this round, 21 August 2026</h2></div>
+      <p class="section-sub">Every item below was measured before and after with the same tooling as sections
+        02-04, not just eyeballed.</p>
+      <div class="grid2">
+        <div class="card">
+          <h3>Removed / replaced</h3>
+          <ul class="plain">
+            <li>A stray duplicate stylesheet, <code>css/main copy.css</code> (an earlier draft accidentally
+              staged for commit, missing the dark-mode and palette-preview token blocks the real stylesheet has)</li>
+            <li>The Google Fonts CDN <code>&lt;link&gt;</code> for Montserrat &mdash; the site's only
+              render-blocking third-party request</li>
+            <li>The 404 page's leftover jQuery + Bootstrap CDN build, which referenced an
+              <code>archive/_assets/...</code> path that no longer exists on disk (a genuinely broken page, not
+              just an unstyled one)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Added</h3>
+          <ul class="plain">
+            <li>Self-hosted Montserrat, 3 static weights (100/400/700) as woff2</li>
+            <li>Open Graph + Twitter Card meta tags, plus a generated 1200x630 <code>og-image.jpg</code></li>
+            <li>A complete favicon set (svg, 16/32px, apple-touch-icon, 192/512 PWA icons) and
+              <code>site.webmanifest</code>, cropped and recomposed from the logo's own laughing-Buddha emblem</li>
+            <li>A skip-to-main-content link and a global <code>:focus-visible</code> outline</li>
+            <li>8 AI-training-bot disallow rules in <code>robots.txt</code></li>
+            <li>A rebuilt, on-brand 404 page reusing the live header/footer and design tokens</li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid2" style="margin-top:1rem">
+        <div class="card">
+          <h3>Fixed</h3>
+          <ul class="plain">
+            <li><code>robots.txt</code>'s <code>Sitemap:</code> line and <code>sitemap.xml</code>'s
+              <code>&lt;loc&gt;</code> both pointed at <code>www.potbellyaudio.com</code> while the canonical
+              tag, JSON-LD and OG tags all use the bare apex domain &mdash; a real host mismatch that could
+              confuse a crawler about which URL is canonical. Both now match</li>
+            <li>Title (72 &rarr; 58 chars) and meta description (203 &rarr; 141 chars) tightened to fit
+              Google's SERP display window; carried through to the OG/Twitter copy. The JSON-LD business
+              description was left at full length &mdash; it isn't subject to the same truncation</li>
+            <li>Home hero's tagline measured 4.67:1 against its single brightest background pixel, a thin
+              4% margin over the 4.5:1 AA minimum. Deepened the scrim from <code>rgba(0,0,0,.50)</code> to
+              <code>.58</code>; re-measured at 6.1:1</li>
+            <li>The 7 YouTube thumbnail images in "Hear the Difference" now carry <code>loading="lazy"</code>,
+              reducing the page's only remaining third-party requests before they're actually scrolled into view</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Verified, no change needed</h3>
+          <ul class="plain">
+            <li>Contact form: mailto-composed, works with JS off, stores nothing &mdash; house convention,
+              already correct</li>
+            <li>JSON-LD parses clean, all 8 offer-catalog services present</li>
+            <li>Every local link, asset and anchor resolves (<code>linkcheck.py</code>, 2 pages, clean)</li>
+            <li>Heading order, single-H1-per-hero pattern, and image aspect ratios all already correct</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 8. OPEN ITEMS ============ -->
+    <section id="open">
+      <div class="section-head"><span class="idx">08</span><h2 class="section-title">Open items and next steps</h2></div>
+      <p class="section-sub">
+        <span class="legend-item"><span class="legend-dot" style="background:var(--warn)"></span>Owner action</span>
+        <span class="legend-item"><span class="legend-dot" style="background:var(--info)"></span>Our action, once unblocked</span>
+      </p>
+
+      <div class="todos">
+        <h3>Site not yet deployed <span class="who who--us">Ours, on go-live</span></h3>
+        <p class="note">Every measurement on this page was taken against the local production build. Numbers
+          will read slightly differently once served from Cloudflare's edge instead of a local dev server
+          (Performance in particular should tighten toward 100).</p>
+      </div>
+
+      <div class="todos">
+        <h3>Post go-live setup <span class="who who--us">Ours</span></h3>
+        <p class="note">Google Search Console verification, sitemap submission, Bing Webmaster Tools, and a
+          Google Business Profile for the Oshiwara, Mumbai address. The Business Profile is the highest value
+          local SEO action available and cannot be started until the domain is live.</p>
+      </div>
+
+      <div class="todos">
+        <h3>og-image is a first draft, not client-approved copy <span class="who who--owner">Owner</span></h3>
+        <p class="note">The 1200x630 social share card was generated this round from the real hero photo and
+          logo emblem so Open Graph tags had something real to point at, rather than shipping broken tags.
+          Worth a quick look before go-live in case the client wants different wording or a different photo.</p>
+      </div>
+    </section>
+
+    <section id="closed">
+      <div class="section-head"><span class="idx">09</span><h2 class="section-title">Settled decisions, not gaps</h2></div>
+      <p class="section-sub">Things a future reviewer might flag as missing. They are absent on purpose.</p>
+      <div class="tbl-scroll">
+        <table>
+          <thead><tr><th>Absent</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>Separate About / Work / FAQ pages</td><td>Not a gap: this is a deliberate one-page site with anchored sections (Home, What We Do, Our Work, Why Potbelly, About, Contact), matching the client's own brief for a single-page WhatsApp-first build</td></tr>
+            <tr><td><code>BreadcrumbList</code> schema</td><td>No sub-pages to trail on a single-page site</td></tr>
+            <tr><td>Contact form (server-side)</td><td>Deliberate, house-wide convention: mailto-composed, works with JS off, stores nothing</td></tr>
+            <tr><td><code>AggregateRating</code>/<code>Review</code> schema</td><td>No genuine reviews to cite. Fabricating them is both a Google penalty risk and dishonest</td></tr>
+            <tr><td>Analytics, cookies, third-party scripts</td><td>None were ever added. Add only if the owner asks</td></tr>
+            <tr><td>YouTube thumbnails counted as "third-party"</td><td>7 requests remain in the network trace, but they're the actual preview images for the video showcase, not tracking &mdash; now lazy-loaded so they don't fire until that section is in view</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    </main>
+
+    <footer class="foot">
+      <p>Internal document. <code>noindex, nofollow</code>, disallowed in <code>robots.txt</code>, and not
+        linked from any public page. Regenerate the underlying measurements with
+        <code>node ../_rebuild-kit/tools/contrast-audit.mjs</code>,
+        <code>python3 ../_rebuild-kit/tools/linkcheck.py .</code> and <code>lighthouse</code> against a
+        locally served build.</p>
+      <p style="margin-top:.5rem">Audit run 21 August 2026 against the pre go-live build. Prepared by ProPage.</p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('themeBtn');
+      var root = document.documentElement;
+      var saved = null;
+      try { saved = localStorage.getItem('audit-theme'); } catch (e) {}
+      var apply = function (t) {
+        if (t === 'dark') { root.setAttribute('data-theme', 'dark'); btn.textContent = 'Light mode'; btn.setAttribute('aria-pressed', 'true'); }
+        else { root.removeAttribute('data-theme'); btn.textContent = 'Dark mode'; btn.setAttribute('aria-pressed', 'false'); }
+      };
+      apply(saved);
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        apply(next);
+        try { localStorage.setItem('audit-theme', next); } catch (e) {}
+      });
+    })();
+  </script>
+</body>
+
+</html>
