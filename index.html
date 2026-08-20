@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+  (function () {
+    try {
+      var stored = localStorage.getItem('theme');
+      if (stored === 'light' || stored === 'dark') {
+        document.documentElement.setAttribute('data-theme', stored);
+      }
+      var storedPalette = localStorage.getItem('palette');
+      if (storedPalette) {
+        document.documentElement.setAttribute('data-palette', storedPalette);
+      }
+    } catch (e) {}
+  })();
+</script>
+<title>Potbelly Audio | Dubbing, Voiceovers, Translation &amp; Localisation, Mumbai</title>
+<meta name="description" content="Potbelly Audio is a Mumbai-based audio and localisation company working across Indian and international languages: dubbing, voiceovers, translation and localisation, handled under one roof." />
+<link rel="shortcut icon" href="imgs/favicon.jpeg" />
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css" />
+<link href="css/main.css" rel="stylesheet" />
+<link rel="canonical" href="https://potbellyaudio.com/" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://potbellyaudio.com/#business",
+      "name": "Potbelly Audio",
+      "description": "Potbelly Audio is a Mumbai-based audio and localisation company working across Indian and international languages: dubbing, voiceovers, translation and localisation, handled under one roof.",
+      "url": "https://potbellyaudio.com/",
+      "logo": "https://potbellyaudio.com/imgs/logo-potbelly.png",
+      "image": "https://potbellyaudio.com/imgs/logo-potbelly.png",
+      "telephone": "+91-99870-18519",
+      "email": "work@potbellyaudio.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Oshiwara",
+        "addressLocality": "Mumbai",
+        "addressRegion": "Maharashtra",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 19.147243,
+        "longitude": 72.8313626
+      },
+      "founder": {
+        "@type": "Person",
+        "name": "Pooja Punjabi"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "India"
+      },
+      "sameAs": [
+        "https://www.facebook.com/potbellyaudio/",
+        "https://twitter.com/potbellyaudio",
+        "https://www.instagram.com/potbellyaudio/"
+      ],
+      "knowsLanguage": ["Hindi", "English", "Marathi", "Bengali", "Tamil", "Telugu", "Kannada", "Malayalam", "Gujarati", "Punjabi", "Urdu"],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Audio & Localisation Services",
+        "itemListElement": [
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Dubbing", "description": "Natural, well-directed dubbing that keeps the performance, emotion and intent of the original." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Voiceovers", "description": "The right voice for films, documentaries, advertising, corporate and digital content." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Translation & Localisation", "description": "Translation that considers context, culture, tone and audience, not just words." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Casting", "description": "A wide pool of voice talent across languages, age groups and performance styles." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Dubbing Direction", "description": "Experienced dubbing directors who know how to get the right performance from every artist." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Recording & Mixing", "description": "Experienced sound engineers handling recording, editing and final mix for a polished output." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Audio Post-Production", "description": "From recorded tracks to final delivery, handled under one roof." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Quality Control", "description": "Every project goes through multiple rounds of QC, at script level and again after recording." } }
+        ]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://potbellyaudio.com/#website",
+      "url": "https://potbellyaudio.com/",
+      "name": "Potbelly Audio",
+      "publisher": { "@id": "https://potbellyaudio.com/#business" }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="brand" href="#home" aria-label="Potbelly Audio home">
+      <span class="logo-chip">
+        <img class="brand__logo" src="imgs/logo-potbelly.png" width="200" height="59" alt="Potbelly Audio" />
+      </span>
+    </a>
+    <div class="site-header__right">
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark theme">
+        <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+        <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      </button>
+      <button type="button" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
+      <nav class="nav" id="site-nav">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="#home">HOME</a></li>
+          <li><a class="nav__link" href="#what-we-do">WHAT WE DO</a></li>
+          <li><a class="nav__link" href="#work">OUR WORK</a></li>
+          <li><a class="nav__link" href="#why">WHY POTBELLY</a></li>
+          <li><a class="nav__link" href="#about">ABOUT</a></li>
+          <li><a class="nav__link" href="#contact">CONTACT</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero hero--home" id="home" style="background-image:url('imgs/hero-home.jpeg')">
+    <div class="hero__content">
+      <h1 class="hero__title">Dubbing. Voiceovers. Translation. Localisation.</h1>
+      <p class="hero__tagline">Potbelly Audio is a Mumbai-based audio and localisation company working across Indian and international languages.</p>
+      <p class="hero__cta">
+        <a class="btn" href="#contact">Discuss Your Project</a>
+        <a class="btn btn--outline" href="https://wa.me/919987018519?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project.">WhatsApp Us</a>
+      </p>
+    </div>
+  </section>
+
+  <section id="what-we-do">
+    <div class="section-title section-title--tight">
+      <h2 class="section-title__heading">What We Do</h2>
+    </div>
+    <div class="feature-grid feature-grid--3">
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-dubbing-0Pv6qv.jpg" width="400" height="300" alt="" loading="lazy" title="Podcast host recording voice in studio with professional microphone by Giuseppe Lombardo / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Dubbing</h3>
+          <p class="feature-card__text">Natural, well-directed dubbing that keeps the performance, emotion and intent of the original.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-voiceovers-56v7pN.jpg" width="400" height="300" alt="" loading="lazy" title="Lapel microphone by ADDICTIVE STOCK / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Voiceovers</h3>
+          <p class="feature-card__text">The right voice for films, documentaries, advertising, corporate and digital content.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-translation-5oqgng.jpg" width="400" height="300" alt="" loading="lazy" title="Female teacher and students searching country in handmade globe world by David Pereiras / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Translation &amp; Localisation</h3>
+          <p class="feature-card__text">Translation that considers context, culture, tone and audience, not just words.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-casting-5qkl1j.jpg" width="400" height="300" alt="" loading="lazy" title="Close-up of a female singer and guitarist rehearsing their songs by ADDICTIVE STOCK / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Casting</h3>
+          <p class="feature-card__text">A wide pool of voice talent across languages, age groups and performance styles.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-dubbing-direction-bDMgy0.jpg" width="400" height="300" alt="" loading="lazy" title="Cropped image of person holding clapperboard by Scopio / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Dubbing Direction</h3>
+          <p class="feature-card__text">Experienced dubbing directors who know how to get the right performance from every artist.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-recording-mixing-0V67MO.jpg" width="400" height="300" alt="" loading="lazy" title="Crop Black person working with mixing console in studio by ADDICTIVE STOCK / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Recording &amp; Mixing</h3>
+          <p class="feature-card__text">Experienced sound engineers handling recording, editing and final mix for a polished output.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-audio-post-production-5wLkw6.jpg" width="400" height="300" alt="" loading="lazy" title="Female Videographer Edits Footage on Her Personal Computer by Aleksei Gorodenkov / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Audio Post-Production</h3>
+          <p class="feature-card__text">From recorded tracks to final delivery, handled under one roof.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-quality-control-5oQ1Xy.jpg" width="400" height="300" alt="" loading="lazy" title="Document Review and Quality Control by Roman Shashko / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Quality Control</h3>
+          <p class="feature-card__text">Every project goes through multiple rounds of QC, at script level and again after recording.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-built-for-volume-0LdgqA.jpg" width="400" height="300" alt="" loading="lazy" title="Dynamic team engaged in video production on a film set by Aleksei Gorodenkov / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Built for Volume</h3>
+          <p class="feature-card__text">Three studios and a strong talent network allow us to handle high-volume and multi-language projects.</p>
+        </div>
+      </div>
+    </div>
+    <p class="section-cta"><a class="btn" href="#contact">Have a Project? Let's Talk</a></p>
+  </section>
+
+  <section id="who-we-work-with" class="section-title--band">
+    <div class="section-title section-title--tight">
+      <h2 class="section-title__heading">Who We Work With</h2>
+    </div>
+    <div class="feature-grid feature-grid--4">
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-production-houses-5r9RN1.jpg" width="400" height="300" alt="" loading="lazy" title="Director instructing a diverse team on a film set by Aleksei Gorodenkov / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Production Houses</h3>
+          <p class="feature-card__text">Multilingual versions for feature films, short films, live-action series and corporate productions.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-ott-streaming-412pWO.jpg" width="400" height="300" alt="" loading="lazy" title="Man watching a streaming show at home by Aleksei Gorodenkov / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">OTT &amp; Streaming</h3>
+          <p class="feature-card__text">Dubbing and localisation for films, series, documentaries and long-form content.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-animation-studios-0Km6y1.jpg" width="400" height="300" alt="" loading="lazy" title="A young artist creating illustrations on a digital tablet by Cezary Lopacinski / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Animation Studios</h3>
+          <p class="feature-card__text">Character voices, episodic dubbing and multilingual adaptation.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-advertising-agencies-4NNNkm.jpg" width="400" height="300" alt="" loading="lazy" title="Manager brainstorming with a team in a creative office by Aleksei Gorodenkov / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Advertising &amp; Creative Agencies</h3>
+          <p class="feature-card__text">Regional campaigns, voiceovers and multilingual content.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-international-distribution-439mLR.jpg" width="400" height="300" alt="" loading="lazy" title="Hand holding a holographic globe in an office by Roman Shashko / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">International Content Owners, Distributors &amp; Syndicators</h3>
+          <p class="feature-card__text">Taking existing content into new markets, from international content entering India to Indian content travelling overseas.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-brands-corporate-bEeNob.jpg" width="400" height="300" alt="" loading="lazy" title="Group of corporate business team discuss and brainstorm at the meeting in the office by winnievinzence / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Brands &amp; Corporate Teams</h3>
+          <p class="feature-card__text">Corporate films, campaigns, training and branded content across languages.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-e-learning-0Pj3wm.jpg" width="400" height="300" alt="" loading="lazy" title="Engaged student using a laptop for online learning by Aleksei Gorodenkov / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">E-learning &amp; Digital Content</h3>
+          <p class="feature-card__text">Making content accessible to audiences in the language they know best.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-gaming-be3OQ3.jpg" width="400" height="300" alt="" loading="lazy" title="Man playing a console video game in the living room by Aleksei Gorodenkov / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Gaming &amp; Interactive Content</h3>
+          <p class="feature-card__text">Voices, dialogue and localisation for character-driven content.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero hero--market" id="new-market" style="background-image:url('imgs/photo-new-market-159206.jpg')">
+    <div class="hero__content">
+      <h1 class="hero__title">Taking Content to a New Market?</h1>
+      <p class="hero__tagline">We can help.<br /><br />From translation and casting to dubbing, direction, recording, mixing and QC, Potbelly handles the localisation process from start to finish.<br /><br />One team. One workflow.</p>
+      <p class="hero__cta">
+        <a class="btn" href="#contact">Discuss Your Project</a>
+        <a class="btn btn--outline" href="#contact">Get a Quote</a>
+        <a class="btn btn--outline" href="https://wa.me/919987018519?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project.">WhatsApp Us</a>
+      </p>
+    </div>
+  </section>
+
+  <section id="languages">
+    <div class="section-title section-title--tight">
+      <h2 class="section-title__heading">Languages</h2>
+    </div>
+    <p class="languages__intro">Indian &amp; International Languages</p>
+    <ul class="languages__list">
+      <li class="languages__chip">Hindi</li>
+      <li class="languages__chip">English</li>
+      <li class="languages__chip">Marathi</li>
+      <li class="languages__chip">Bengali</li>
+      <li class="languages__chip">Tamil</li>
+      <li class="languages__chip">Telugu</li>
+      <li class="languages__chip">Kannada</li>
+      <li class="languages__chip">Malayalam</li>
+      <li class="languages__chip">Gujarati</li>
+      <li class="languages__chip">Punjabi</li>
+      <li class="languages__chip">Urdu</li>
+      <li class="languages__chip">and more</li>
+    </ul>
+    <p class="languages__prompt">Don't see your language?</p>
+    <p class="section-cta"><a class="btn" href="https://wa.me/919987018519?text=Hi%2C%20is%20my%20language%20supported%3F">Ask Us</a></p>
+  </section>
+
+  <section id="work" class="section-title--band">
+    <div class="section-title section-title--tight">
+      <h2 class="section-title__heading">Hear the Difference</h2>
+    </div>
+    <p class="services__intro">Our work speaks for itself.<br />Explore selected projects, dubbing samples and voice work.</p>
+    <p class="section-cta"><a class="btn" href="#work-grid">Listen to Our Work</a></p>
+    <div class="catalog" id="work-grid">
+      <div class="catalog__grid">
+        <article class="catalog-item">
+          <a class="catalog-item__thumb" href="https://www.youtube.com/watch?v=Q48tj-O-Tzo" data-youtube-id="Q48tj-O-Tzo">
+            <img src="https://i.ytimg.com/vi/Q48tj-O-Tzo/hqdefault.jpg" alt="Mahindra Scorpio - Badshah" />
+            <button type="button" class="catalog-item__play" aria-label="Play video"></button>
+          </a>
+          <p class="catalog-item__caption">Mahindra Scorpio - Badshah</p>
+        </article>
+        <article class="catalog-item">
+          <a class="catalog-item__thumb" href="https://www.youtube.com/watch?v=mR-LlG23JxI" data-youtube-id="mR-LlG23JxI">
+            <img src="https://i.ytimg.com/vi/mR-LlG23JxI/hqdefault.jpg" alt="Mahindra Scorpio - Dhakad" />
+            <button type="button" class="catalog-item__play" aria-label="Play video"></button>
+          </a>
+          <p class="catalog-item__caption">Mahindra Scorpio - Dhakad</p>
+        </article>
+        <article class="catalog-item">
+          <a class="catalog-item__thumb" href="https://www.youtube.com/watch?v=rYtycVB8zu0" data-youtube-id="rYtycVB8zu0">
+            <img src="https://i.ytimg.com/vi/rYtycVB8zu0/hqdefault.jpg" alt="What is Kidzania? Gujarati" />
+            <button type="button" class="catalog-item__play" aria-label="Play video"></button>
+          </a>
+          <p class="catalog-item__caption">What is Kidzania? Gujarati</p>
+        </article>
+        <article class="catalog-item">
+          <a class="catalog-item__thumb" href="https://www.youtube.com/watch?v=CjOymDx0IaA" data-youtube-id="CjOymDx0IaA">
+            <img src="https://i.ytimg.com/vi/CjOymDx0IaA/hqdefault.jpg" alt="What is Kidzania? Hindi" />
+            <button type="button" class="catalog-item__play" aria-label="Play video"></button>
+          </a>
+          <p class="catalog-item__caption">What is Kidzania? Hindi</p>
+        </article>
+        <article class="catalog-item">
+          <a class="catalog-item__thumb" href="https://www.youtube.com/watch?v=7vmwrFt_XFs" data-youtube-id="7vmwrFt_XFs">
+            <img src="https://i.ytimg.com/vi/7vmwrFt_XFs/hqdefault.jpg" alt="What is Kidzania? Marathi" />
+            <button type="button" class="catalog-item__play" aria-label="Play video"></button>
+          </a>
+          <p class="catalog-item__caption">What is Kidzania? Marathi</p>
+        </article>
+        <article class="catalog-item">
+          <a class="catalog-item__thumb" href="https://www.youtube.com/watch?v=u81WaEFCs8Q" data-youtube-id="u81WaEFCs8Q">
+            <img src="https://i.ytimg.com/vi/u81WaEFCs8Q/hqdefault.jpg" alt="Kidzania - Imagine" />
+            <button type="button" class="catalog-item__play" aria-label="Play video"></button>
+          </a>
+          <p class="catalog-item__caption">Kidzania - Imagine</p>
+        </article>
+        <article class="catalog-item">
+          <a class="catalog-item__thumb" href="https://www.youtube.com/watch?v=c3EcpSbwAf0" data-youtube-id="c3EcpSbwAf0">
+            <img src="https://i.ytimg.com/vi/c3EcpSbwAf0/hqdefault.jpg" alt="Flynote - Women's Day Special" />
+            <button type="button" class="catalog-item__play" aria-label="Play video"></button>
+          </a>
+          <p class="catalog-item__caption">Flynote - Women's Day Special</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="why">
+    <div class="section-title section-title--tight">
+      <h2 class="section-title__heading">Why Potbelly?</h2>
+    </div>
+    <div class="feature-grid feature-grid--3">
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-experience-5qkRKj.jpg" width="400" height="300" alt="" loading="lazy" title="Radio host using a mixing console in studio by ADDICTIVE STOCK / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Experience</h3>
+          <p class="feature-card__text">Years of hands-on experience across dubbing, voiceovers and localisation.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-right-people-5oDaNx.jpg" width="400" height="300" alt="" loading="lazy" title="Cinematographers collaborating on a film set by Aleksei Gorodenkov / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">The Right People</h3>
+          <p class="feature-card__text">Experienced translators, directors, voice artists and sound engineers.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-scale-bG32Av.jpg" width="400" height="300" alt="" loading="lazy" title="Close-up of a professional mixing console by Aleksei Gorodenkov / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Scale</h3>
+          <p class="feature-card__text">Three studios and the talent network to take on high-volume projects.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-one-point-of-contact-5rz73Z.jpg" width="400" height="300" alt="" loading="lazy" title="Customer support representative talking through a headset by Aleksei Gorodenkov / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">One Point of Contact</h3>
+          <p class="feature-card__text">One team managing your project from script to final delivery.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-we-get-the-original-4BVKkx.jpg" width="400" height="300" alt="" loading="lazy" title="Creative focused on handwritten notes at a workspace by Giuseppe Lombardo / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">We Get the Original</h3>
+          <p class="feature-card__text">Localisation should make content feel native, not make it feel like a translation.</p>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card__photo"><img src="imgs/photo-quality-matters-0K8gjD.jpg" width="400" height="300" alt="" loading="lazy" title="Professional headphones on a gray background by Roman Shashko / Noun Project (CC BY 3.0)"></div>
+        <div class="feature-card__body">
+          <h3 class="feature-card__title">Quality Matters</h3>
+          <p class="feature-card__text">Multiple rounds of QC. Because small mistakes don't stay small in finished content.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-solid" id="lets-talk">
+    <h2 class="cta-solid__heading">Let's Talk</h2>
+    <p class="cta-solid__text">Have a project in mind?<br />Tell us what you're working on. We'll tell you how we can help.</p>
+    <p class="section-cta">
+      <a class="btn" href="https://wa.me/919987018519?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project.">WhatsApp Us</a>
+      <a class="btn btn--outline-light" href="#contact">Get a Quote</a>
+      <a class="btn btn--outline-light" href="#contact">Discuss a Project</a>
+    </p>
+  </section>
+
+  <section class="refer" id="refer">
+    <div class="section-title section-title--tight">
+      <h2 class="section-title__heading">Refer Potbelly</h2>
+    </div>
+    <p class="refer__text">Know someone who needs dubbing, voiceovers or localisation?<br />Send them our way.</p>
+    <ul class="refer__list">
+      <li class="refer__chip">Production Houses</li>
+      <li class="refer__chip">OTT</li>
+      <li class="refer__chip">Animation</li>
+      <li class="refer__chip">Agencies</li>
+      <li class="refer__chip">Brands</li>
+      <li class="refer__chip">International Content Owners</li>
+      <li class="refer__chip">Distributors</li>
+      <li class="refer__chip">Syndicators</li>
+    </ul>
+    <p class="section-cta"><a class="btn" href="mailto:work@potbellyaudio.com?subject=Introduction%20to%20Potbelly%20Audio&body=Hi%20Potbelly%20Audio%2C%0A%0AI%27d%20like%20to%20introduce%20you%20to%3A">Make an Introduction</a></p>
+  </section>
+
+  <section id="about">
+    <div class="section-title">
+      <h2 class="section-title__heading">About Potbelly</h2>
+    </div>
+    <div class="about">
+      <div class="about__grid">
+        <div class="about__media">
+          <div class="disc">
+            <img class="disc__cover" src="imgs/about-cd-box.png" alt="" />
+            <img class="disc__record" src="imgs/about-cd-record.png" alt="" />
+          </div>
+        </div>
+        <div class="about__body">
+          <p class="about__lede">Built around good audio. Built to make content travel.</p>
+          <p>Founded by Pooja Punjabi, Potbelly Audio has grown from an audio production company into a localisation partner for content across languages, formats and markets.</p>
+          <p>Based in Mumbai. Working across markets.</p>
+          <p class="section-cta section-cta--left"><a class="btn" href="https://wa.me/919987018519?text=Hi%20Pooja%2C%20I%27d%20like%20to%20talk%20about%20a%20project.">Talk to Pooja</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="section-title section-title--band">
+      <h2 class="section-title__heading">Contact</h2>
+    </div>
+    <p class="contact__intro">Have a project? Need a quote? Want to explore a partnership?</p>
+    <p class="section-cta">
+      <a class="btn" href="https://wa.me/919987018519?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project.">WhatsApp Us</a>
+      <a class="btn btn--outline-dark" href="mailto:work@potbellyaudio.com">Email Us</a>
+      <a class="btn btn--outline-dark" href="https://wa.me/919987018519?text=Hi%2C%20I%27d%20like%20to%20get%20a%20quote%20for%20a%20project.">Get a Quote</a>
+    </p>
+    <div class="contact__logo-wrap">
+      <span class="logo-chip">
+        <img class="contact__logo" src="imgs/logo-potbelly.png" width="200" height="59" alt="Potbelly Audio" />
+      </span>
+    </div>
+    <form class="contact__grid js-contact-form">
+      <div>
+        <input class="contact__field" type="text" id="name" name="name" placeholder="Name" required />
+        <input class="contact__field" type="email" id="email" name="email" placeholder="Email Address" required />
+        <input class="contact__field" type="text" id="phone" name="phone" placeholder="Phone Number" />
+      </div>
+      <div>
+        <textarea class="contact__field" id="message" name="message" placeholder="Message" rows="8" required></textarea>
+        <p class="hero__cta"><button type="submit" class="btn">Send</button></p>
+      </div>
+      <div>
+        <div class="contact__info-item">
+          <p>
+            <svg viewBox="0 0 384 512" width="14" height="14" fill="currentColor" aria-hidden="true" focusable="false" style="display:inline-block;vertical-align:-1px;"><path d="M172.3 501.7C27 291 0 269.4 0 192 0 86 86 0 192 0s192 86 192 192c0 77.4-27 99-172.3 309.7-9.5 13.8-29.9 13.8-39.4 0zM192 272a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+            <b>Address</b>
+          </p>
+          <div>Oshiwara, Mumbai</div>
+        </div>
+        <div class="contact__info-item">
+          <p>
+            <svg viewBox="0 0 512 512" width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false" style="display:inline-block;vertical-align:-2px;"><path d="M64 112c-8.8 0-16 7.2-16 16v22.1L227.8 268.4c16.9 12.4 39.5 12.4 56.4 0L464 150.1V128c0-8.8-7.2-16-16-16H64zM48 212.2V384c0 8.8 7.2 16 16 16h384c8.8 0 16-7.2 16-16V212.2L322.5 302.6c-38.4 28.2-90.6 28.2-129 0L48 212.2zM0 128C0 92.7 28.7 64 64 64h384c35.3 0 64 28.7 64 64v256c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z"/></svg>
+            <b>Email</b>
+          </p>
+          <a href="mailto:work@potbellyaudio.com">work@potbellyaudio.com</a>
+        </div>
+        <div class="contact__info-item">
+          <p>
+            <svg viewBox="0 0 512 512" width="14" height="14" fill="currentColor" aria-hidden="true" focusable="false" style="display:inline-block;vertical-align:-1px;"><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 300.3 211.7 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6l-40.4 49.3c-70.4-33.3-127.4-90.3-160.7-160.7l49.3-40.4c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>
+            <b>WhatsApp / Phone</b>
+          </p>
+          <a href="https://wa.me/919987018519">+91 99870 18519</a>
+        </div>
+      </div>
+    </form>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <p class="site-footer__tagline">Dubbing, Voiceovers, Translation, Localisation, Audio Production</p>
+    <p class="site-footer__location">Mumbai, India</p>
+    <div class="site-footer__social">
+      <a href="https://www.facebook.com/potbellyaudio/" target="_blank" rel="noopener noreferrer">
+        <img src="imgs/icon-facebook.png" alt="Facebook" />
+      </a>
+      <a href="https://twitter.com/potbellyaudio?lang=en" target="_blank" rel="noopener noreferrer">
+        <img src="imgs/icon-twitter.png" alt="Twitter" />
+      </a>
+      <a href="https://www.instagram.com/potbellyaudio/" target="_blank" rel="noopener noreferrer">
+        <img src="imgs/icon-instagram.png" alt="Instagram" />
+      </a>
+    </div>
+    <p class="site-footer__sign-off">Sounds Good.</p>
+    <p class="site-footer__copyright">&copy; 2026 Potbelly Audio. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<a class="whatsapp-float" href="https://wa.me/919987018519?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer" aria-label="Chat with Potbelly Audio on WhatsApp">
+  <svg viewBox="0 0 448 512" width="28" height="28" fill="#fff" aria-hidden="true" focusable="false"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1s54 81.2 54 130.5c-.1 101.8-83.1 184.6-184.5 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3s19.9 53.7 22.6 57.4c2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+</a>
+
+<div class="lightbox">
+  <div class="lightbox__frame-wrap">
+    <button type="button" class="lightbox__close" aria-label="Close video">&times;</button>
+    <iframe class="lightbox__frame" src="" title="Video player" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  </div>
+</div>
+
+<!--
+  Feature card photos from The Noun Project (CC BY 3.0):
+  Giuseppe Lombardo; ADDICTIVE STOCK; David Pereiras; Scopio; Aleksei Gorodenkov;
+  Roman Shashko; Cezary Lopacinski; winnievinzence.
+-->
+<script src="js/main.js"></script>
+</body>
+</html>
