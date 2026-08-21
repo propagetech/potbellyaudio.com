@@ -8,9 +8,18 @@
    Accent #ffcb00 is client-locked (confirmed 2026-08-21). Pure #ffcb00 fails
    AA as body text on paper, so --accent-deep carries it on light sheets.
 
-   Display: Archivo Condensed 800, always uppercase. Body: Manrope.
+   Type by register, all three faces self-hosted and subset:
+     statement  Coconat Regular (Collletttivo, OFL 1.1, see fonts/OFL-Coconat.txt)
+     label      Archivo Condensed 800, for micro caps, stats and the marquee
+     body       Manrope
+   Coconat is a flared serif with no bold cut, so every rule that uses
+   --font-display must stay at weight 400 or the browser fakes a bold and
+   widens it further. It also sets about 43 percent wider than Archivo
+   Condensed at the same size, which is why the display steps below are
+   smaller in px than the condensed ones they replaced.
    ========================================================================== */
 
+@font-face { font-family:"Coconat"; font-style:normal; font-weight:400; font-display:swap; src:url("../fonts/coconat-400.woff2") format("woff2"); }
 @font-face { font-family:"Archivo Cond"; font-style:normal; font-weight:800; font-display:swap; src:url("../fonts/archivo-cond-800.woff2") format("woff2"); }
 @font-face { font-family:"Manrope"; font-style:normal; font-weight:400; font-display:swap; src:url("../fonts/manrope-400.woff2") format("woff2"); }
 @font-face { font-family:"Manrope"; font-style:normal; font-weight:600; font-display:swap; src:url("../fonts/manrope-600.woff2") format("woff2"); }
@@ -33,7 +42,8 @@
   --line-dark: rgba(242, 239, 232, 0.16);
   --line-light: rgba(13, 11, 8, 0.16);
 
-  --font-display: "Archivo Cond", "Arial Narrow", Arial, sans-serif;
+  --font-display: "Coconat", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-label: "Archivo Cond", "Arial Narrow", Arial, sans-serif;
   --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 
   --wrap: 1440px;
@@ -202,6 +212,9 @@ section { scroll-margin-top: 64px; }
 .site-nav__link:hover { color: var(--accent); }
 
 .site-nav__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   background: var(--accent);
   color: var(--ink);
   padding: 12px 26px;
@@ -211,6 +224,7 @@ section { scroll-margin-top: 64px; }
   transition: background 0.25s ease;
 }
 .site-nav__cta:hover { background: #ffd633; }
+.site-nav__cta .icon-wa { flex: none; margin-top: -1px; }
 
 /* ---- Shared layout ------------------------------------------------------ */
 
@@ -234,10 +248,10 @@ section { scroll-margin-top: 64px; }
 
 .headline {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(34px, 5.4vw, 60px);
-  line-height: 1.04;
-  letter-spacing: 0.005em;
+  font-weight: 400;
+  font-size: clamp(28px, 4.2vw, 48px);
+  line-height: 1.06;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
 }
 
@@ -297,8 +311,8 @@ main > section::after {
   top: 20px;
   right: -30px;
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(110px, 17vw, 236px);
+  font-weight: 400;
+  font-size: clamp(84px, 13vw, 190px);
   line-height: 1;
   letter-spacing: 0.02em;
   color: transparent;
@@ -364,7 +378,7 @@ main > section::after {
 .sheet--paper .row { border-color: var(--line-light); }
 
 .row__key {
-  font-family: var(--font-display);
+  font-family: var(--font-label);
   font-weight: 800;
   font-size: 16px;
   letter-spacing: 0.1em;
@@ -427,10 +441,10 @@ main > section::after {
 
 .hero__title {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(40px, 8.4vw, 120px);
-  line-height: 0.98;
-  letter-spacing: 0.005em;
+  font-weight: 400;
+  font-size: clamp(34px, 6.6vw, 94px);
+  line-height: 1;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
   opacity: 0;
   animation: pbrise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s forwards;
@@ -524,7 +538,7 @@ main > section::after {
 .stats > div:nth-child(3) { padding-left: 28px; }
 
 .stat__num {
-  font-family: var(--font-display);
+  font-family: var(--font-label);
   font-weight: 800;
   font-size: 44px;
   line-height: 1;
@@ -571,7 +585,7 @@ main > section::after {
   align-items: center;
   gap: 56px;
   width: max-content;
-  font-family: var(--font-display);
+  font-family: var(--font-label);
   font-weight: 800;
   font-size: 21px;
   letter-spacing: 0.06em;
@@ -620,7 +634,7 @@ main > section::after {
 }
 
 .stage__num {
-  font-family: var(--font-display);
+  font-family: var(--font-label);
   font-weight: 800;
   font-size: 16px;
   letter-spacing: 0.1em;
@@ -639,9 +653,10 @@ main > section::after {
 
 .stage__title {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(30px, 3.8vw, 40px);
-  line-height: 1.02;
+  font-weight: 400;
+  font-size: clamp(28px, 3.6vw, 40px);
+  line-height: 1.06;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
   margin-bottom: 14px;
 }
@@ -716,9 +731,10 @@ main > section::after {
 
 .band__title {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(34px, 4.4vw, 62px);
-  line-height: 1.06;
+  font-weight: 400;
+  font-size: clamp(26px, 3.3vw, 46px);
+  line-height: 1.1;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
   max-width: 1000px;
   margin: 0 auto;
@@ -902,9 +918,10 @@ main > section::after {
 
 .about__lede {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(26px, 3.2vw, 38px);
-  line-height: 1.1;
+  font-weight: 400;
+  font-size: clamp(22px, 2.5vw, 30px);
+  line-height: 1.14;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
   margin-bottom: 22px;
 }
@@ -952,8 +969,9 @@ main > section::after {
 
 .refer__title {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 400;
   font-size: 24px;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
   margin-bottom: 10px;
 }
@@ -1008,7 +1026,7 @@ main > section::after {
 .site-footer__social a:hover img { opacity: 1; }
 
 .site-footer__sign-off {
-  font-family: var(--font-display);
+  font-family: var(--font-label);
   font-weight: 800;
   font-size: 20px;
   letter-spacing: 0.04em;
@@ -1077,7 +1095,8 @@ main > section::after {
 @media (max-width: 640px) {
   .site-nav__link { display: none; }
 
-  .hero__title { font-size: 13.5vw; line-height: 1.0; }
+  /* Coconat sets wider, so the phone steps drop to keep the same line count. */
+  .hero__title { font-size: 10.5vw; line-height: 1.04; }
   .hero__sub { font-size: 15px; }
 
   .hero__cta { flex-direction: column; width: 100%; }
@@ -1105,8 +1124,8 @@ main > section::after {
   }
   .marquee__mask { flex: none; width: 100%; }
 
-  .headline, .stages__head .headline { font-size: 11vw; line-height: 1.04; }
-  .ghost { font-size: 30vw; right: -4vw; }
+  .headline, .stages__head .headline { font-size: 8.5vw; line-height: 1.08; }
+  .ghost { font-size: 24vw; right: -4vw; }
 
   .lede,
   .stage__text,
