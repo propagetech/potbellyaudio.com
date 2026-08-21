@@ -1,0 +1,51 @@
+*SECTION 1 — What We Do (9 cards)*
+
+*1. Dubbing*
+Shot: voice artist mid-performance in the booth, looking at the screen/monitor (not camera), mouth open/mid-line, headphones on
+Angle: slightly from the side, through the booth glass if possible (reflection is fine) or from just inside the door
+Light: studio's usual booth light — a single warm bulb is ideal, keep it moody
+Frame: fill the frame with artist + mic, don't leave empty booth wall
+
+*2. Voiceovers*
+Shot: solo VO artist at the mic, 3/4 angle (not straight-on), mid-sentence
+Angle: from behind/beside the mic stand looking past the pop filter at the artist
+Light: one warm key light or window light from the front-side, let the far side of the face fall into soft shadow
+Frame: mic + pop filter in the foreground (soft/blurred is fine), artist in focus behind it
+
+*3. Translation & Localisation*
+Shot: translator's desk mid-work — script pages with visible red-pen markup, laptop open beside them, hand holding pen over the page
+Angle: top-down or steep 3/4 over the desk
+Light: natural desk/window light, no overhead fluorescent glare on the paper
+Frame: hands + script + laptop screen edge in frame; keep laptop content generic
+
+*4. Casting*
+Shot: (a) a casting sheet/headshots spread on a desk next to an open laptop, hand pointing at one entry — OR (b) a talent auditioning at the mic with someone listening in the background, slightly out of focus
+Angle: (a) top-down over the desk. (b) past the listener's shoulder toward the talent at the mic
+Light: same as Translation for (a), same as Voiceovers for (b)
+
+*5. Dubbing Direction*
+Shot: classic through-the-glass shot — director in the control room gesturing/speaking into the talkback mic, booth and artist visible (soft-focus) through the glass behind
+Angle: from inside the control room, slightly behind/beside the director
+Light: console/monitor glow lighting the director's face from the front — very "real studio at night"
+Frame: director sharp in the foreground third, booth/artist soft in the background
+
+*6. Recording & Mixing*
+Shot: close-up of hands on a mixing console fader or a DAW timeline on screen, mid-adjustment
+Angle: low, close, from the side — hands and console/screen fill most of the frame
+Light: screen glow + one warm accent light, rest of the room dark
+Frame: tight crop — a detail shot, not a wide room shot
+
+*7. Audio Post-Production*
+Shot: over-the-shoulder of an editor at the screen, waveform/timeline visible, hand on mouse/trackpad
+Angle: directly behind the editor's shoulder, screen readable but the person is the subject
+Light: same screen-glow + warm-accent approach as Recording & Mixing
+
+*8. Quality Control*
+Shot: someone with headphones on, eyes closed or focused downward, clearly listening critically (not performing). A QC checklist nearby is a nice optional detail
+Angle: close 3/4 face shot — this is the one card where soft background blur is fine
+Light: soft, warm, front-side — calm and focused, not dramatic
+
+*9. Built for Volume*
+Shot: wide shot showing scale — multiple booths/stations in use at once, a corridor with more than one studio door, or the team working in parallel
+Angle: wide, from a doorway or corridor, capturing depth
+Light: whatever's naturally on — don't over-light this one, the bustle should read as ordinary and real

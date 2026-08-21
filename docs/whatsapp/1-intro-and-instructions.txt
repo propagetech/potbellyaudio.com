@@ -1,0 +1,30 @@
+*Potbelly Audio — Photo Shot List*
+
+Purpose: replace stock photography on the site with real photos of the studio and team, so the site matches "human-led" and stops reading as generic/foreign. Every one of these is shootable on a phone.
+
+*HOW TO SHOOT THESE (read once, applies to every card below)*
+
+_Camera / phone settings_
+- Shoot landscape orientation (all cards are wide rectangles, not square or portrait)
+- Turn the phone's grid lines ON (Settings → Camera → Grid) — use it to keep verticals straight
+- Tap the subject to focus, then hold and drag down slightly to underexpose a touch — the site's palette is warm and dark, so slightly moodier beats bright and flat
+- Turn HDR off if your phone forces a flat, over-lit look with it on
+- Never use flash — flattens the image, fastest way to make a real photo look fake
+- Portrait Mode (blur) off unless a card below says otherwise
+- Shoot each setup 5-6 times from slightly different angles/moments, pick the best after
+
+_Light_
+- Prefer whatever light is already in the room: window daylight, or the studio's own warm practical lamps
+- Avoid cold white/blue LED panel light and greenish tube-light — clashes with the site's warm palette (terracotta, warm cream, warm near-black) and reads "corporate stock photo"
+- If adding light, use a warm desk lamp ("warm white" bulb setting, not "daylight"/"cool white") from the side or slightly above eye level
+- Console/gear screens glowing in a dim room look great — keep that if the studio already looks like that at night
+
+_People_
+- Nobody looks at or smiles at the camera — shoot mid-task, mid-conversation, mid-listen, candid not posed
+- Wardrobe: whatever people would normally wear to a session, no need to dress up
+
+_Sending files_
+- Send full-resolution originals, not screenshots
+- On WhatsApp, attach as Document, not Photo/Gallery — Photo send compresses and it'll show
+- If there are many, a shared Google Drive folder is easier
+- No filters, no Instagram presets — send straight out of the camera
