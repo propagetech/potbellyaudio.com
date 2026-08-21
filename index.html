@@ -3,31 +3,20 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<script>
-  (function () {
-    try {
-      var stored = localStorage.getItem('theme');
-      if (stored === 'light' || stored === 'dark') {
-        document.documentElement.setAttribute('data-theme', stored);
-      }
-      var storedPalette = localStorage.getItem('palette');
-      if (storedPalette) {
-        document.documentElement.setAttribute('data-palette', storedPalette);
-      }
-    } catch (e) {}
-  })();
-</script>
 <title>Potbelly Audio | Dubbing, Voiceovers, Localisation, Mumbai</title>
-<meta name="description" content="Potbelly Audio is a Mumbai-based dubbing, voiceovers, translation and localisation company working across Indian and international languages." />
+<meta name="description" content="Potbelly Audio is a Mumbai dubbing, voiceover, translation and localisation studio. Script to final mix in 21 Indian and international languages, recording since 2009." />
+<meta name="theme-color" content="#0d0b08" />
 <link rel="icon" href="imgs/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="imgs/favicon-32.png" sizes="32x32" type="image/png" />
 <link rel="apple-touch-icon" href="imgs/apple-touch-icon.png" />
 <link rel="manifest" href="site.webmanifest" />
+<link rel="preload" href="fonts/archivo-cond-800.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="fonts/manrope-400.woff2" as="font" type="font/woff2" crossorigin />
 <link href="css/main.css" rel="stylesheet" />
 <link rel="canonical" href="https://potbellyaudio.com/" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Potbelly Audio | Dubbing, Voiceovers, Localisation, Mumbai" />
-<meta property="og:description" content="Potbelly Audio is a Mumbai-based dubbing, voiceovers, translation and localisation company working across Indian and international languages." />
+<meta property="og:description" content="Mumbai dubbing, voiceover, translation and localisation studio. Script to final mix in 21 languages, recording since 2009." />
 <meta property="og:url" content="https://potbellyaudio.com/" />
 <meta property="og:image" content="https://potbellyaudio.com/imgs/og-image.jpg" />
 <meta property="og:image:width" content="1200" />
@@ -36,7 +25,7 @@
 <meta property="og:site_name" content="Potbelly Audio" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Potbelly Audio | Dubbing, Voiceovers, Localisation, Mumbai" />
-<meta name="twitter:description" content="Potbelly Audio is a Mumbai-based dubbing, voiceovers, translation and localisation company working across Indian and international languages." />
+<meta name="twitter:description" content="Mumbai dubbing, voiceover, translation and localisation studio. Script to final mix in 21 languages, recording since 2009." />
 <meta name="twitter:image" content="https://potbellyaudio.com/imgs/og-image.jpg" />
 <script type="application/ld+json">
 {
@@ -52,6 +41,7 @@
       "image": "https://potbellyaudio.com/imgs/icon-512.png",
       "telephone": "+91-70213-83205",
       "email": "work@potbellyaudio.com",
+      "foundingDate": "2009-08",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Oshiwara",
@@ -82,7 +72,7 @@
         "@type": "OfferCatalog",
         "name": "Audio & Localisation Services",
         "itemListElement": [
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Dubbing", "description": "Natural, well-directed dubbing that keeps the performance, emotion and intent of the original." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Dubbing", "description": "Natural, well directed dubbing that keeps the performance, emotion and intent of the original." } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Voiceovers", "description": "The right voice for films, documentaries, advertising, corporate and digital content." } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Translation & Localisation", "description": "Translation that considers context, culture, tone and audience, not just words." } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Casting", "description": "A wide pool of voice talent across languages, age groups and performance styles." } },
@@ -108,505 +98,509 @@
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
-<header class="site-header">
-  <div class="site-header__inner">
-    <a class="brand" href="#home" aria-label="Potbelly Audio home">
-      <img class="brand__logo logo-light" src="imgs/logo-horizontal-light.png" width="200" height="50" alt="Potbelly Audio" />
-      <img class="brand__logo logo-dark" src="imgs/logo-horizontal-dark.png" width="200" height="50" alt="Potbelly Audio" />
-    </a>
-    <div class="site-header__right">
-      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark theme">
-        <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
-        <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-      </button>
-      <button type="button" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="site-nav">
-        <span class="nav-toggle__bar"></span>
-        <span class="nav-toggle__bar"></span>
-        <span class="nav-toggle__bar"></span>
-      </button>
-      <nav class="nav" id="site-nav">
-        <ul class="nav__list">
-          <li><a class="nav__link" href="#home">HOME</a></li>
-          <li><a class="nav__link" href="#what-we-do">WHAT WE DO</a></li>
-          <li><a class="nav__link" href="#work">OUR WORK</a></li>
-          <li><a class="nav__link" href="#why">WHY POTBELLY</a></li>
-          <li><a class="nav__link" href="#about">ABOUT</a></li>
-          <li><a class="nav__link" href="#contact">CONTACT</a></li>
-        </ul>
-      </nav>
-    </div>
+<div class="intro" aria-hidden="true">
+  <div class="intro__accent"></div>
+  <div class="intro__ink">
+    <img src="imgs/logo-horizontal-dark.png" width="280" height="70" alt="" />
   </div>
-</header>
+</div>
+
+<nav class="site-nav" aria-label="Main">
+  <a class="site-nav__logo" href="#top" aria-label="Potbelly Audio home">
+    <img src="imgs/logo-horizontal-dark.png" width="200" height="50" alt="Potbelly Audio" />
+  </a>
+  <div class="site-nav__links">
+    <a class="site-nav__link" href="#script">SCRIPT</a>
+    <a class="site-nav__link" href="#voice">VOICE</a>
+    <a class="site-nav__link" href="#sound">SOUND</a>
+    <a class="site-nav__link" href="#work">WORK</a>
+    <a class="site-nav__link" href="#about">ABOUT</a>
+    <a class="site-nav__cta" href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">WHATSAPP US</a>
+  </div>
+</nav>
 
 <main id="main">
 
-  <section class="hero hero--home" id="home" style="background-image:url('imgs/hero-home.jpeg')">
-    <div class="hero__content">
-      <h1 class="hero__title">Dubbing. Voiceovers. Translation. Localisation.</h1>
-      <p class="hero__tagline">Potbelly Audio is a Mumbai-based audio and localisation company working across Indian and international languages.</p>
-      <p class="hero__cta">
-        <a class="btn" href="#contact">Discuss Your Project</a>
-        <a class="btn btn--outline" href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
-      </p>
-    </div>
-  </section>
+  <!-- Hero -->
+  <section id="top" class="hero">
+    <header class="hero__inner">
+      <div class="hero__eyebrow">
+        <span class="hero__dot"></span>
+        <span>DUBBING &middot; VOICEOVERS &middot; LOCALISATION &middot; MUMBAI, INDIA</span>
+      </div>
+      <h1 class="hero__title">Make it sound<br />like it was <em>made here.</em></h1>
+      <div class="hero__row">
+        <p class="hero__sub">Potbelly Audio is a Mumbai dubbing and localisation studio. Translation, casting, direction, recording and mix across 21 Indian and international languages, handled by one team under one roof. Recording since August 2009.</p>
+        <div class="hero__cta">
+          <a class="pill pill--accent" href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
+          <a class="pill pill--ghost-dark" href="#work">Hear Our Work</a>
+        </div>
+      </div>
+      <div class="hero__panel">
+        <p class="hero__panel-label">
+          <span>Oshiwara, Mumbai</span>
+          <span><b>Three studios</b> &middot; script to final mix</span>
+        </p>
+        <div class="waveform" id="waveform" aria-hidden="true"></div>
+      </div>
+    </header>
 
-  <nav class="persona-jump" aria-label="Jump to your industry">
-    <p class="persona-jump__label">Looking for:</p>
-    <ul class="persona-jump__list">
-      <li><a href="#segment-production-houses">Production Houses</a></li>
-      <li><a href="#segment-ott-streaming">OTT &amp; Streaming</a></li>
-      <li><a href="#segment-animation-studios">Animation Studios</a></li>
-      <li><a href="#segment-advertising-agencies">Agencies</a></li>
-      <li><a href="#segment-international">International Distributors</a></li>
-      <li><a href="#segment-brands-corporate">Brands &amp; Corporate</a></li>
-      <li><a href="#segment-elearning">E-learning</a></li>
-      <li><a href="#segment-gaming">Gaming</a></li>
-    </ul>
-  </nav>
-
-  <section id="what-we-do">
-    <div class="section-title section-title--tight">
-      <h2 class="section-title__heading">What We Do</h2>
-    </div>
-    <div class="feature-grid feature-grid--3">
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-dubbing-0Pv6qv.jpg" width="400" height="300" alt="" loading="lazy" title="Podcast host recording voice in studio with professional microphone by Giuseppe Lombardo / Noun Project (CC BY 3.0)"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Dubbing</h3>
-          <p class="feature-card__text">Natural, well-directed dubbing that keeps the performance, emotion and intent of the original.</p>
+    <div class="stats-band">
+      <div class="stats">
+        <div>
+          <div class="stat__num">17+</div>
+          <div class="stat__label">Years in the room, since August 2009</div>
+        </div>
+        <div>
+          <div class="stat__num">5,000+</div>
+          <div class="stat__label">Projects recorded, mixed and delivered</div>
+        </div>
+        <div>
+          <div class="stat__num">NDA</div>
+          <div class="stat__label">The names we are not allowed to print</div>
         </div>
       </div>
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-voiceovers-56v7pN.jpg" width="400" height="300" alt="" loading="lazy" title="Lapel microphone by ADDICTIVE STOCK / Noun Project (CC BY 3.0)"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Voiceovers</h3>
-          <p class="feature-card__text">The right voice for films, documentaries, advertising, corporate and digital content.</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-translation-5oqgng.jpg" width="400" height="300" alt="" loading="lazy" title="Female teacher and students searching country in handmade globe world by David Pereiras / Noun Project (CC BY 3.0)"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Translation &amp; Localisation</h3>
-          <p class="feature-card__text">Translation that considers context, culture, tone and audience, not just words.</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-casting-5qkl1j.jpg" width="400" height="300" alt="" loading="lazy" title="Close-up of a female singer and guitarist rehearsing their songs by ADDICTIVE STOCK / Noun Project (CC BY 3.0)"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Casting</h3>
-          <p class="feature-card__text">A wide pool of voice talent across languages, age groups and performance styles.</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-dubbing-direction-bDMgy0.jpg" width="400" height="300" alt="" loading="lazy" title="Cropped image of person holding clapperboard by Scopio / Noun Project (CC BY 3.0)"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Dubbing Direction</h3>
-          <p class="feature-card__text">Experienced dubbing directors who know how to get the right performance from every artist.</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-recording-mixing-0V67MO.jpg" width="400" height="300" alt="" loading="lazy" title="Crop Black person working with mixing console in studio by ADDICTIVE STOCK / Noun Project (CC BY 3.0)"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Recording &amp; Mixing</h3>
-          <p class="feature-card__text">Experienced sound engineers handling recording, editing and final mix for a polished output.</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-audio-post-production-5wLkw6.jpg" width="400" height="300" alt="" loading="lazy" title="Female Videographer Edits Footage on Her Personal Computer by Aleksei Gorodenkov / Noun Project (CC BY 3.0)"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Audio Post-Production</h3>
-          <p class="feature-card__text">From recorded tracks to final delivery, handled under one roof.</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-quality-control-5oQ1Xy.jpg" width="600" height="400" alt="" loading="lazy" title="Marking up a review checklist"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Quality Control</h3>
-          <p class="feature-card__text">Every project goes through multiple rounds of QC, at script level and again after recording.</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-built-for-volume-0LdgqA.jpg" width="400" height="300" alt="" loading="lazy" title="Dynamic team engaged in video production on a film set by Aleksei Gorodenkov / Noun Project (CC BY 3.0)"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Built for Volume</h3>
-          <p class="feature-card__text">Three studios and a strong talent network allow us to handle high-volume and multi-language projects.</p>
-        </div>
-      </div>
-    </div>
-    <p class="section-cta"><a class="btn" href="#contact">Have a Project? Let's Talk</a></p>
-  </section>
-
-  <section id="how-it-works" class="section-title--band">
-    <div class="section-title section-title--tight">
-      <h2 class="section-title__heading">How a Project Moves Through Potbelly</h2>
-    </div>
-    <p class="services__intro">One team, one workflow, script to final delivery.</p>
-    <ol class="process">
-      <li class="process__step">
-        <span class="process__num">1</span>
-        <h3 class="process__title">Translation &amp; Localisation</h3>
-        <p class="process__text">Script adapted for language, context, culture and tone.</p>
-      </li>
-      <li class="process__step">
-        <span class="process__num">2</span>
-        <h3 class="process__title">Casting</h3>
-        <p class="process__text">The right voice selected from a wide talent pool.</p>
-      </li>
-      <li class="process__step">
-        <span class="process__num">3</span>
-        <h3 class="process__title">Dubbing Direction</h3>
-        <p class="process__text">Direction that gets the right performance from every artist.</p>
-      </li>
-      <li class="process__step">
-        <span class="process__num">4</span>
-        <h3 class="process__title">Dubbing &amp; Voiceovers</h3>
-        <p class="process__text">Performance recorded, keeping the emotion and intent of the original.</p>
-      </li>
-      <li class="process__step">
-        <span class="process__num">5</span>
-        <h3 class="process__title">Recording &amp; Mixing</h3>
-        <p class="process__text">Recording, editing and final mix for a polished output.</p>
-      </li>
-      <li class="process__step">
-        <span class="process__num">6</span>
-        <h3 class="process__title">Audio Post-Production</h3>
-        <p class="process__text">Recorded tracks assembled through to final delivery.</p>
-      </li>
-      <li class="process__step">
-        <span class="process__num">7</span>
-        <h3 class="process__title">Quality Control</h3>
-        <p class="process__text">Multiple rounds of QC, at script level and again after recording.</p>
-      </li>
-    </ol>
-    <p class="section-cta"><a class="btn" href="#contact">Start a Project</a></p>
-  </section>
-
-  <section id="who-we-work-with">
-    <div class="section-title section-title--tight">
-      <h2 class="section-title__heading">Who We Work With</h2>
-    </div>
-    <div class="feature-grid feature-grid--4">
-      <div class="feature-card" id="segment-production-houses">
-        <div class="feature-card__photo"><img src="imgs/photo-production-houses-5r9RN1.jpg" width="600" height="400" alt="" loading="lazy" title="Director's chair on a film set"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Production Houses</h3>
-          <p class="feature-card__text">Multilingual versions for feature films, short films, live-action series and corporate productions.</p>
-        </div>
-      </div>
-      <div class="feature-card" id="segment-ott-streaming">
-        <div class="feature-card__photo"><img src="imgs/photo-ott-streaming-412pWO.jpg" width="600" height="450" alt="" loading="lazy" title="Watching a show at home"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">OTT &amp; Streaming</h3>
-          <p class="feature-card__text">Dubbing and localisation for films, series, documentaries and long-form content.</p>
-        </div>
-      </div>
-      <div class="feature-card" id="segment-animation-studios">
-        <div class="feature-card__photo"><img src="imgs/photo-animation-studios-0Km6y1.jpg" width="600" height="450" alt="" loading="lazy" title="Character sketch on a drawing tablet"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Animation Studios</h3>
-          <p class="feature-card__text">Character voices, episodic dubbing and multilingual adaptation.</p>
-        </div>
-      </div>
-      <div class="feature-card" id="segment-advertising-agencies">
-        <div class="feature-card__photo"><img src="imgs/photo-advertising-agencies-4NNNkm.jpg" width="600" height="450" alt="" loading="lazy" title="Creative team working around a table"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Advertising &amp; Creative Agencies</h3>
-          <p class="feature-card__text">Regional campaigns, voiceovers and multilingual content.</p>
-        </div>
-      </div>
-      <div class="feature-card" id="segment-international">
-        <div class="feature-card__photo"><img src="imgs/photo-international-distribution-439mLR.jpg" width="600" height="400" alt="" loading="lazy" title="World map on a desk setup"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">International Content Owners, Distributors &amp; Syndicators</h3>
-          <p class="feature-card__text">Taking existing content into new markets, from international content entering India to Indian content travelling overseas.</p>
-        </div>
-      </div>
-      <div class="feature-card" id="segment-brands-corporate">
-        <div class="feature-card__photo"><img src="imgs/photo-brands-corporate-bEeNob.jpg" width="600" height="400" alt="" loading="lazy" title="Corporate team in a briefing"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Brands &amp; Corporate Teams</h3>
-          <p class="feature-card__text">Corporate films, campaigns, training and branded content across languages.</p>
-        </div>
-      </div>
-      <div class="feature-card" id="segment-elearning">
-        <div class="feature-card__photo"><img src="imgs/photo-e-learning-0Pj3wm.jpg" width="600" height="400" alt="" loading="lazy" title="Student in an online class"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">E-learning &amp; Digital Content</h3>
-          <p class="feature-card__text">Making content accessible to audiences in the language they know best.</p>
-        </div>
-      </div>
-      <div class="feature-card" id="segment-gaming">
-        <div class="feature-card__photo"><img src="imgs/photo-gaming-be3OQ3.jpg" width="600" height="400" alt="" loading="lazy" title="Playing with a game controller"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Gaming &amp; Interactive Content</h3>
-          <p class="feature-card__text">Voices, dialogue and localisation for character-driven content.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="hero hero--market" id="new-market" style="background-image:url('imgs/photo-new-market-159206.jpg')">
-    <div class="hero__content">
-      <h1 class="hero__title">Taking Content to a New Market?</h1>
-      <p class="hero__tagline">We can help.<br /><br />From translation and casting to dubbing, direction, recording, mixing and QC, Potbelly handles the localisation process from start to finish.<br /><br />One team. One workflow.</p>
-      <p class="hero__cta">
-        <a class="btn" href="#contact">Discuss Your Project</a>
-        <a class="btn btn--outline" href="#contact">Get a Quote</a>
-        <a class="btn btn--outline" href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
-      </p>
-    </div>
-  </section>
-
-  <section id="languages">
-    <div class="section-title section-title--tight">
-      <h2 class="section-title__heading">Languages</h2>
-    </div>
-    <p class="languages__intro">Indian Languages</p>
-    <ul class="languages__list">
-      <li class="languages__chip">Hindi</li>
-      <li class="languages__chip">English</li>
-      <li class="languages__chip">Marathi</li>
-      <li class="languages__chip">Bengali</li>
-      <li class="languages__chip">Tamil</li>
-      <li class="languages__chip">Telugu</li>
-      <li class="languages__chip">Kannada</li>
-      <li class="languages__chip">Malayalam</li>
-      <li class="languages__chip">Gujarati</li>
-      <li class="languages__chip">Punjabi</li>
-      <li class="languages__chip">Urdu</li>
-    </ul>
-    <p class="languages__intro">International Languages</p>
-    <ul class="languages__list">
-      <li class="languages__chip">Spanish</li>
-      <li class="languages__chip">French</li>
-      <li class="languages__chip">German</li>
-      <li class="languages__chip">Arabic</li>
-      <li class="languages__chip">Mandarin Chinese</li>
-      <li class="languages__chip">Japanese</li>
-      <li class="languages__chip">Korean</li>
-      <li class="languages__chip">Portuguese</li>
-      <li class="languages__chip">Italian</li>
-      <li class="languages__chip">Russian</li>
-      <li class="languages__chip">and more</li>
-    </ul>
-    <p class="languages__prompt">Don't see your language?</p>
-    <p class="section-cta"><a class="btn" href="https://wa.me/919137533976?text=Hi%2C%20is%20my%20language%20supported%3F" target="_blank" rel="noopener noreferrer">Ask Us</a></p>
-  </section>
-
-  <section id="work" class="section-title--band">
-    <div class="section-title section-title--tight">
-      <h2 class="section-title__heading">Hear the Difference</h2>
-    </div>
-    <p class="services__intro">Our work speaks for itself.<br />Explore selected projects, dubbing samples and voice work.</p>
-    <p class="section-cta"><a class="btn" href="#work-grid">Listen to Our Work</a></p>
-    <div class="catalog" id="work-grid">
-      <div class="catalog__filters" role="group" aria-label="Filter work by industry">
-        <button type="button" class="catalog__filter is-active" data-filter="all" aria-pressed="true">All</button>
-        <button type="button" class="catalog__filter" data-filter="automotive" aria-pressed="false">Automotive</button>
-        <button type="button" class="catalog__filter" data-filter="kids-education" aria-pressed="false">Kids &amp; Education</button>
-        <button type="button" class="catalog__filter" data-filter="csr-social" aria-pressed="false">CSR &amp; Social</button>
-      </div>
-      <div class="catalog__grid">
-        <article class="catalog-item" data-category="automotive">
-          <a class="catalog-item__thumb" href="https://www.youtube.com/watch?v=Q48tj-O-Tzo" data-youtube-id="Q48tj-O-Tzo">
-            <img src="https://i.ytimg.com/vi/Q48tj-O-Tzo/hqdefault.jpg" alt="Mahindra Scorpio - Badshah" loading="lazy" />
-            <button type="button" class="catalog-item__play" aria-label="Play video"></button>
-          </a>
-          <p class="catalog-item__caption">Mahindra Scorpio - Badshah</p>
-          <p class="catalog-item__tag">Automotive</p>
-        </article>
-        <article class="catalog-item" data-category="automotive">
-          <a class="catalog-item__thumb" href="https://www.youtube.com/watch?v=mR-LlG23JxI" data-youtube-id="mR-LlG23JxI">
-            <img src="https://i.ytimg.com/vi/mR-LlG23JxI/hqdefault.jpg" alt="Mahindra Scorpio - Dhakad" loading="lazy" />
-            <button type="button" class="catalog-item__play" aria-label="Play video"></button>
-          </a>
-          <p class="catalog-item__caption">Mahindra Scorpio - Dhakad</p>
-          <p class="catalog-item__tag">Automotive</p>
-        </article>
-        <article class="catalog-item" data-category="kids-education">
-          <a class="catalog-item__thumb" href="https://www.youtube.com/watch?v=rYtycVB8zu0" data-youtube-id="rYtycVB8zu0">
-            <img src="https://i.ytimg.com/vi/rYtycVB8zu0/hqdefault.jpg" alt="What is Kidzania? Gujarati" loading="lazy" />
-            <button type="button" class="catalog-item__play" aria-label="Play video"></button>
-          </a>
-          <p class="catalog-item__caption">What is Kidzania? Gujarati</p>
-          <p class="catalog-item__tag">Kids &amp; Education</p>
-        </article>
-        <article class="catalog-item" data-category="kids-education">
-          <a class="catalog-item__thumb" href="https://www.youtube.com/watch?v=CjOymDx0IaA" data-youtube-id="CjOymDx0IaA">
-            <img src="https://i.ytimg.com/vi/CjOymDx0IaA/hqdefault.jpg" alt="What is Kidzania? Hindi" loading="lazy" />
-            <button type="button" class="catalog-item__play" aria-label="Play video"></button>
-          </a>
-          <p class="catalog-item__caption">What is Kidzania? Hindi</p>
-          <p class="catalog-item__tag">Kids &amp; Education</p>
-        </article>
-        <article class="catalog-item" data-category="kids-education">
-          <a class="catalog-item__thumb" href="https://www.youtube.com/watch?v=7vmwrFt_XFs" data-youtube-id="7vmwrFt_XFs">
-            <img src="https://i.ytimg.com/vi/7vmwrFt_XFs/hqdefault.jpg" alt="What is Kidzania? Marathi" loading="lazy" />
-            <button type="button" class="catalog-item__play" aria-label="Play video"></button>
-          </a>
-          <p class="catalog-item__caption">What is Kidzania? Marathi</p>
-          <p class="catalog-item__tag">Kids &amp; Education</p>
-        </article>
-        <article class="catalog-item" data-category="kids-education">
-          <a class="catalog-item__thumb" href="https://www.youtube.com/watch?v=u81WaEFCs8Q" data-youtube-id="u81WaEFCs8Q">
-            <img src="https://i.ytimg.com/vi/u81WaEFCs8Q/hqdefault.jpg" alt="Kidzania - Imagine" loading="lazy" />
-            <button type="button" class="catalog-item__play" aria-label="Play video"></button>
-          </a>
-          <p class="catalog-item__caption">Kidzania - Imagine</p>
-          <p class="catalog-item__tag">Kids &amp; Education</p>
-        </article>
-        <article class="catalog-item" data-category="csr-social">
-          <a class="catalog-item__thumb" href="https://www.youtube.com/watch?v=c3EcpSbwAf0" data-youtube-id="c3EcpSbwAf0">
-            <img src="https://i.ytimg.com/vi/c3EcpSbwAf0/hqdefault.jpg" alt="Flynote - Women's Day Special" loading="lazy" />
-            <button type="button" class="catalog-item__play" aria-label="Play video"></button>
-          </a>
-          <p class="catalog-item__caption">Flynote - Women's Day Special</p>
-          <p class="catalog-item__tag">CSR &amp; Social</p>
-        </article>
-      </div>
-      <p class="catalog__empty" hidden>No videos in this category yet.</p>
-    </div>
-  </section>
-
-  <section id="why">
-    <div class="section-title section-title--tight">
-      <h2 class="section-title__heading">Why Potbelly?</h2>
-    </div>
-    <div class="feature-grid feature-grid--3">
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-experience-5qkRKj.jpg" width="400" height="300" alt="" loading="lazy" title="Radio host using a mixing console in studio by ADDICTIVE STOCK / Noun Project (CC BY 3.0)"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Experience</h3>
-          <p class="feature-card__text">Years of hands-on experience across dubbing, voiceovers and localisation.</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-right-people-5oDaNx.jpg" width="400" height="300" alt="" loading="lazy" title="Cinematographers collaborating on a film set by Aleksei Gorodenkov / Noun Project (CC BY 3.0)"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">The Right People</h3>
-          <p class="feature-card__text">Experienced translators, directors, voice artists and sound engineers.</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-scale-bG32Av.jpg" width="400" height="300" alt="" loading="lazy" title="Close-up of a professional mixing console by Aleksei Gorodenkov / Noun Project (CC BY 3.0)"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Scale</h3>
-          <p class="feature-card__text">Three studios and the talent network to take on high-volume projects.</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-one-point-of-contact-5rz73Z.jpg" width="600" height="400" alt="" loading="lazy" title="Headset on a laptop at a desk"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">One Point of Contact</h3>
-          <p class="feature-card__text">One team managing your project from script to final delivery.</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-we-get-the-original-4BVKkx.jpg" width="400" height="300" alt="" loading="lazy" title="Creative focused on handwritten notes at a workspace by Giuseppe Lombardo / Noun Project (CC BY 3.0)"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">We Get the Original</h3>
-          <p class="feature-card__text">Localisation should make content feel native, not make it feel like a translation.</p>
-        </div>
-      </div>
-      <div class="feature-card">
-        <div class="feature-card__photo"><img src="imgs/photo-quality-matters-0K8gjD.jpg" width="400" height="300" alt="" loading="lazy" title="Professional headphones on a gray background by Roman Shashko / Noun Project (CC BY 3.0)"></div>
-        <div class="feature-card__body">
-          <h3 class="feature-card__title">Quality Matters</h3>
-          <p class="feature-card__text">Multiple rounds of QC. Because small mistakes don't stay small in finished content.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="cta-solid" id="lets-talk">
-    <h2 class="cta-solid__heading">Let's Talk</h2>
-    <p class="cta-solid__text">Have a project in mind?<br />Tell us what you're working on. We'll tell you how we can help.</p>
-    <p class="section-cta">
-      <a class="btn" href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
-      <a class="btn btn--outline-light" href="#contact">Get a Quote</a>
-      <a class="btn btn--outline-light" href="#contact">Discuss a Project</a>
-    </p>
-  </section>
-
-  <section class="refer" id="refer">
-    <div class="section-title section-title--tight">
-      <h2 class="section-title__heading">Refer Potbelly</h2>
-    </div>
-    <p class="refer__text">Know someone who needs dubbing, voiceovers or localisation?<br />Send them our way.</p>
-    <ul class="refer__list">
-      <li class="refer__chip">Production Houses</li>
-      <li class="refer__chip">OTT</li>
-      <li class="refer__chip">Animation</li>
-      <li class="refer__chip">Agencies</li>
-      <li class="refer__chip">Brands</li>
-      <li class="refer__chip">International Content Owners</li>
-      <li class="refer__chip">Distributors</li>
-      <li class="refer__chip">Syndicators</li>
-    </ul>
-    <p class="section-cta"><a class="btn" href="mailto:work@potbellyaudio.com?subject=Introduction%20to%20Potbelly%20Audio&body=Hi%20Potbelly%20Audio%2C%0A%0AI%27d%20like%20to%20introduce%20you%20to%3A">Make an Introduction</a></p>
-  </section>
-
-  <section id="about">
-    <div class="section-title">
-      <h2 class="section-title__heading">About Potbelly</h2>
-    </div>
-    <div class="about">
-      <div class="about__grid">
-        <div class="about__media">
-          <div class="disc">
-            <img class="disc__cover" src="imgs/about-cd-box.png" alt="" />
-            <img class="disc__record" src="imgs/about-cd-record.png" alt="" />
+      <div class="marquee">
+        <span class="marquee__label">We work in</span>
+        <div class="marquee__mask">
+          <div class="marquee__track">
+            <span>HINDI</span><span>ENGLISH</span><span>MARATHI</span><span>BENGALI</span><span>TAMIL</span><span>TELUGU</span><span>KANNADA</span><span>MALAYALAM</span><span>GUJARATI</span><span>PUNJABI</span><span>URDU</span><span>SPANISH</span><span>FRENCH</span><span>GERMAN</span><span>ARABIC</span><span>MANDARIN</span><span>JAPANESE</span><span>KOREAN</span><span>PORTUGUESE</span><span>ITALIAN</span><span>RUSSIAN</span>
+            <span aria-hidden="true">HINDI</span><span aria-hidden="true">ENGLISH</span><span aria-hidden="true">MARATHI</span><span aria-hidden="true">BENGALI</span><span aria-hidden="true">TAMIL</span><span aria-hidden="true">TELUGU</span><span aria-hidden="true">KANNADA</span><span aria-hidden="true">MALAYALAM</span><span aria-hidden="true">GUJARATI</span><span aria-hidden="true">PUNJABI</span><span aria-hidden="true">URDU</span><span aria-hidden="true">SPANISH</span><span aria-hidden="true">FRENCH</span><span aria-hidden="true">GERMAN</span><span aria-hidden="true">ARABIC</span><span aria-hidden="true">MANDARIN</span><span aria-hidden="true">JAPANESE</span><span aria-hidden="true">KOREAN</span><span aria-hidden="true">PORTUGUESE</span><span aria-hidden="true">ITALIAN</span><span aria-hidden="true">RUSSIAN</span>
           </div>
         </div>
-        <div class="about__body">
-          <p class="about__lede">Built around good audio. Built to make content travel.</p>
-          <p>Founded by Pooja Punjabi, Potbelly Audio has grown from an audio production company into a localisation partner for content across languages, formats and markets.</p>
-          <p>Based in Mumbai. Working across markets.</p>
-          <p class="section-cta section-cta--left"><a class="btn" href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener noreferrer">Talk to Us</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three stages -->
+  <section class="stages" aria-labelledby="stages-title">
+    <div class="wrap">
+      <div class="stages__head">
+        <p class="eyebrow eyebrow--light">What we do</p>
+        <h2 class="headline" id="stages-title">Three stages.<br />One team.</h2>
+        <p class="lede">Localisation is not one job. It is a script job, then a performance job, then a sound job. It falls apart when three vendors own three pieces of it. At Potbelly all three happen in the same building, with the same person answering the phone.</p>
+      </div>
+      <div class="stage-grid">
+        <a class="stage" href="#script">
+          <div class="stage__top">
+            <span class="stage__num">01</span>
+            <span class="stage__tag">On the page</span>
+          </div>
+          <div>
+            <h3 class="stage__title">Script</h3>
+            <p class="stage__text">Translation and localisation that reads for context, culture and tone, then clears a round of QC before anyone books a booth.</p>
+            <span class="stage__cta">See the script stage &rarr;</span>
+          </div>
+        </a>
+        <a class="stage stage--accent" href="#voice">
+          <div class="stage__top">
+            <span class="stage__num">02</span>
+            <span class="stage__tag">In the booth</span>
+          </div>
+          <div>
+            <h3 class="stage__title">Voice</h3>
+            <p class="stage__text">Casting, dubbing direction, dubbing and voiceovers. The performance is the product, so we direct it like one.</p>
+            <span class="stage__cta">See the voice stage &rarr;</span>
+          </div>
+        </a>
+        <a class="stage" href="#sound">
+          <div class="stage__top">
+            <span class="stage__num">03</span>
+            <span class="stage__tag">On the desk</span>
+          </div>
+          <div>
+            <h3 class="stage__title">Sound</h3>
+            <p class="stage__text">Recording, editing, mixing and audio post, through a final round of QC and out to your delivery spec.</p>
+            <span class="stage__cta">See the sound stage &rarr;</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 / Script -->
+  <section id="script" class="sheet sheet--dark seam-down" aria-labelledby="script-title">
+    <div class="ghost ghost--dark" data-word="SCRIPT" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="eyebrow eyebrow--dark">01 / Script &amp; language</p>
+          <h2 class="headline" id="script-title">Get the words right first.</h2>
+          <p class="lede">A weak script cannot be rescued by a strong actor. Everything upstream of the booth happens here: translation, adaptation for the audience actually watching, and a full round of quality control before a single line is recorded.</p>
+          <p class="pill-row" style="margin-top:32px"><a class="pill pill--ghost-dark" href="https://wa.me/919137533976?text=Hi%2C%20I%27d%20like%20to%20talk%20about%20a%20script%20for%20translation." target="_blank" rel="noopener noreferrer">Talk about a script</a></p>
+        </div>
+        <div class="rows">
+          <div class="row">
+            <span class="row__key">A</span>
+            <div>
+              <h3 class="row__title">Translation &amp; Localisation</h3>
+              <p class="row__text">Translation that considers context, culture, tone and audience, not just words. The test is whether a native speaker forgets they are watching a dub.</p>
+            </div>
+          </div>
+          <div class="row">
+            <span class="row__key">B</span>
+            <div>
+              <h3 class="row__title">Script-level QC</h3>
+              <p class="row__text">Every script clears quality control before recording starts. A problem caught on the page costs a line. The same problem caught after the mix costs the session.</p>
+            </div>
+          </div>
+          <div class="row">
+            <span class="row__key">C</span>
+            <div>
+              <h3 class="row__title">Twenty-one languages, and counting</h3>
+              <p class="row__text">Eleven Indian languages and ten international ones, with more available on request. If you do not see yours, ask.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="chips__label">Indian languages</p>
+      <ul class="chips">
+        <li class="chip">Hindi</li><li class="chip">English</li><li class="chip">Marathi</li><li class="chip">Bengali</li><li class="chip">Tamil</li><li class="chip">Telugu</li><li class="chip">Kannada</li><li class="chip">Malayalam</li><li class="chip">Gujarati</li><li class="chip">Punjabi</li><li class="chip">Urdu</li>
+      </ul>
+      <p class="chips__label">International languages</p>
+      <ul class="chips">
+        <li class="chip">Spanish</li><li class="chip">French</li><li class="chip">German</li><li class="chip">Arabic</li><li class="chip">Mandarin Chinese</li><li class="chip">Japanese</li><li class="chip">Korean</li><li class="chip">Portuguese</li><li class="chip">Italian</li><li class="chip">Russian</li>
+        <li class="chip chip--more"><a href="https://wa.me/919137533976?text=Hi%2C%20is%20my%20language%20supported%3F" target="_blank" rel="noopener noreferrer">Ask about yours</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 02 / Voice -->
+  <section id="voice" class="sheet sheet--paper seam-round" aria-labelledby="voice-title">
+    <div class="ghost ghost--light" data-word="VOICE" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="eyebrow eyebrow--light">02 / Voice &amp; performance</p>
+          <h2 class="headline" id="voice-title">The performance is the product.</h2>
+          <p class="lede">Localisation should make content feel native, not make it feel like a translation. That is a casting decision and a direction decision long before it is a technical one, which is why a director sits in on the session and not just an engineer.</p>
+          <p class="pill-row" style="margin-top:32px"><a class="pill pill--ghost-light" href="https://wa.me/919137533976?text=Hi%2C%20I%27d%20like%20to%20brief%20you%20on%20a%20project." target="_blank" rel="noopener noreferrer">Brief us on a project</a></p>
+        </div>
+        <div class="rows">
+          <div class="row">
+            <span class="row__key">A</span>
+            <div>
+              <h3 class="row__title">Casting</h3>
+              <p class="row__text">A wide pool of voice talent across languages, age groups and performance styles, with options sent back so you can hear the choice, not just read it.</p>
+            </div>
+          </div>
+          <div class="row">
+            <span class="row__key">B</span>
+            <div>
+              <h3 class="row__title">Dubbing direction</h3>
+              <p class="row__text">Experienced dubbing directors who know how to get the right performance from every artist, take after take, across a full season.</p>
+            </div>
+          </div>
+          <div class="row">
+            <span class="row__key">C</span>
+            <div>
+              <h3 class="row__title">Dubbing</h3>
+              <p class="row__text">Natural, well directed dubbing that keeps the performance, emotion and intent of the original, in sync and in character.</p>
+            </div>
+          </div>
+          <div class="row">
+            <span class="row__key">D</span>
+            <div>
+              <h3 class="row__title">Voiceovers</h3>
+              <p class="row__text">The right voice for films, documentaries, advertising, corporate and digital content, briefed properly and delivered ready to cut.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="contact" class="contact">
-    <div class="section-title section-title--band">
-      <h2 class="section-title__heading">Contact</h2>
+  <!-- 03 / Sound -->
+  <section id="sound" class="sheet sheet--dark seam-up" aria-labelledby="sound-title">
+    <div class="ghost ghost--dark" data-word="SOUND" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="eyebrow eyebrow--dark">03 / Sound &amp; delivery</p>
+          <h2 class="headline" id="sound-title">Out the door, to spec.</h2>
+          <p class="lede">Recorded tracks become finished content here. Engineers who have been doing this since 2009, three studios running in parallel when the volume demands it, and one more round of QC before anything leaves the building.</p>
+          <p class="pill-row" style="margin-top:32px"><a class="pill pill--accent" href="https://wa.me/919137533976?text=Hi%2C%20I%27d%20like%20to%20get%20a%20quote%20for%20a%20project." target="_blank" rel="noopener noreferrer">Get a quote</a></p>
+        </div>
+        <div class="rows">
+          <div class="row">
+            <span class="row__key">A</span>
+            <div>
+              <h3 class="row__title">Recording &amp; mixing</h3>
+              <p class="row__text">Experienced sound engineers handling recording, editing and final mix for a polished output that holds up on a phone speaker and a cinema system.</p>
+            </div>
+          </div>
+          <div class="row">
+            <span class="row__key">B</span>
+            <div>
+              <h3 class="row__title">Audio post-production</h3>
+              <p class="row__text">From recorded tracks to final delivery, handled under one roof, in the formats and specs your platform asks for.</p>
+            </div>
+          </div>
+          <div class="row">
+            <span class="row__key">C</span>
+            <div>
+              <h3 class="row__title">Final QC</h3>
+              <p class="row__text">A second round of quality control after recording, because small mistakes do not stay small once content is finished and published.</p>
+            </div>
+          </div>
+          <div class="row">
+            <span class="row__key">D</span>
+            <div>
+              <h3 class="row__title">Built for volume</h3>
+              <p class="row__text">Three studios and a strong talent network, so high volume and multi language projects run in parallel instead of queueing behind each other.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="band">
+        <p class="eyebrow eyebrow--dark">Under one roof</p>
+        <p class="band__title">Script to final mix in <span class="stroke">three Mumbai studios.</span></p>
+        <p class="band__text">Translation, casting, direction, recording, mixing and QC. One team, one workflow, one person to call. Nothing gets lost in the handoff between vendors, because there is no handoff.</p>
+      </div>
     </div>
-    <p class="contact__intro">Have a project? Need a quote? Want to explore a partnership?</p>
-    <p class="section-cta">
-      <a class="btn" href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
-      <a class="btn btn--outline-dark" href="mailto:work@potbellyaudio.com">Email Us</a>
-      <a class="btn btn--outline-dark" href="https://wa.me/919137533976?text=Hi%2C%20I%27d%20like%20to%20get%20a%20quote%20for%20a%20project." target="_blank" rel="noopener noreferrer">Get a Quote</a>
-    </p>
-    <div class="contact__info">
-      <div class="contact__info-item">
-        <p>
-          <svg viewBox="0 0 384 512" width="14" height="14" fill="currentColor" aria-hidden="true" focusable="false" style="display:inline-block;vertical-align:-1px;"><path d="M172.3 501.7C27 291 0 269.4 0 192 0 86 86 0 192 0s192 86 192 192c0 77.4-27 99-172.3 309.7-9.5 13.8-29.9 13.8-39.4 0zM192 272a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
-          <b>Address</b>
-        </p>
-        <div>Oshiwara, Mumbai</div>
+  </section>
+
+  <!-- Work -->
+  <section id="work" class="sheet sheet--paper seam-round" aria-labelledby="work-title">
+    <div class="ghost ghost--light" data-word="WORK" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="work__head">
+        <div>
+          <p class="eyebrow eyebrow--light">Selected work</p>
+          <h2 class="headline" id="work-title">Hear the difference.</h2>
+        </div>
+        <div>
+          <p class="lede">Most of what we record is covered by an NDA. These are the pieces we are free to show you. Filter by industry, or ask us for samples in your language and we will send what we can.</p>
+        </div>
       </div>
-      <div class="contact__info-item">
-        <p>
-          <svg viewBox="0 0 512 512" width="16" height="16" fill="currentColor" aria-hidden="true" focusable="false" style="display:inline-block;vertical-align:-2px;"><path d="M64 112c-8.8 0-16 7.2-16 16v22.1L227.8 268.4c16.9 12.4 39.5 12.4 56.4 0L464 150.1V128c0-8.8-7.2-16-16-16H64zM48 212.2V384c0 8.8 7.2 16 16 16h384c8.8 0 16-7.2 16-16V212.2L322.5 302.6c-38.4 28.2-90.6 28.2-129 0L48 212.2zM0 128C0 92.7 28.7 64 64 64h384c35.3 0 64 28.7 64 64v256c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128z"/></svg>
-          <b>Email</b>
-        </p>
-        <a href="mailto:work@potbellyaudio.com">work@potbellyaudio.com</a>
+
+      <div class="filters" role="group" aria-label="Filter work by industry">
+        <button type="button" class="filter is-active" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="filter" data-filter="automotive" aria-pressed="false">Automotive</button>
+        <button type="button" class="filter" data-filter="kids-education" aria-pressed="false">Kids &amp; Education</button>
+        <button type="button" class="filter" data-filter="csr-social" aria-pressed="false">CSR &amp; Social</button>
       </div>
-      <div class="contact__info-item">
-        <p>
-          <svg viewBox="0 0 512 512" width="14" height="14" fill="currentColor" aria-hidden="true" focusable="false" style="display:inline-block;vertical-align:-1px;"><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 300.3 211.7 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6l-40.4 49.3c-70.4-33.3-127.4-90.3-160.7-160.7l49.3-40.4c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>
-          <b>Phone</b>
-        </p>
-        <a href="tel:+917021383205">+91 70213 83205</a>
+
+      <div class="work-grid">
+        <article class="work-item" data-category="automotive">
+          <a class="work-item__thumb" href="https://www.youtube.com/watch?v=Q48tj-O-Tzo" data-youtube-id="Q48tj-O-Tzo">
+            <img src="https://i.ytimg.com/vi/Q48tj-O-Tzo/hqdefault.jpg" width="480" height="360" alt="Mahindra Scorpio, Badshah" loading="lazy" />
+            <span class="work-item__play" aria-hidden="true"></span>
+          </a>
+          <p class="work-item__caption">Mahindra Scorpio, Badshah</p>
+          <p class="work-item__tag">Automotive</p>
+        </article>
+        <article class="work-item" data-category="automotive">
+          <a class="work-item__thumb" href="https://www.youtube.com/watch?v=mR-LlG23JxI" data-youtube-id="mR-LlG23JxI">
+            <img src="https://i.ytimg.com/vi/mR-LlG23JxI/hqdefault.jpg" width="480" height="360" alt="Mahindra Scorpio, Dhakad" loading="lazy" />
+            <span class="work-item__play" aria-hidden="true"></span>
+          </a>
+          <p class="work-item__caption">Mahindra Scorpio, Dhakad</p>
+          <p class="work-item__tag">Automotive</p>
+        </article>
+        <article class="work-item" data-category="kids-education">
+          <a class="work-item__thumb" href="https://www.youtube.com/watch?v=rYtycVB8zu0" data-youtube-id="rYtycVB8zu0">
+            <img src="https://i.ytimg.com/vi/rYtycVB8zu0/hqdefault.jpg" width="480" height="360" alt="What is Kidzania, Gujarati" loading="lazy" />
+            <span class="work-item__play" aria-hidden="true"></span>
+          </a>
+          <p class="work-item__caption">What is Kidzania, Gujarati</p>
+          <p class="work-item__tag">Kids &amp; Education</p>
+        </article>
+        <article class="work-item" data-category="kids-education">
+          <a class="work-item__thumb" href="https://www.youtube.com/watch?v=CjOymDx0IaA" data-youtube-id="CjOymDx0IaA">
+            <img src="https://i.ytimg.com/vi/CjOymDx0IaA/hqdefault.jpg" width="480" height="360" alt="What is Kidzania, Hindi" loading="lazy" />
+            <span class="work-item__play" aria-hidden="true"></span>
+          </a>
+          <p class="work-item__caption">What is Kidzania, Hindi</p>
+          <p class="work-item__tag">Kids &amp; Education</p>
+        </article>
+        <article class="work-item" data-category="kids-education">
+          <a class="work-item__thumb" href="https://www.youtube.com/watch?v=7vmwrFt_XFs" data-youtube-id="7vmwrFt_XFs">
+            <img src="https://i.ytimg.com/vi/7vmwrFt_XFs/hqdefault.jpg" width="480" height="360" alt="What is Kidzania, Marathi" loading="lazy" />
+            <span class="work-item__play" aria-hidden="true"></span>
+          </a>
+          <p class="work-item__caption">What is Kidzania, Marathi</p>
+          <p class="work-item__tag">Kids &amp; Education</p>
+        </article>
+        <article class="work-item" data-category="kids-education">
+          <a class="work-item__thumb" href="https://www.youtube.com/watch?v=u81WaEFCs8Q" data-youtube-id="u81WaEFCs8Q">
+            <img src="https://i.ytimg.com/vi/u81WaEFCs8Q/hqdefault.jpg" width="480" height="360" alt="Kidzania, Imagine" loading="lazy" />
+            <span class="work-item__play" aria-hidden="true"></span>
+          </a>
+          <p class="work-item__caption">Kidzania, Imagine</p>
+          <p class="work-item__tag">Kids &amp; Education</p>
+        </article>
+        <article class="work-item" data-category="csr-social">
+          <a class="work-item__thumb" href="https://www.youtube.com/watch?v=c3EcpSbwAf0" data-youtube-id="c3EcpSbwAf0">
+            <img src="https://i.ytimg.com/vi/c3EcpSbwAf0/hqdefault.jpg" width="480" height="360" alt="Flynote, Women's Day Special" loading="lazy" />
+            <span class="work-item__play" aria-hidden="true"></span>
+          </a>
+          <p class="work-item__caption">Flynote, Women's Day Special</p>
+          <p class="work-item__tag">CSR &amp; Social</p>
+        </article>
       </div>
-      <div class="contact__info-item">
-        <p>
-          <svg viewBox="0 0 448 512" width="14" height="14" fill="currentColor" aria-hidden="true" focusable="false" style="display:inline-block;vertical-align:-1px;"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1s54 81.2 54 130.5c-.1 101.8-83.1 184.6-184.5 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3s19.9 53.7 22.6 57.4c2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
-          <b>WhatsApp</b>
-        </p>
-        <a href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>
+      <p class="work__empty" hidden>No videos in this category yet.</p>
+
+      <div class="band">
+        <p class="eyebrow eyebrow--light">Under NDA</p>
+        <p class="band__title">Five thousand projects in. Most of them we <span class="stroke">cannot name.</span></p>
+        <p class="band__text">Seventeen years of features, series, campaigns and corporate work for studios, platforms and brands that sign us to silence. The work is out there. Our name is not on it, and that is exactly the job.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Potbelly -->
+  <section id="why" class="sheet sheet--dark seam-down" aria-labelledby="why-title">
+    <div class="ghost ghost--dark" data-word="WHY" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="eyebrow eyebrow--dark">Why Potbelly</p>
+          <h2 class="headline" id="why-title">Built for content that travels.</h2>
+          <p class="lede">Potbelly Audio opened in August 2009 as an audio production company. Seventeen years later it is a localisation partner for content moving across languages, formats and markets, and the reasons clients keep coming back have not really changed.</p>
+        </div>
+        <div class="rows">
+          <div class="row">
+            <span class="row__key">01</span>
+            <div>
+              <h3 class="row__title">Seventeen years of it</h3>
+              <p class="row__text">Recording since August 2009. More than five thousand projects delivered across languages, formats and delivery specs.</p>
+            </div>
+          </div>
+          <div class="row">
+            <span class="row__key">02</span>
+            <div>
+              <h3 class="row__title">The right people</h3>
+              <p class="row__text">Experienced translators, dubbing directors, voice artists and sound engineers, not a rotating pool of freelancers.</p>
+            </div>
+          </div>
+          <div class="row">
+            <span class="row__key">03</span>
+            <div>
+              <h3 class="row__title">Scale</h3>
+              <p class="row__text">Three studios and the talent network to take on high volume, multi language projects without the schedule slipping.</p>
+            </div>
+          </div>
+          <div class="row">
+            <span class="row__key">04</span>
+            <div>
+              <h3 class="row__title">One point of contact</h3>
+              <p class="row__text">One team managing your project from script to final delivery. You brief once, and you chase nobody.</p>
+            </div>
+          </div>
+          <div class="row">
+            <span class="row__key">05</span>
+            <div>
+              <h3 class="row__title">We get the original</h3>
+              <p class="row__text">Localisation should make content feel native, not make it feel like a translation. We treat the original as the brief, not as raw material.</p>
+            </div>
+          </div>
+          <div class="row">
+            <span class="row__key">06</span>
+            <div>
+              <h3 class="row__title">Quality matters</h3>
+              <p class="row__text">Multiple rounds of QC, at script level and again after recording, because small mistakes do not stay small in finished content.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who we work with + About (one paper sheet) -->
+  <section id="clients" class="sheet sheet--paper seam-round segments" aria-labelledby="clients-title">
+    <div class="ghost ghost--light" data-word="WHO" aria-hidden="true"></div>
+    <div class="wrap">
+      <p class="eyebrow eyebrow--light">Who we work with</p>
+      <h2 class="headline" id="clients-title">When your content needs another language.</h2>
+      <p class="lede" style="margin-top:20px">Eight kinds of client, one problem: content that has to work for an audience which does not speak the language it was made in.</p>
+      <div class="segment-grid">
+        <div class="segment">
+          <h3 class="segment__title">Production houses</h3>
+          <p class="segment__text">Multilingual versions for feature films, short films, live action series and corporate productions.</p>
+        </div>
+        <div class="segment">
+          <h3 class="segment__title">OTT &amp; streaming</h3>
+          <p class="segment__text">Dubbing and localisation for films, series, documentaries and long form content.</p>
+        </div>
+        <div class="segment">
+          <h3 class="segment__title">Animation studios</h3>
+          <p class="segment__text">Character voices, episodic dubbing and multilingual adaptation.</p>
+        </div>
+        <div class="segment">
+          <h3 class="segment__title">Advertising &amp; creative agencies</h3>
+          <p class="segment__text">Regional campaigns, voiceovers and multilingual content on campaign deadlines.</p>
+        </div>
+        <div class="segment">
+          <h3 class="segment__title">International content owners</h3>
+          <p class="segment__text">Distributors and syndicators taking existing content into new markets, in both directions.</p>
+        </div>
+        <div class="segment">
+          <h3 class="segment__title">Brands &amp; corporate teams</h3>
+          <p class="segment__text">Corporate films, campaigns, training and branded content across languages.</p>
+        </div>
+        <div class="segment">
+          <h3 class="segment__title">E-learning &amp; digital</h3>
+          <p class="segment__text">Making content accessible to learners in the language they know best.</p>
+        </div>
+        <div class="segment">
+          <h3 class="segment__title">Gaming &amp; interactive</h3>
+          <p class="segment__text">Voices, dialogue and localisation for character driven content.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="sheet sheet--paper about" aria-labelledby="about-title">
+    <div class="wrap">
+      <p class="eyebrow eyebrow--light">About</p>
+      <div class="about__grid">
+        <div>
+          <div class="about__portrait">
+            <img src="imgs/about-pooja.png" width="200" height="250" alt="Pooja Punjabi, founder of Potbelly Audio, at a studio microphone" loading="lazy" />
+          </div>
+          <p class="about__caption">Pooja Punjabi, founder</p>
+        </div>
+        <div class="about__body">
+          <h2 class="about__lede" id="about-title">Built around good audio. Built to make content travel.</h2>
+          <p>Potbelly Audio was founded in August 2009 by Pooja Punjabi and has grown from an audio production company into a localisation partner for content across languages, formats and markets.</p>
+          <p>Three studios in Oshiwara, Mumbai. Seventeen years, more than five thousand projects, and a client list we are mostly not allowed to print.</p>
+          <p class="pill-row"><a class="pill pill--ink" href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener noreferrer">Talk to us</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="sheet sheet--dark seam-up contact" aria-labelledby="contact-title">
+    <div class="ghost ghost--dark" data-word="TALK" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="eyebrow eyebrow--dark">Get started</p>
+          <h2 class="headline" id="contact-title">Tell us what you are making.</h2>
+          <p class="lede">A film, a series, a campaign, a course. Tell us the languages and the deadline and we will tell you how we would run it, and what it costs. WhatsApp is the fastest way to reach us.</p>
+          <div class="contact__lines">
+            <a href="mailto:work@potbellyaudio.com">work@potbellyaudio.com</a>
+            <a href="tel:+917021383205">+91 70213 83205</a>
+            <span class="addr">Oshiwara, Mumbai<br />Maharashtra, India</span>
+          </div>
+        </div>
+        <div class="contact__actions">
+          <p class="pill-row">
+            <a class="pill pill--accent" href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">WhatsApp Us</a>
+            <a class="pill pill--ghost-dark" href="mailto:work@potbellyaudio.com">Email Us</a>
+            <a class="pill pill--ghost-dark" href="tel:+917021383205">Call Us</a>
+            <a class="pill pill--ghost-dark" href="https://wa.me/919137533976?text=Hi%2C%20I%27d%20like%20to%20get%20a%20quote%20for%20a%20project." target="_blank" rel="noopener noreferrer">Get a Quote</a>
+          </p>
+          <div class="refer">
+            <h3 class="refer__title">Refer Potbelly</h3>
+            <p class="refer__text">Know a production house, platform, agency or brand that needs dubbing, voiceovers or localisation? Send them our way.</p>
+            <p class="pill-row"><a class="pill pill--ghost-dark" href="mailto:work@potbellyaudio.com?subject=Introduction%20to%20Potbelly%20Audio&amp;body=Hi%20Potbelly%20Audio%2C%0A%0AI%27d%20like%20to%20introduce%20you%20to%3A">Make an introduction</a></p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -616,27 +610,22 @@
 <footer class="site-footer">
   <div class="site-footer__inner">
     <img class="site-footer__logo" src="imgs/logo-horizontal-dark.png" width="160" height="40" alt="Potbelly Audio" />
-    <p class="site-footer__tagline">Dubbing, Voiceovers, Translation, Localisation, Audio Production</p>
-    <p class="site-footer__location">Mumbai, India</p>
+    <p class="site-footer__tagline">Dubbing &middot; Voiceovers &middot; Translation &middot; Localisation</p>
     <div class="site-footer__social">
-      <a href="https://www.facebook.com/potbellyaudio/" target="_blank" rel="noopener noreferrer">
-        <img src="imgs/icon-facebook.png" alt="Facebook" />
+      <a href="https://www.facebook.com/potbellyaudio/" target="_blank" rel="noopener noreferrer" aria-label="Potbelly Audio on Facebook">
+        <img src="imgs/icon-facebook.png" width="22" height="22" alt="" />
       </a>
-      <a href="https://twitter.com/potbellyaudio?lang=en" target="_blank" rel="noopener noreferrer">
-        <img src="imgs/icon-twitter.png" alt="Twitter" />
+      <a href="https://twitter.com/potbellyaudio?lang=en" target="_blank" rel="noopener noreferrer" aria-label="Potbelly Audio on Twitter">
+        <img src="imgs/icon-twitter.png" width="22" height="22" alt="" />
       </a>
-      <a href="https://www.instagram.com/potbellyaudio/" target="_blank" rel="noopener noreferrer">
-        <img src="imgs/icon-instagram.png" alt="Instagram" />
+      <a href="https://www.instagram.com/potbellyaudio/" target="_blank" rel="noopener noreferrer" aria-label="Potbelly Audio on Instagram">
+        <img src="imgs/icon-instagram.png" width="22" height="22" alt="" />
       </a>
     </div>
     <p class="site-footer__sign-off">Sounds Good.</p>
-    <p class="site-footer__copyright">&copy; 2026 Potbelly Audio. All Rights Reserved.</p>
+    <p class="site-footer__copyright">&copy; 2026 Potbelly Audio. All rights reserved.</p>
   </div>
 </footer>
-
-<a class="whatsapp-float" href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer" aria-label="Chat with Potbelly Audio on WhatsApp">
-  <svg viewBox="0 0 448 512" width="28" height="28" fill="#fff" aria-hidden="true" focusable="false"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1s54 81.2 54 130.5c-.1 101.8-83.1 184.6-184.5 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3s19.9 53.7 22.6 57.4c2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
-</a>
 
 <div class="lightbox">
   <div class="lightbox__frame-wrap">
@@ -645,11 +634,6 @@
   </div>
 </div>
 
-<!--
-  Feature card photos from The Noun Project (CC BY 3.0):
-  Giuseppe Lombardo; ADDICTIVE STOCK; David Pereiras; Scopio; Aleksei Gorodenkov;
-  Roman Shashko; Cezary Lopacinski; winnievinzence.
--->
-<script src="js/main.js"></script>
+<script src="js/main.js" defer></script>
 </body>
 </html>

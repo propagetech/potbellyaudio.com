@@ -3,71 +3,92 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<script>
-  (function () {
-    try {
-      var stored = localStorage.getItem('theme');
-      if (stored === 'light' || stored === 'dark') {
-        document.documentElement.setAttribute('data-theme', stored);
-      }
-    } catch (e) {}
-  })();
-</script>
 <title>Page Not Found | Potbelly Audio</title>
-<meta name="description" content="The page you're looking for doesn't exist or has moved. Return to Potbelly Audio's homepage for dubbing, voiceovers, translation and localisation services." />
+<meta name="description" content="The page you are looking for does not exist or has moved. Return to the Potbelly Audio homepage for dubbing, voiceovers, translation and localisation." />
 <meta name="robots" content="noindex, follow" />
+<meta name="theme-color" content="#0d0b08" />
 <link rel="icon" href="/imgs/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="/imgs/favicon-32.png" sizes="32x32" type="image/png" />
 <link rel="apple-touch-icon" href="/imgs/apple-touch-icon.png" />
 <link href="/css/main.css" rel="stylesheet" />
 <style>
-  .errpage { min-height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 80px 20px; }
-  .errpage__code { font-family: var(--font-base); font-weight: bold; font-size: 96px; line-height: 1; color: var(--color-accent); margin-bottom: 16px; }
-  .errpage__heading { font-family: var(--font-base); font-weight: bold; font-size: 28px; color: var(--color-heading); margin-bottom: 12px; }
-  .errpage__text { color: var(--color-body); margin-bottom: 32px; max-width: 46ch; margin-left: auto; margin-right: auto; }
+  .errpage {
+    min-height: 72vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: clamp(64px, 12vw, 120px) var(--pad-x);
+  }
+  .errpage__code {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(96px, 22vw, 220px);
+    line-height: 0.9;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .errpage__heading {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(28px, 5vw, 52px);
+    line-height: 1.05;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .errpage__text {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--on-dark-mute);
+    max-width: 48ch;
+    margin: 0 auto 34px;
+  }
 </style>
 </head>
 <body>
 
 <a class="skip-link" href="#main">Skip to main content</a>
 
-<header class="site-header">
-  <div class="site-header__inner">
-    <a class="brand" href="/" aria-label="Potbelly Audio home">
-      <img class="brand__logo logo-light" src="/imgs/logo-horizontal-light.png" width="200" height="50" alt="Potbelly Audio" />
-      <img class="brand__logo logo-dark" src="/imgs/logo-horizontal-dark.png" width="200" height="50" alt="Potbelly Audio" />
-    </a>
+<nav class="site-nav" aria-label="Main">
+  <a class="site-nav__logo" href="/" aria-label="Potbelly Audio home">
+    <img src="/imgs/logo-horizontal-dark.png" width="200" height="50" alt="Potbelly Audio" />
+  </a>
+  <div class="site-nav__links">
+    <a class="site-nav__cta" href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">WHATSAPP US</a>
   </div>
-</header>
+</nav>
 
 <main id="main">
   <section class="errpage">
     <div>
       <p class="errpage__code">404</p>
-      <h1 class="errpage__heading">Page Not Found</h1>
-      <p class="errpage__text">The page you're looking for doesn't exist or has moved. Head back to the homepage to find dubbing, voiceovers, translation and localisation services.</p>
-      <p class="section-cta"><a class="btn" href="/">Return to Homepage</a></p>
+      <h1 class="errpage__heading">Nothing recorded here.</h1>
+      <p class="errpage__text">The page you are looking for does not exist or has moved. Head back to the homepage for dubbing, voiceovers, translation and localisation.</p>
+      <p class="pill-row" style="justify-content:center">
+        <a class="pill pill--accent" href="/">Return to Homepage</a>
+        <a class="pill pill--ghost-dark" href="/#work">Hear Our Work</a>
+      </p>
     </div>
   </section>
 </main>
 
 <footer class="site-footer">
   <div class="site-footer__inner">
-    <p class="site-footer__tagline">Dubbing, Voiceovers, Translation, Localisation, Audio Production</p>
-    <p class="site-footer__location">Mumbai, India</p>
+    <img class="site-footer__logo" src="/imgs/logo-horizontal-dark.png" width="160" height="40" alt="Potbelly Audio" />
+    <p class="site-footer__tagline">Dubbing &middot; Voiceovers &middot; Translation &middot; Localisation</p>
     <div class="site-footer__social">
-      <a href="https://www.facebook.com/potbellyaudio/" target="_blank" rel="noopener noreferrer">
-        <img src="/imgs/icon-facebook.png" alt="Facebook" />
+      <a href="https://www.facebook.com/potbellyaudio/" target="_blank" rel="noopener noreferrer" aria-label="Potbelly Audio on Facebook">
+        <img src="/imgs/icon-facebook.png" width="22" height="22" alt="" />
       </a>
-      <a href="https://twitter.com/potbellyaudio?lang=en" target="_blank" rel="noopener noreferrer">
-        <img src="/imgs/icon-twitter.png" alt="Twitter" />
+      <a href="https://twitter.com/potbellyaudio?lang=en" target="_blank" rel="noopener noreferrer" aria-label="Potbelly Audio on Twitter">
+        <img src="/imgs/icon-twitter.png" width="22" height="22" alt="" />
       </a>
-      <a href="https://www.instagram.com/potbellyaudio/" target="_blank" rel="noopener noreferrer">
-        <img src="/imgs/icon-instagram.png" alt="Instagram" />
+      <a href="https://www.instagram.com/potbellyaudio/" target="_blank" rel="noopener noreferrer" aria-label="Potbelly Audio on Instagram">
+        <img src="/imgs/icon-instagram.png" width="22" height="22" alt="" />
       </a>
     </div>
     <p class="site-footer__sign-off">Sounds Good.</p>
-    <p class="site-footer__copyright">&copy; 2026 Potbelly Audio. All Rights Reserved.</p>
+    <p class="site-footer__copyright">&copy; 2026 Potbelly Audio. All rights reserved.</p>
   </div>
 </footer>
 
