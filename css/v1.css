@@ -191,12 +191,53 @@ section { scroll-margin-top: 88px; }
 .rail__icon { width: 78px; height: auto; }
 .rail__word { width: 124px; height: auto; }
 
+/* Readout and channel list travel together, so they stay one flex child of
+   the rail and the mark/deck/foot rhythm is unchanged. */
+.rail__deck {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
 .rail__channels {
   display: flex;
   flex-direction: column;
   gap: 2px;
   width: 100%;
   padding: 0 12px;
+}
+
+/* Console readout: a recessed panel, not a nav item. It names the section on
+   screen even when that section has no channel, which is the whole reason it
+   exists. Accent is reserved for "you are here", and this line always is. */
+.rail__now {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0 12px;
+  padding: 10px 11px;
+  border-radius: 6px;
+  border-left: 2px solid var(--accent);
+  background: var(--ink-2);
+}
+.rail__now-key {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-dark-mute);
+}
+.rail__now-val {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.25;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+  /* "Potbelly Audio" and "How it runs" are the long ones; let them wrap
+     rather than clip, since the rail is only 156px wide. */
+  overflow-wrap: break-word;
 }
 
 /* A channel = one nav target. Meter left, label right, lights on current. */
@@ -216,6 +257,10 @@ section { scroll-margin-top: 88px; }
 }
 .chan:hover { color: var(--on-dark); background: var(--ink-2); }
 .chan.is-live { color: var(--accent); background: var(--ink-2); }
+/* Passed, not live. Set only when the section on screen has no channel of its
+   own, so the list never claims you are somewhere you are not. Copper is the
+   site's second accent and reads clearly as the quieter of the two. */
+.chan.is-past { color: var(--copper-dk); }
 
 .chan__meter {
   position: relative;
@@ -238,6 +283,9 @@ section { scroll-margin-top: 88px; }
   background: var(--accent);
   animation: pbLevel 0.9s ease-in-out infinite alternate;
 }
+/* A meter holding a level rather than moving: the three states read apart
+   without relying on colour alone. */
+.chan.is-past .chan__meter::after { transform: scaleY(0.52); }
 
 .rail__foot {
   display: flex;

@@ -122,6 +122,30 @@
     });
   }
 
+  /* Re-pin after a sheet changes height, without moving what the reader is
+     looking at. A sheet is pinned by its bottom edge, so growing one drags its
+     top -- and everything printed on it -- upward by the height it gained.
+     Capture where the sheet sits, re-pin, then scroll to the position that puts
+     it back: a pinned sheet ignores scrolling, so the net effect is that it
+     gains runway rather than lurching out from under a thumb. */
+  function relayoutHolding(act) {
+    var idx = acts.indexOf(act);
+    if (idx < 0) { layout(); return; }
+
+    var before = act.getBoundingClientRect().top;
+    layout();
+    var drift = act.getBoundingClientRect().top - before;
+    if (!drift) return;                       // an unpinned sheet does not lurch
+
+    // Scroll to the position that renders the sheet exactly where it was. The
+    // sheet covering it moves down by what this one gained, which is the point:
+    // a taller section needs the runway, and the row under the thumb is what
+    // has to stay still.
+    var y = Math.round(window.scrollY);
+    var want = Math.max(0, Math.round(flowTop[idx] - before));
+    if (want !== y) window.scrollTo({ top: want, behavior: 'auto' });
+  }
+
   layout();
   window.addEventListener('load', layout);
   window.addEventListener('resize', layout, { passive: true });
@@ -131,12 +155,46 @@
   /* ---- Console rail: scroll spy, veil, mobile progress ------------------ */
   var chans = Array.prototype.slice.call(document.querySelectorAll('.chan'));
   var barNow = document.getElementById('bar-now');
+  var railNow = document.getElementById('rail-now');
   var barProgress = document.getElementById('bar-progress');
 
-  var spied = chans.map(function (chan) {
-    var id = chan.getAttribute('href').slice(1);
-    return { chan: chan, el: document.getElementById(id), label: chan.lastElementChild.textContent };
-  }).filter(function (entry) { return entry.el; });
+  /* Spy on every act, not just the six that have a rail channel. Chain,
+     clients, why and contact have no channel of their own, and the rail is a
+     curated six by design, so the nav alone can never say where the reader is.
+
+     Two signals come out of this, and they are deliberately not the same one:
+
+       chan  the act's own channel, if it has one. Lit in accent. This is the
+             only thing that ever means "you are here".
+       lit   the nearest channel at or above the act. Shown in copper as a
+             passed marker when the live act has no channel of its own, so the
+             list still places the reader without claiming the wrong section.
+
+     The readout carries the actual position in both cases. Before it existed
+     the carried channel was the only signal on desktop, and it named a section
+     that was not on screen for about a third of the page. */
+  var chanFor = {};
+  chans.forEach(function (chan) { chanFor[chan.getAttribute('href').slice(1)] = chan; });
+
+  var carry = null;
+  var spied = acts.map(function (act) {
+    var chan = chanFor[act.id] || null;
+    if (chan) carry = chan;
+    var label = act.getAttribute('data-nav') || 'Potbelly Audio';
+    return {
+      el: act,
+      chan: chan,
+      lit: carry,
+      label: label,
+      /* The readout takes a different value than the mobile bar in exactly one
+         place: above the first channel there is nothing to name but the top of
+         the page, the wordmark sits directly above this line already, and
+         "Potbelly Audio" is the only label long enough to wrap the readout onto
+         a second line -- which would shift the channel list every time the
+         reader left the hero. The bar keeps the full name; it has the width. */
+      read: carry ? label : 'Top'
+    };
+  });
 
   var ticking = false;
 
@@ -164,20 +222,28 @@
       }
     }
 
-    // Live channel = the last one whose top has passed 45% of the viewport.
+    // Live section = the last one whose top has passed 45% of the viewport.
     var mark = vh * 0.45;
     var live = null;
     spied.forEach(function (entry) {
       if (entry.el.getBoundingClientRect().top <= mark) live = entry;
     });
 
-    chans.forEach(function (chan) { chan.classList.remove('is-live'); });
+    chans.forEach(function (chan) {
+      chan.classList.remove('is-live', 'is-past');
+      chan.removeAttribute('aria-current');
+    });
     if (live) {
-      live.chan.classList.add('is-live');
-      if (barNow) barNow.textContent = live.label;
-    } else if (barNow) {
-      barNow.textContent = 'Potbelly Audio';
+      if (live.chan) {
+        live.chan.classList.add('is-live');
+        live.chan.setAttribute('aria-current', 'true');
+      } else if (live.lit) {
+        live.lit.classList.add('is-past');
+      }
     }
+
+    if (barNow) barNow.textContent = live ? live.label : 'Potbelly Audio';
+    if (railNow) railNow.textContent = live ? live.read : 'Top';
   }
 
   window.addEventListener('scroll', function () {
@@ -217,7 +283,9 @@
   function toggleCue(cue) {
     var open = cue.classList.toggle('is-open');
     cue.setAttribute('aria-expanded', open ? 'true' : 'false');
-    setTimeout(layout, 400);   // the sheet just changed height, so re-pin it
+    // The note takes 350ms to open, so wait for the height before re-pinning.
+    var act = cue.closest('main > .act');
+    setTimeout(function () { relayoutHolding(act); }, 400);
   }
 
   function syncCueRoles() {
@@ -275,7 +343,7 @@
       });
 
       if (reelsEmpty) reelsEmpty.hidden = shown > 0;
-      layout();   // the grid just reflowed
+      relayoutHolding(btn.closest('main > .act'));   // the grid just reflowed
     });
   });
 
