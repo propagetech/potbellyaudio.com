@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /seo-audit.html
+Disallow: /user-personas.html
 
 User-agent: GPTBot
 Disallow: /

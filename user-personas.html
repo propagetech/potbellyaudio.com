@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Personas &amp; Site Gap Review, Internal | Potbelly Audio</title>
+  <meta name="description" content="Internal buyer-persona and content-gap review for potbellyaudio.com. Not for public sharing." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta property="og:title" content="User Personas &amp; Site Gap Review, Internal | Potbelly Audio" />
+  <meta property="og:description" content="Internal buyer-persona and content-gap review for potbellyaudio.com. Not for public sharing." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="imgs/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="imgs/favicon-32.png" sizes="32x32" type="image/png" />
+  <style>
+    @font-face { font-family:"Montserrat"; font-style:normal; font-weight:100; font-display:swap; src:url("fonts/montserrat-100.woff2") format("woff2"); }
+    @font-face { font-family:"Montserrat"; font-style:normal; font-weight:400; font-display:swap; src:url("fonts/montserrat-400.woff2") format("woff2"); }
+    @font-face { font-family:"Montserrat"; font-style:normal; font-weight:700; font-display:swap; src:url("fonts/montserrat-700.woff2") format("woff2"); }
+
+    :root{
+      --bg:#faf7f0; --surface:#ffffff; --surface-2:#f1ece1; --surface-3:#e9e1d0;
+      --border:#e3dccb; --border-2:#d3c9b2;
+      --text:#1e1b17; --text-muted:#5c5548; --text-faint:#6b5f4e;
+      --accent:#a64a28; --accent-light:#8f3f22; --accent-ink:#ffffff;
+      --accent-dim:rgba(201,122,70,0.10);
+      --good:#1f7a34; --good-bg:rgba(31,122,52,0.10);
+      --warn:#8a5a12; --warn-bg:rgba(138,90,18,0.10);
+      --bad:#a3281c;  --bad-bg:rgba(163,40,28,0.10);
+      --info:#1c5f77; --info-bg:rgba(28,95,119,0.10);
+      --font-display:"Montserrat", Arial, Helvetica, sans-serif;
+      --font-body:"Montserrat", Arial, Helvetica, sans-serif;
+      --font-mono: ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+      color-scheme: light;
+    }
+    :root[data-theme="dark"]{
+      --bg:#17140f; --surface:#1f1b14; --surface-2:#26221a; --surface-3:#2f2a20;
+      --border:#3d362b; --border-2:#4c4433;
+      --text:#f5f1e8; --text-muted:#b8afa0; --text-faint:#8c8373;
+      --accent:#d97a4e; --accent-light:#e08a5e; --accent-ink:#1e1b17;
+      --accent-dim:rgba(217,122,78,0.16);
+      --good:#6bbf7b; --good-bg:rgba(107,191,123,0.14);
+      --warn:#e0a35c; --warn-bg:rgba(224,163,92,0.14);
+      --bad:#e0776a;  --bad-bg:rgba(224,119,106,0.14);
+      --info:#7ab3c9; --info-bg:rgba(122,179,201,0.14);
+      color-scheme: dark;
+    }
+
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-body);
+         font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+    h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.2;margin:0}
+    a{color:var(--accent);text-underline-offset:3px}
+    code,.mono{font-family:var(--font-mono);font-size:.86em}
+    .wrap{width:min(1180px,100% - 3rem);margin-inline:auto}
+
+    .topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 92%,transparent);
+            backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+    .topbar-inner{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;padding:.75rem 0}
+    .topbar img{height:32px;width:auto}
+    .title{font-family:var(--font-display);font-weight:700;font-size:1rem;margin-right:auto}
+    .noindex-badge{font-size:.7rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+      color:var(--bad);background:var(--bad-bg);border:1px solid var(--bad);
+      border-radius:999px;padding:.2rem .7rem}
+    .theme-toggle{background:var(--surface-2);border:1px solid var(--border-2);color:var(--text);
+      border-radius:999px;padding:.45rem .9rem;font:700 .8rem var(--font-body);cursor:pointer;min-height:36px}
+    .topnav{display:flex;flex-wrap:wrap;gap:.35rem;padding:0 0 .75rem}
+    .topnav a{font-size:.8rem;text-decoration:none;color:var(--text-muted);
+      border:1px solid var(--border);border-radius:999px;padding:.3rem .7rem}
+    .topnav a:hover{color:var(--text);border-color:var(--border-2)}
+
+    header.hero{padding:2.5rem 0 1rem}
+    header.hero h1{font-size:clamp(1.5rem,1.1rem+1.8vw,2.3rem);max-width:32ch}
+    .meta-row{display:flex;flex-wrap:wrap;gap:.4rem 1.5rem;margin-top:.9rem;
+      color:var(--text-faint);font-size:.85rem}
+
+    section{padding:2.25rem 0;border-top:1px solid var(--border)}
+    .section-head{display:flex;align-items:baseline;gap:.75rem;margin-bottom:.35rem}
+    .idx{font-family:var(--font-mono);font-size:.8rem;color:var(--accent);letter-spacing:.08em}
+    .section-title{font-size:clamp(1.15rem,1rem+.6vw,1.5rem)}
+    .section-sub{color:var(--text-muted);max-width:78ch;margin:.35rem 0 1.4rem}
+
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.3rem}
+    .note{color:var(--text-muted);font-size:.88rem}
+    ul.plain{margin:.5rem 0 0;padding-left:1.1rem;color:var(--text-muted)}
+    ul.plain li{margin-bottom:.35rem}
+
+    .persona-grid{display:grid;gap:1.1rem;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+    .persona{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.3rem 1.4rem;display:flex;flex-direction:column;gap:.8rem}
+    .persona__head{display:flex;align-items:center;gap:.85rem}
+    .persona__avatar{width:46px;height:46px;border-radius:50%;background:var(--accent-dim);color:var(--accent);
+      display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:1.1rem;flex:none}
+    .persona__name{font-family:var(--font-display);font-weight:700;font-size:1.05rem}
+    .persona__role{color:var(--text-muted);font-size:.82rem}
+    .persona__quote{font-style:italic;color:var(--text);border-left:3px solid var(--accent);padding:.2rem .9rem;font-size:.92rem}
+    .persona h4{font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--text-faint);margin:0 0 .3rem;font-family:var(--font-body);font-weight:700}
+    .persona__block{margin-bottom:0}
+    .persona__block ul{margin:0;padding-left:1.05rem;font-size:.87rem;color:var(--text-muted)}
+    .persona__block ul li{margin-bottom:.25rem}
+    .persona__lands{font-size:.82rem;color:var(--info);background:var(--info-bg);border-radius:8px;padding:.5rem .7rem}
+
+    .tbl-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+    table{border-collapse:collapse;width:100%;min-width:640px;font-size:.88rem}
+    th,td{text-align:left;padding:.62rem .8rem;border-bottom:1px solid var(--border);vertical-align:top}
+    th{background:var(--surface-2);font-weight:700;color:var(--text-muted);
+       font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+    tbody tr:last-child td{border-bottom:0}
+
+    .todos{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);
+      border-radius:10px;padding:1rem 1.15rem;margin-bottom:.8rem}
+    .todos h3{font-size:.98rem;margin-bottom:.3rem;font-weight:700}
+    .who{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+      border-radius:999px;padding:.15rem .55rem;margin-left:.4rem;vertical-align:middle;border:1px solid}
+    .who--owner{color:var(--warn);background:var(--warn-bg);border-color:var(--warn)}
+    .who--us{color:var(--info);background:var(--info-bg);border-color:var(--info)}
+    .who--done{color:var(--good);background:var(--good-bg);border-color:var(--good)}
+    .persona-tags{font-size:.75rem;color:var(--text-faint);margin-top:.4rem}
+    .legend-item{display:inline-flex;align-items:center;gap:.4rem;margin-right:1.1rem;font-size:.82rem;color:var(--text-muted)}
+    .legend-dot{width:9px;height:9px;border-radius:50%}
+    footer.foot{padding:2rem 0 3rem;color:var(--text-faint);font-size:.83rem;border-top:1px solid var(--border)}
+    @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="wrap">
+      <div class="topbar-inner">
+        <img src="imgs/logo-horizontal-light.png" alt="Potbelly Audio" />
+        <span class="title">User personas &amp; site gap review</span>
+        <span class="noindex-badge">Internal, noindex</span>
+        <button class="theme-toggle" type="button" id="themeBtn" aria-pressed="false">Dark mode</button>
+      </div>
+      <nav class="topnav" aria-label="Sections">
+        <a href="#method">01 How these were built</a>
+        <a href="#personas">02 The five buyer personas</a>
+        <a href="#mapping">03 Where each persona lands today</a>
+        <a href="#gaps">04 Room for improvement</a>
+        <a href="#wins">05 What we can ship now vs. what needs you</a>
+      </nav>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <main>
+      <header class="hero">
+        <h1>Buyer personas and a content-gap review, potbellyaudio.com</h1>
+        <div class="meta-row">
+          <span>Prepared: 21 August 2026</span>
+          <span>Scope: home page (one-page build)</span>
+          <span>Type: B2B service buyers, not consumer UX personas</span>
+        </div>
+      </header>
+
+      <!-- ============ 1. METHOD ============ -->
+      <section id="method">
+        <div class="section-head"><span class="idx">01</span><h2 class="section-title">How these personas were built</h2></div>
+        <p class="section-sub">Potbelly sells a service to other businesses, not a product to consumers, so
+          the personas below are <strong>buyer personas</strong>: the person at a client organisation who
+          finds the site, evaluates it, and decides whether to message.</p>
+        <div class="card">
+          <p class="note">Every persona is built from segments Pooja has already named herself &mdash; the
+            "Who We Work With" section on the live page (Production Houses, OTT &amp; Streaming, Animation
+            Studios, Advertising Agencies, International Content Owners/Distributors, Brands &amp; Corporate,
+            E-learning, Gaming) and the "Refer Potbelly" list. Nothing here invents a new market or a new
+            audience. That follows the same rule the July rebuild broke: positioning and audience come from
+            the client's own words, not from outside research layered on top. This document only asks
+            "given the buyers she already told us about, does the current page make it easy for each of
+            them to say yes?"</p>
+        </div>
+      </section>
+
+      <!-- ============ 2. PERSONAS ============ -->
+      <section id="personas">
+        <div class="section-head"><span class="idx">02</span><h2 class="section-title">The five buyer personas</h2></div>
+        <p class="section-sub">Five recurring buyer types, drawn from the segments already on the page.
+          Names are placeholders for readability, not real clients.</p>
+        <div class="persona-grid">
+
+          <div class="persona">
+            <div class="persona__head">
+              <div class="persona__avatar">R</div>
+              <div><div class="persona__name">Reema, Localisation Lead</div><div class="persona__role">OTT / streaming platform</div></div>
+            </div>
+            <p class="persona__quote">"I need one vendor who can take a season into six languages at once, without six different quality bars."</p>
+            <div class="persona__block"><h4>Goals</h4><ul><li>Consistent QC across every language in a release window</li><li>One accountable team instead of juggling freelancers per language</li><li>Predictable turnaround before a launch date</li></ul></div>
+            <div class="persona__block"><h4>Objections</h4><ul><li>Can they really run several languages in parallel at scale, or is "Built for Volume" just a slogan?</li><li>What happens to schedule risk if one language's talent falls through?</li></ul></div>
+            <div class="persona__lands">Lands on: hero &rarr; "What We Do" grid &rarr; "Built for Volume" card. No proof of concurrent multi-language delivery at scale beyond the card's one line.</div>
+          </div>
+
+          <div class="persona">
+            <div class="persona__head">
+              <div class="persona__avatar">K</div>
+              <div><div class="persona__name">Karan, Broadcast Producer</div><div class="persona__role">Advertising / creative agency</div></div>
+            </div>
+            <p class="persona__quote">"My client will want three tone options and a change after the client call. I need a partner who moves at agency speed, not studio speed."</p>
+            <div class="persona__block"><h4>Goals</h4><ul><li>Right voice, fast, with room for a same-day revision round</li><li>A single contact who can join a call with his client if needed</li></ul></div>
+            <div class="persona__block"><h4>Objections</h4><ul><li>Is the talent pool right for brand-voice work, not just narration?</li><li>How many revision rounds are included before it costs extra?</li></ul></div>
+            <div class="persona__lands">Lands on: "Hear the Difference" catalog (Mahindra Scorpio spots are exactly his use case) but nothing states revision policy or typical timeline.</div>
+          </div>
+
+          <div class="persona">
+            <div class="persona__head">
+              <div class="persona__avatar">A</div>
+              <div><div class="persona__name">Anita, Post-Production Supervisor</div><div class="persona__role">Production house / OTT delivery</div></div>
+            </div>
+            <p class="persona__quote">"Dubbing direction and sync accuracy make or break the delivery QC. I need to see they've handled long-form before."</p>
+            <div class="persona__block"><h4>Goals</h4><ul><li>End-to-end pipeline (script &rarr; cast &rarr; direct &rarr; record &rarr; mix &rarr; QC) under one roof</li><li>Confidence on broadcast/OTT delivery specs</li></ul></div>
+            <div class="persona__block"><h4>Objections</h4><ul><li>Track record on long-form (feature/series), not just short ads and explainers</li><li>Does the site show the workflow, or just list service names?</li></ul></div>
+            <div class="persona__lands">Lands on: "What We Do" (all eight services listed, good) but the services read as a menu, not a pipeline &mdash; nothing shows how they connect start to finish.</div>
+          </div>
+
+          <div class="persona">
+            <div class="persona__head">
+              <div class="persona__avatar">V</div>
+              <div><div class="persona__name">Vikram, L&amp;D / Brand Manager</div><div class="persona__role">Corporate, e-learning</div></div>
+            </div>
+            <p class="persona__quote">"I've never bought dubbing before. I just need someone to tell me what to send and what it costs."</p>
+            <div class="persona__block"><h4>Goals</h4><ul><li>Low-friction first contact (WhatsApp, plain language)</li><li>Clear idea of process and rough cost before committing time</li></ul></div>
+            <div class="persona__block"><h4>Objections</h4><ul><li>Is my project too small for a studio that also handles OTT-scale work?</li><li>No visible pricing signal or minimum project size anywhere on the page</li></ul></div>
+            <div class="persona__lands">Lands on: WhatsApp-first CTAs (his best-fit contact channel, already done well) but nothing reassures him a small corporate job is welcome.</div>
+          </div>
+
+          <div class="persona">
+            <div class="persona__head">
+              <div class="persona__avatar">S</div>
+              <div><div class="persona__name">Sofia, Content Acquisition Manager</div><div class="persona__role">International distributor / content owner</div></div>
+            </div>
+            <p class="persona__quote">"The last localisation partner gave us something technically correct but it felt translated. And the content wasn't public yet &mdash; I needed to trust them with that."</p>
+            <div class="persona__block"><h4>Goals</h4><ul><li>Content that feels native in the target market, not literal</li><li>Confidence pre-release material stays confidential</li></ul></div>
+            <div class="persona__block"><h4>Objections</h4><ul><li>Can one Mumbai studio really understand nuance across many international languages?</li><li>No confidentiality/NDA statement visible anywhere on the site</li></ul></div>
+            <div class="persona__lands">Lands on: "We Get the Original" card (speaks directly to her worry) and the Languages section, but nothing addresses confidentiality for unreleased content.</div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============ 3. MAPPING ============ -->
+      <section id="mapping">
+        <div class="section-head"><span class="idx">03</span><h2 class="section-title">Where each persona lands today</h2></div>
+        <p class="section-sub">The page already speaks to every segment somewhere. The gap is proof density
+          at the moment each persona needs to decide, not missing sections.</p>
+        <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>Persona</th><th>Best-fit section today</th><th>What's missing at that moment</th></tr></thead>
+            <tbody>
+              <tr><td>Reema &middot; OTT</td><td>"Built for Volume" card</td><td>No number, reel, or case study behind the claim</td></tr>
+              <tr><td>Karan &middot; Agency</td><td>"Hear the Difference" catalog</td><td>No stated revision policy or typical turnaround</td></tr>
+              <tr><td>Anita &middot; Production house</td><td>"What We Do" grid</td><td>Services read as a list, not a connected pipeline</td></tr>
+              <tr><td>Vikram &middot; Corporate</td><td>WhatsApp / Contact CTAs</td><td>No signal that small, one-off jobs are welcome</td></tr>
+              <tr><td>Sofia &middot; International</td><td>"We Get the Original" + Languages</td><td>No confidentiality/NDA statement</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============ 4. GAPS ============ -->
+      <section id="gaps">
+        <div class="section-head"><span class="idx">04</span><h2 class="section-title">Room for improvement</h2></div>
+        <p class="section-sub">Ranked by how many personas it unblocks. Each item is tagged by who it
+          depends on &mdash; matching the same rule as the portfolio and About items already open with Pooja:
+          we don't publish a claim, number, or client name she hasn't confirmed.</p>
+
+        <div class="todos">
+          <h3>Turn the service list into a visible pipeline <span class="who who--us">Ours</span></h3>
+          <p class="note">"What We Do" already lists all eight services in the right order (script/translation
+            &rarr; casting &rarr; dubbing direction &rarr; recording &amp; mixing &rarr; post-production &rarr; QC).
+            A short "how a project moves through Potbelly" strip using those same eight names, just sequenced,
+            would answer Anita's and Reema's biggest question without adding a single new claim.</p>
+          <p class="persona-tags">Helps: Anita, Reema, Vikram</p>
+        </div>
+
+        <div class="todos">
+          <h3>Self-select entry points by buyer type <span class="who who--us">Ours</span></h3>
+          <p class="note">"Who We Work With" already lists all eight segments. Turning those into anchor
+            links from the hero (or a thin strip right under it) lets a visitor confirm "this is for people
+            like me" in the first three seconds, instead of scrolling to find themselves further down the page.</p>
+          <p class="persona-tags">Helps: all five</p>
+        </div>
+
+        <div class="todos">
+          <h3>Group the existing "Hear the Difference" catalog by use case <span class="who who--us">Ours</span></h3>
+          <p class="note">The seven videos already on the page cover automotive (Mahindra Scorpio),
+            kids/education (Kidzania), and CSR (Flynote) &mdash; exactly Karan's and Vikram's categories. A label
+            or filter over the existing grid (no new videos needed) helps each persona find their own use
+            case faster.</p>
+          <p class="persona-tags">Helps: Karan, Vikram, Anita</p>
+        </div>
+
+        <div class="todos">
+          <h3>State turnaround and revision expectations <span class="who who--owner">Needs Pooja</span></h3>
+          <p class="note">Karan and Vikram both hesitate without a rough sense of "how many revision rounds"
+            and "how fast." We can't publish a number we haven't been given &mdash; this needs her actual
+            policy, even approximate (e.g. "two rounds included," "typical turnaround for a 3-minute spot is
+            X days").</p>
+          <p class="persona-tags">Helps: Karan, Vikram</p>
+        </div>
+
+        <div class="todos">
+          <h3>Add a confidentiality / NDA line <span class="who who--owner">Needs Pooja</span></h3>
+          <p class="note">Sofia's segment (international distributors, pre-release content) explicitly worries
+            about leaks before launch. Even one sentence ("NDA on request for unreleased content") would
+            remove an objection the current page never addresses &mdash; but it needs her to confirm that's
+            actually her practice.</p>
+          <p class="persona-tags">Helps: Sofia, Anita</p>
+        </div>
+
+        <div class="todos">
+          <h3>Proof behind "Built for Volume" and case studies generally <span class="who who--owner">Needs Pooja, already open</span></h3>
+          <p class="note">This is the same open item already logged from the portfolio conversation: she said
+            yes to updating the portfolio and adding reels in general, but hasn't confirmed the named
+            examples (Kushals Jewellery, Thermax &amp; Shellmax, road safety campaign) one by one, or supplied
+            reel links/logos. Reema and Anita are the two personas who most need this proof to trust the
+            scale claims. No new ask here &mdash; just flagging it's the same blocker, seen from the persona
+            side this time.</p>
+          <p class="persona-tags">Helps: Reema, Anita, Karan</p>
+        </div>
+
+        <div class="todos">
+          <h3>Founder credibility for About <span class="who who--owner">Needs Pooja, already open</span></h3>
+          <p class="note">Also already open: About has never had a photo of Pooja, and the copy is two short
+            lines. Sofia and Anita both weigh "who is actually behind this" before trusting a smaller studio
+            with international or long-form work. A fuller founder bio and a real photo (not just the CD
+            illustration) would help &mdash; but needs her input on what to include.</p>
+          <p class="persona-tags">Helps: Sofia, Anita</p>
+        </div>
+
+        <div class="todos">
+          <h3>Nothing to add: language coverage objection is already handled <span class="who who--done">Already solved</span></h3>
+          <p class="note">Sofia's "do they cover my specific language" worry is already answered by the
+            existing "Don't see your language? Ask Us" WhatsApp CTA at the end of the Languages section. No
+            change needed there &mdash; noted so it isn't mistaken for a gap.</p>
+        </div>
+      </section>
+
+      <!-- ============ 5. WINS ============ -->
+      <section id="wins">
+        <div class="section-head"><span class="idx">05</span><h2 class="section-title">What we can ship now vs. what needs you</h2></div>
+        <p class="section-sub">Splitting the list above by dependency, so nothing waits on the other.</p>
+        <div class="tbl-scroll">
+          <table>
+            <thead><tr><th>Can build now, no new facts needed</th><th>Needs Pooja's input first</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>
+                  <ul class="plain">
+                    <li>Pipeline strip sequencing the existing 8 services</li>
+                    <li>Persona/segment self-select links from the hero</li>
+                    <li>Use-case labels on the existing 7 catalog videos</li>
+                  </ul>
+                </td>
+                <td>
+                  <ul class="plain">
+                    <li>Turnaround &amp; revision-round policy</li>
+                    <li>Confidentiality / NDA line</li>
+                    <li>Named portfolio proof (already open item)</li>
+                    <li>Fuller founder bio + real photo (already open item)</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note" style="margin-top:1rem">Say the word and we'll build the left column into
+          <code>index.html</code> directly &mdash; none of it requires waiting on Pooja. The right column
+          stays queued alongside the existing portfolio and About questions.</p>
+      </section>
+
+    </main>
+
+    <footer class="foot">
+      <p>Internal document. <code>noindex, nofollow</code>, not linked from any public page. Personas are
+        derived entirely from segments and language already stated on the live site and in client
+        correspondence &mdash; no external market research was used to define who Potbelly sells to.</p>
+      <p style="margin-top:.5rem">Prepared by ProPage, 21 August 2026.</p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('themeBtn');
+      var root = document.documentElement;
+      var saved = null;
+      try { saved = localStorage.getItem('audit-theme'); } catch (e) {}
+      var apply = function (t) {
+        if (t === 'dark') { root.setAttribute('data-theme', 'dark'); btn.textContent = 'Light mode'; btn.setAttribute('aria-pressed', 'true'); }
+        else { root.removeAttribute('data-theme'); btn.textContent = 'Dark mode'; btn.setAttribute('aria-pressed', 'false'); }
+      };
+      apply(saved);
+      btn.addEventListener('click', function () {
+        var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        apply(next);
+        try { localStorage.setItem('audit-theme', next); } catch (e) {}
+      });
+    })();
+  </script>
+</body>
+
+</html>

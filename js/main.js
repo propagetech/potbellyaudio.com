@@ -341,6 +341,47 @@
     });
   }
 
+  // Catalog filter (by industry/use case)
+  var catalogFilters = document.querySelectorAll('.catalog__filter');
+  var catalogItems = document.querySelectorAll('.catalog-item');
+  var catalogEmpty = document.querySelector('.catalog__empty');
+  if (catalogFilters.length && catalogItems.length) {
+    catalogFilters.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var filter = btn.getAttribute('data-filter');
+        var visibleCount = 0;
+        catalogFilters.forEach(function (b) {
+          b.classList.toggle('is-active', b === btn);
+          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        });
+        catalogItems.forEach(function (item) {
+          var match = filter === 'all' || item.getAttribute('data-category') === filter;
+          item.classList.toggle('is-hidden', !match);
+          if (match) visibleCount++;
+        });
+        if (catalogEmpty) catalogEmpty.hidden = visibleCount > 0;
+      });
+    });
+  }
+
+  // Mobile "reels" scroll hint -- clicking the bouncing arrow jumps to
+  // the next snap section instead of just hinting at it.
+  var snapSections = Array.prototype.slice.call(document.querySelectorAll('main > section[id]'));
+  var siteFooter = document.querySelector('.site-footer');
+  var snapTargets = siteFooter ? snapSections.concat(siteFooter) : snapSections;
+  snapSections.forEach(function (section, i) {
+    var next = snapTargets[i + 1];
+    if (!next) return;
+    var hint = document.createElement('button');
+    hint.type = 'button';
+    hint.className = 'scroll-hint';
+    hint.setAttribute('aria-label', 'Scroll to next section');
+    hint.addEventListener('click', function () {
+      next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    section.appendChild(hint);
+  });
+
   // Video lightbox
   var lightbox = document.querySelector('.lightbox');
   var lightboxFrame = document.querySelector('.lightbox__frame');
