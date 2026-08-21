@@ -136,6 +136,21 @@
     }
   }
 
+  :root[data-palette="warm-gold"] {
+    --color-accent: #d4af37;
+    --color-accent-alt: #a8842a;
+  }
+  :root[data-palette="warm-gold"][data-theme="dark"] {
+    --color-accent: #d4af37;
+    --color-accent-alt: #a8842a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root[data-palette="warm-gold"]:not([data-theme="light"]) {
+      --color-accent: #d4af37;
+      --color-accent-alt: #a8842a;
+    }
+  }
+
   /* Reset */
   *, *::before, *::after { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }

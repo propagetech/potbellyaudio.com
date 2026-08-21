@@ -44,6 +44,7 @@
     var palettes = [
       { id: '', label: 'Copper', accent: '#c97a46', bg: '#faf7f0' },
       { id: 'yellow-accent', label: 'Copper + yellow', accent: '#ffcb00', bg: '#faf7f0' },
+      { id: 'warm-gold', label: 'Warm gold', accent: '#d4af37', bg: '#faf7f0' },
       { id: 'original', label: 'Original', accent: '#ffcb00', bg: '#ffffff' }
     ];
     var storedPalette;
@@ -279,7 +280,9 @@
     fab.addEventListener('click', function () { setCollapsed(false); });
     setCollapsed(savedCollapsed);
 
-    if (savedPos) {
+    var isMobileViewport = window.innerWidth <= 640;
+
+    if (savedPos && !isMobileViewport) {
       panel.style.left = savedPos.left + 'px';
       panel.style.top = savedPos.top + 'px';
       panel.style.right = 'auto';
@@ -291,6 +294,7 @@
     var dragging = false;
 
     header.addEventListener('pointerdown', function (e) {
+      if (isMobileViewport) return;
       if (e.target === closeBtn || closeBtn.contains(e.target)) return;
       var rect = panel.getBoundingClientRect();
       dragOffsetX = e.clientX - rect.left;
