@@ -133,7 +133,7 @@
   <div class="topbar">
     <div class="wrap">
       <div class="topbar-inner">
-        <img src="imgs/logo-potbelly.png" alt="Potbelly Audio" />
+        <img src="imgs/logo-horizontal-light.png" alt="Potbelly Audio" />
         <span class="title">SEO &amp; accessibility audit</span>
         <span class="noindex-badge">Internal, noindex</span>
         <button class="theme-toggle" type="button" id="themeBtn" aria-pressed="false">Dark mode</button>
@@ -158,6 +158,7 @@
       <h1>SEO, Lighthouse and AA accessibility audit, potbellyaudio.com</h1>
       <div class="meta-row">
         <span>Audit date: 21 August 2026</span>
+        <span>Re-measured: 21 August 2026, after the same-day brand/contact refresh</span>
         <span>Pages audited: 2 (home, 404)</span>
         <span>Build: one-page rebuild, pre go-live</span>
         <span>Not live yet</span>
@@ -194,16 +195,17 @@
         </div>
         <div class="exec-card">
           <h3>Performance</h3>
-          <div class="score">95 to 100</div>
-          <div class="score-label">Home 95 to 100 across repeat runs (LCP 0.6 to 1.6s, still comfortably
-            "Good"), 404 a flat 100. Blocking time 0ms and layout shift ~0 on both.</div>
+          <div class="score">94 / 100</div>
+          <div class="score-label">Home held steady at 94 across two fresh repeat runs (LCP 1.6s both times,
+            still "Good"), 404 a flat 100 (LCP 0.7s). Blocking time 0ms and layout shift ~0 on both.</div>
           <span class="chip done">Done</span>
         </div>
         <div class="exec-card">
           <h3>Schema.org coverage</h3>
           <div class="score">2 types</div>
-          <div class="score-label"><code>LocalBusiness</code> (8-service offer catalog), <code>WebSite</code>.
-            One JSON-LD block, parses clean. No fabricated ratings or reviews.</div>
+          <div class="score-label"><code>LocalBusiness</code> (8-service offer catalog, now 21 languages in
+            <code>knowsLanguage</code>, up from 11), <code>WebSite</code>. One JSON-LD block, parses clean. No
+            fabricated ratings or reviews.</div>
           <span class="chip done">Done</span>
         </div>
         <div class="exec-card">
@@ -248,8 +250,8 @@
                 <th class="num">SEO</th><th class="num">LCP</th><th class="num">CLS</th><th class="num">TBT</th></tr>
           </thead>
           <tbody>
-            <tr><td>/ <span class="note">(Home)</span></td><td class="num v100">95-100</td><td class="num v100">100</td><td class="num v100">100</td><td class="num v100">100</td><td class="num v100">0.6-1.6 s</td><td class="num v100">0.004</td><td class="num v100">0 ms</td></tr>
-            <tr><td>/404.html</td><td class="num v100">100</td><td class="num v100">100</td><td class="num v100">100</td><td class="num v90">66</td><td class="num v100">0.4 s</td><td class="num v100">0.008</td><td class="num v100">0 ms</td></tr>
+            <tr><td>/ <span class="note">(Home)</span></td><td class="num v100">94</td><td class="num v100">100</td><td class="num v100">100</td><td class="num v100">100</td><td class="num v100">1.6 s</td><td class="num v100">0.004</td><td class="num v100">0 ms</td></tr>
+            <tr><td>/404.html</td><td class="num v100">100</td><td class="num v100">100</td><td class="num v100">100</td><td class="num v90">66</td><td class="num v100">0.7 s</td><td class="num v100">0.008</td><td class="num v100">0 ms</td></tr>
           </tbody>
         </table>
       </div>
@@ -258,9 +260,10 @@
         because Lighthouse's only failed check is <code>is-crawlable: Page is blocked from indexing</code>,
         caused by the intentional <code>&lt;meta name="robots" content="noindex"&gt;</code>. A 404 that Google
         indexes is the actual bug; this is the correct configuration, not a defect to fix. Home's Performance
-        varies 95 to 100 across repeat runs purely on LCP timing against a local dev server (0.6 to 1.6s, still
-        well inside "Good") &mdash; not a real regression, and it will read differently again once served from
-        Cloudflare's edge.</p>
+        held at 94 across two fresh repeat runs (LCP 1.6s both times, still well inside "Good") &mdash; tighter
+        and more consistent than the earlier 95-100 spread &mdash; and it will read differently again once
+        served from Cloudflare's edge instead of a local dev server. Network trace confirms 34 total requests
+        on home, 0 external/third-party, 0 console errors.</p>
     </section>
 
     <!-- ============ 3. SEO MATRIX ============ -->
@@ -278,7 +281,8 @@
             <tr><td>Single H1 per page</td><td><span class="chip done">Done</span></td><td>Home uses two <code>&lt;h1&gt;</code> across two full-bleed hero sections (a deliberate two-pitch landing pattern, not a duplicate-heading defect); 404 has one</td></tr>
             <tr><td>Sequential heading order</td><td><span class="chip done">Done</span></td><td>Verified via Lighthouse's <code>heading-order</code> audit, both pages</td></tr>
             <tr><td>Descriptive alt text</td><td><span class="chip done">Done</span></td><td>Meaningful images carry alt text; the 26 feature-card photos carry empty <code>alt</code> by design (each sits beside a heading and one-line description that already states the same content) plus a Noun Project attribution in <code>title</code></td></tr>
-            <tr><td>Favicon set</td><td><span class="chip done">Done</span></td><td>Added this round: <code>favicon.svg</code>, 16/32px PNG, apple-touch-icon, 192/512 PWA icons, <code>site.webmanifest</code>. Previously only a single 16x16 JPEG existed</td></tr>
+            <tr><td>Favicon set</td><td><span class="chip done">Done</span></td><td><code>favicon.svg</code>, 16/32px PNG, apple-touch-icon, 192/512 PWA icons, <code>site.webmanifest</code>, regenerated again this round from the new logo lockup. Previously only a single 16x16 JPEG existed</td></tr>
+            <tr><td>NAP consistency (phone number)</td><td><span class="chip missing">Needs review</span></td><td>New this round: the site's phone number changed to <code>+91 70213 83205</code> and now matches across <code>tel:</code> and the JSON-LD <code>telephone</code> field &mdash; but every WhatsApp CTA on the home page (9 links) points to a <em>different</em> number, <code>+91 91375 33976</code>. Two numbers for one business is a real local-SEO/NAP risk once Google Business Profile goes up (section 8). Confirm with the owner whether this is intentional (two lines) or a copy-paste slip</td></tr>
             <tr><td>Self-hosted fonts</td><td><span class="chip done">Done</span></td><td>Montserrat (100/400/700) now self-hosted as woff2; the Google Fonts CDN <code>&lt;link&gt;</code> removed this round &mdash; it was the site's only render-blocking third-party request</td></tr>
             <tr><td>sitemap.xml</td><td><span class="chip done">Done</span></td><td>1 URL. <code>&lt;loc&gt;</code> host fixed this round (was <code>www.</code>, didn't match the canonical apex domain)</td></tr>
             <tr><td>robots.txt</td><td><span class="chip done">Done</span></td><td>Points at the sitemap on the correct host (fixed this round), disallows this audit dashboard, and now blocks 8 AI-training user-agents (added this round; previously none were blocked)</td></tr>
@@ -303,9 +307,10 @@
       <div class="grid2">
         <div class="card">
           <h3>DOM contrast audit</h3>
-          <div class="score" style="font-size:1.5rem">137 elements, 0 failures</div>
-          <p class="note">Across both pages. 7 elements sit over a photographic hero background and were flagged
-            for manual review rather than guessed &mdash; resolved below.</p>
+          <div class="score" style="font-size:1.5rem">150 elements, 0 failures</div>
+          <p class="note">Across both pages (141 home, 9 on 404 &mdash; up from 137 total, from the wider
+            4-column contact grid added this round). 7 elements sit over a photographic hero background and
+            were flagged for manual review rather than guessed &mdash; resolved below.</p>
           <ul class="plain">
             <li>Body text on cream: 6.8:1</li>
             <li>Muted text on cream: 5.1:1</li>
@@ -357,7 +362,7 @@
         <table>
           <thead><tr><th>Type</th><th>Where</th><th>Notes</th></tr></thead>
           <tbody>
-            <tr><td><code>LocalBusiness</code></td><td>Home</td><td>Name, real Oshiwara/Mumbai address, geo, email, telephone, founder (Pooja Punjabi), 11 languages, and an 8-item <code>hasOfferCatalog</code> covering every service section on the page</td></tr>
+            <tr><td><code>LocalBusiness</code></td><td>Home</td><td>Name, real Oshiwara/Mumbai address, geo, email, telephone, founder (Pooja Punjabi), 21 languages in <code>knowsLanguage</code> (up from 11 this round, now split Indian/international to match the page's Languages section), an 8-item <code>hasOfferCatalog</code> covering every service section, and a <code>logo</code>/<code>image</code> now pointed at the actual live asset (<code>icon-512.png</code>, was referencing the now-unused <code>logo-potbelly.png</code>)</td></tr>
             <tr><td><code>WebSite</code></td><td>Home</td><td>Publisher references the business node by <code>@id</code></td></tr>
             <tr><td class="note" colspan="3" style="color:var(--warn)"><strong>Deliberately absent:</strong>
               <code>BreadcrumbList</code> (single-page site, no sub-pages to trail), <code>FAQPage</code>
@@ -401,6 +406,44 @@
       <div class="section-head"><span class="idx">07</span><h2 class="section-title">Findings fixed this round, 21 August 2026</h2></div>
       <p class="section-sub">Every item below was measured before and after with the same tooling as sections
         02-04, not just eyeballed.</p>
+
+      <h3 style="margin:0 0 .8rem;font-size:1rem;font-weight:700">Round 2, same day: brand, contact and
+        language refresh</h3>
+      <div class="grid2" style="margin-bottom:1.4rem">
+        <div class="card">
+          <h3>Added / changed</h3>
+          <ul class="plain">
+            <li>Theme-aware horizontal logo lockup (<code>logo-horizontal-light.png</code> /
+              <code>-dark.png</code>) replacing the single flat logo plus a hard-coded light "chip" background
+              hack for dark mode</li>
+            <li>Footer now carries a logo (previously footer had none)</li>
+            <li>Full favicon set regenerated from the new lockup: <code>favicon.svg</code>, 16/32px,
+              apple-touch-icon, 192/512 PWA icons</li>
+            <li>Languages section split into explicit "Indian Languages" and "International Languages"
+              subsections, adding 10 more languages (Spanish, French, German, Arabic, Mandarin Chinese,
+              Japanese, Korean, Portuguese, Italian, Russian); JSON-LD <code>knowsLanguage</code> now matches
+              at 21 entries, up from 11</li>
+            <li>Contact section restructured: separate "Phone" and "WhatsApp" fields (was one combined
+              "WhatsApp / Phone" field) in a 4-column grid; the duplicate logo block that used to sit in the
+              contact section was removed now that the footer carries one</li>
+            <li>Nav link font-weight raised 100 &rarr; 400 for legibility; mobile nav now opens as an
+              overlay panel with a shadow instead of pushing page content down</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Flagged, needs owner input</h3>
+          <ul class="plain">
+            <li>Primary phone number changed to <code>+91 70213 83205</code> (matches <code>tel:</code> and
+              JSON-LD <code>telephone</code>) &mdash; but every WhatsApp CTA still points to a different
+              number, <code>+91 91375 33976</code>. See the NAP consistency row in section 3</li>
+            <li><code>imgs/logo-potbelly.png</code> (the old flat logo) is no longer referenced by the live
+              site &mdash; only this audit dashboard still points at it. Safe to delete once confirmed, or
+              leave as a harmless orphaned file; either way it's not shipped in any page's markup</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 style="margin:0 0 .8rem;font-size:1rem;font-weight:700">Round 1, earlier the same day</h3>
       <div class="grid2">
         <div class="card">
           <h3>Removed / replaced</h3>
@@ -481,6 +524,17 @@
       </div>
 
       <div class="todos">
+        <h3>Phone number and WhatsApp number don't match <span class="who who--owner">Owner</span></h3>
+        <p class="note">Added this round: the site's phone number was updated to <code>+91 70213 83205</code>
+          and is consistent between the visible <code>tel:</code> link and the JSON-LD <code>telephone</code>
+          field. But all 9 WhatsApp CTAs on the home page still link to a different number,
+          <code>+91 91375 33976</code>. If these are meant to be two separate lines (e.g. a front-desk number
+          vs. a WhatsApp-only line) no action is needed beyond confirming that's intentional; if it's a
+          leftover from an earlier draft, it should be reconciled before the Google Business Profile listing
+          goes up, since NAP (name/address/phone) consistency is a real local-SEO signal.</p>
+      </div>
+
+      <div class="todos">
         <h3>og-image is a first draft, not client-approved copy <span class="who who--owner">Owner</span></h3>
         <p class="note">The 1200x630 social share card was generated this round from the real hero photo and
           logo emblem so Open Graph tags had something real to point at, rather than shipping broken tags.
@@ -513,7 +567,9 @@
         <code>node ../_rebuild-kit/tools/contrast-audit.mjs</code>,
         <code>python3 ../_rebuild-kit/tools/linkcheck.py .</code> and <code>lighthouse</code> against a
         locally served build.</p>
-      <p style="margin-top:.5rem">Audit run 21 August 2026 against the pre go-live build. Prepared by ProPage.</p>
+      <p style="margin-top:.5rem">Initial audit run the morning of 21 August 2026; Lighthouse, the DOM contrast
+        audit and the link checker were all re-run the same day against the build after the brand, contact and
+        language refresh (section 7, Round 2). Still against the pre go-live build. Prepared by ProPage.</p>
     </footer>
   </div>
 
