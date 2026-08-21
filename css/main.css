@@ -184,7 +184,7 @@ section { scroll-margin-top: 64px; }
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 12px;
-  padding: 16px var(--pad-x);
+  padding: 0 var(--pad-x);
   background: rgba(13, 11, 8, 0.86);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
@@ -192,7 +192,7 @@ section { scroll-margin-top: 64px; }
 }
 
 .site-nav__logo { display: flex; align-items: center; }
-.site-nav__logo img { height: 28px; width: auto; display: block; }
+.site-nav__logo img { height: 48px; margin:16px 0; width: auto; display: block; }
 
 .site-nav__links {
   display: flex;

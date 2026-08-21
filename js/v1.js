@@ -1,31 +1,42 @@
 /* Potbelly Audio -- alternate build (/1.html).
  *
- * Deliberately shares no algorithm with js/main.js. That file is the
- * sticky-sheet-stacking routine ported from merakifilms.in: sections pinned
- * with position:sticky, the covered one scaled down and dimmed through a
- * --cover custom property, plus a flowTops table to repair anchor scrolling
- * afterwards. None of that is here.
+ * Sheet stacking is here because the client asked for it: they liked the
+ * scroll on merakifilms.in and want each section to pin while the next slides
+ * over it. The pattern stays; the code does not. js/main.js is that routine
+ * ported from their site more or less verbatim, down to the comment wording
+ * and the magic numbers. This is written from scratch:
  *
- * What is here instead: normal document flow, a console rail that follows the
- * reader, and reveals that wipe in from the left.
+ *   - flow positions are recovered by dropping every act back to static and
+ *     measuring, rather than by accumulating heights and margins by hand
+ *   - the covered sheet is not scaled down; it holds its size and takes a
+ *     shadow from the sheet covering it (see .act::after and the box-shadow
+ *     in css/v1.css)
+ *   - different cover ramp, different thresholds, no --cover property
+ *
+ * Everything else on this page -- the console rail, the level meter, the cue
+ * accordion -- shares nothing with either file.
  */
 (function () {
   'use strict';
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   var mqPhone = window.matchMedia('(max-width: 640px)');
+  var mqRail = window.matchMedia('(max-width: 1080px)');
+
+  var BAR_H = 60;            // mobile top bar, for anchor landing
+  var COVER_LEAD = 0.5;      // veil starts when the next sheet crosses this much of the viewport
+  var COVER_MAX = 0.62;      // how dark a fully covered sheet goes
 
   /* ---- Hero level meter ------------------------------------------------ */
-  /* Bottom-anchored bars, peaks lit in accent. Bars are inserted by script so
-     the markup stays free of 64 empty spans. */
+  /* Bottom-anchored bars, peaks lit in accent. Inserted by script so the
+     markup stays free of 64 empty spans. */
   var levels = document.getElementById('levels');
   if (levels) {
     var BARS = 64;
     var frag = document.createDocumentFragment();
     for (var i = 0; i < BARS; i++) {
-      // Two summed sines so the shape reads as signal rather than a sawtooth.
-      var amp = 0.22 + 0.5 * Math.abs(Math.sin(i * 0.31)) + 0.26 * Math.abs(Math.sin(i * 0.11));
-      amp = Math.min(1, amp);
+      // Two summed sines so the shape reads as signal, not a sawtooth.
+      var amp = Math.min(1, 0.22 + 0.5 * Math.abs(Math.sin(i * 0.31)) + 0.26 * Math.abs(Math.sin(i * 0.11)));
       var bar = document.createElement('span');
       bar.style.height = (amp * 100).toFixed(1) + '%';
       if (amp > 0.86) bar.style.background = 'var(--accent)';
@@ -40,7 +51,8 @@
   }
 
   /* ---- Reveals --------------------------------------------------------- */
-  /* Left wipe, staggered per direct child of .inner. */
+  /* Left wipe, staggered per direct child of .inner. Opacity and transform
+     only, so nothing here changes the measured heights the stack depends on. */
   if (!reduceMotion.matches && 'IntersectionObserver' in window) {
     var targets = [];
     document.querySelectorAll('.act > .inner').forEach(function (inner) {
@@ -71,7 +83,52 @@
     });
   }
 
-  /* ---- Console rail: scroll spy + mobile progress ---------------------- */
+  /* ---- Sheet stacking -------------------------------------------------- */
+  var acts = Array.prototype.slice.call(document.querySelectorAll('main > .act'));
+  var flowTop = [];
+
+  /* A pinned sheet reports its pinned position, not its position in the
+     document, so anchor scrolling to one lands in the wrong place once it is
+     above the viewport. Rather than reconstruct the flow by summing heights,
+     drop the whole stack back to static, read it, and pin it again. Sticky
+     reserves its normal flow space, so this measures true and does not move
+     the scroll position. */
+  function layout() {
+    acts.forEach(function (act) {
+      act.style.position = 'static';
+      act.style.top = '';
+    });
+
+    var scrolled = window.scrollY;
+    flowTop = acts.map(function (act) {
+      return Math.round(act.getBoundingClientRect().top + scrolled);
+    });
+
+    var vh = window.innerHeight;
+    var last = acts.length - 1;
+
+    acts.forEach(function (act, idx) {
+      // The final sheet scrolls away normally so the footer can follow it, and
+      // reduced motion drops the whole stack. Both cases stay `relative` rather
+      // than `static`: .inner is a positioned box, so a static sheet would let
+      // its own content paint over the sheet before it while its background
+      // stayed underneath, and the two would show through each other.
+      if (reduceMotion.matches || idx === last) {
+        act.style.position = 'relative';
+        return;
+      }
+      act.style.position = 'sticky';
+      act.style.top = Math.min(0, vh - act.offsetHeight) + 'px';
+    });
+  }
+
+  layout();
+  window.addEventListener('load', layout);
+  window.addEventListener('resize', layout, { passive: true });
+  // Coconat changes line counts once it lands, which changes every height.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+
+  /* ---- Console rail: scroll spy, veil, mobile progress ------------------ */
   var chans = Array.prototype.slice.call(document.querySelectorAll('.chan'));
   var barNow = document.getElementById('bar-now');
   var barProgress = document.getElementById('bar-progress');
@@ -85,15 +142,30 @@
 
   function onScroll() {
     ticking = false;
+    var vh = window.innerHeight;
 
     if (barProgress) {
-      var span = document.documentElement.scrollHeight - window.innerHeight;
+      var span = document.documentElement.scrollHeight - vh;
       var pct = span > 0 ? Math.min(1, Math.max(0, window.scrollY / span)) : 0;
       barProgress.style.transform = 'scaleX(' + pct.toFixed(4) + ')';
     }
 
+    // Veil: ramps up while the next sheet is crossing this one, clears once
+    // this sheet is off screen entirely.
+    if (!reduceMotion.matches) {
+      var lead = vh * COVER_LEAD;
+      for (var i = 0; i < acts.length - 1; i++) {
+        var act = acts[i];
+        var rect = act.getBoundingClientRect();
+        var onScreen = rect.bottom > 0 && rect.top < vh;
+        var nextTop = acts[i + 1].getBoundingClientRect().top;
+        var ramp = Math.min(1, Math.max(0, (lead - nextTop) / lead));
+        act.style.setProperty('--veil', (onScreen ? ramp * COVER_MAX : 0).toFixed(3));
+      }
+    }
+
     // Live channel = the last one whose top has passed 45% of the viewport.
-    var mark = window.innerHeight * 0.45;
+    var mark = vh * 0.45;
     var live = null;
     spied.forEach(function (entry) {
       if (entry.el.getBoundingClientRect().top <= mark) live = entry;
@@ -114,12 +186,38 @@
   window.addEventListener('resize', onScroll, { passive: true });
   onScroll();
 
+  /* ---- In-page anchors ------------------------------------------------- */
+  function anchorY(id) {
+    if (id === 'top') return 0;
+    var el = document.getElementById(id);
+    if (!el) return null;
+    var offset = mqRail.matches ? BAR_H : 0;
+    var act = el.closest('main > .act');
+    var idx = acts.indexOf(act);
+    if (idx < 0) return Math.max(0, el.getBoundingClientRect().top + window.scrollY - offset);
+    // Anchor targets on this page are the sections themselves, so the sheet's
+    // own flow position is the landing point.
+    return Math.max(0, flowTop[idx] - offset);
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var href = link.getAttribute('href');
+      if (href === '#' || href === '#main') return;
+      var y = anchorY(href.slice(1));
+      if (y === null) return;
+      e.preventDefault();
+      window.scrollTo({ top: y, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+    });
+  });
+
   /* ---- Phone: cue rows collapse ---------------------------------------- */
   var cues = Array.prototype.slice.call(document.querySelectorAll('.cue'));
 
   function toggleCue(cue) {
     var open = cue.classList.toggle('is-open');
     cue.setAttribute('aria-expanded', open ? 'true' : 'false');
+    setTimeout(layout, 400);   // the sheet just changed height, so re-pin it
   }
 
   function syncCueRoles() {
@@ -135,6 +233,7 @@
         cue.classList.remove('is-open');
       }
     });
+    layout();
   }
 
   cues.forEach(function (cue) {
@@ -176,6 +275,7 @@
       });
 
       if (reelsEmpty) reelsEmpty.hidden = shown > 0;
+      layout();   // the grid just reflowed
     });
   });
 

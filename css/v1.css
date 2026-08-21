@@ -15,9 +15,17 @@
    video-first production company, so this vocabulary is one they structurally
    cannot be accused of owning.
 
+   Sheet stacking is KEPT (client asked for it on 2026-08-21: they liked the
+   scroll on merakifilms.in and want each section to pin while the next slides
+   over it). That mechanic is therefore the one signature this build shares
+   with them, so it is re-implemented from scratch rather than ported, and the
+   covering treatment is deliberately different: main.css shrinks the covered
+   sheet to 0.95 and flattens a pure-black scrim over it, this one holds the
+   sheet at full size and lets the incoming sheet cast a shadow onto it.
+
    What is deliberately NOT here, versus main.css:
      - no clip-path diagonal seams, no rounded sheet seams
-     - no sticky sheet stacking, no --cover scrim, no scale-down-on-cover
+     - no scale-down-on-cover, no flat --cover scrim
      - no .ghost outlined section words
      - no A/B/C/D .row__key list, no left-headline/right-rows .split
      - no three-stat band ending on an NDA punchline, no "Under NDA" band
@@ -329,6 +337,31 @@ section { scroll-margin-top: 88px; }
    act without one opt into padding directly. */
 .act > .ruler { margin-bottom: var(--pad-y); }
 .act--top { padding-top: var(--pad-y); }
+
+/* ---- Sheet stacking -----------------------------------------------------
+   Each act pins once it has been read and the next slides over the top of it.
+   position/top are assigned in js/v1.js, not here: the pin offset depends on
+   each act's measured height, and a sheet taller than the viewport has to
+   scroll through before it parks.
+
+   The covered sheet keeps its size. Depth comes from two things instead: a
+   warm scrim that is heaviest along the top edge, and a real shadow cast down
+   from the sheet doing the covering, so the stack reads as paper on paper. */
+.act {
+  box-shadow: 0 -26px 54px -18px rgba(0, 0, 0, 0.72);
+}
+
+/* Painted over the sheet rather than fading it, so it stays opaque and
+   nothing below can show through. */
+.act::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: var(--veil, 0);
+  background: linear-gradient(180deg, rgba(9, 6, 4, 0.94), rgba(9, 6, 4, 0.46));
+}
 .act--ink   { background: var(--ink);   color: var(--on-dark); }
 .act--ink-2 { background: var(--ink-2); color: var(--on-dark); }
 .act--paper { background: var(--paper); color: var(--on-light); }
@@ -589,7 +622,7 @@ section { scroll-margin-top: 88px; }
 }
 
 /* ==========================================================================
-   Languages -- led with, because 21 languages is the thing Potbelly has that
+   Languages -- led with, because 21+ languages is the thing Potbelly has that
    a video-first production partner does not.
    ========================================================================== */
 
