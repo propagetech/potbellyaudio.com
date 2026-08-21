@@ -175,10 +175,21 @@ section { scroll-margin-top: 88px; }
   padding: 22px 0 20px;
   background: var(--ink);
   border-right: 1px solid var(--rule-dark);
+  overflow-y: auto;
 }
 
-.rail__mark { display: block; padding: 0 14px; }
-.rail__mark img { width: 100%; height: auto; }
+/* The rail runs vertically, so the mark stacks rather than using the wide
+   horizontal lockup, which shrinks the Buddha to an unreadable smudge at this
+   width. At 78px the icon holds its detail and the wordmark still reads. */
+.rail__mark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 0 14px;
+}
+.rail__icon { width: 78px; height: auto; }
+.rail__word { width: 124px; height: auto; }
 
 .rail__channels {
   display: flex;
@@ -282,12 +293,15 @@ section { scroll-margin-top: 88px; }
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 12px var(--pad-x);
+  padding: 0 var(--pad-x);
   background: rgba(18, 13, 9, 0.94);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--rule-dark);
 }
-.bar__mark img { height: 26px; width: auto; }
+.bar__mark { display: flex; align-items: center; }
+/* Tablet gets the full lockup; the phone rule below swaps in the icon, which
+   <picture> has already chosen as the only file it downloaded. */
+.bar__mark img { height: 40px; width: auto; }
 .bar__now {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -587,40 +601,6 @@ section { scroll-margin-top: 88px; }
   transform-origin: 50% 100%;
 }
 
-/* Session ledger. Replaces the three-stat band. Small, technical, a run of
-   facts on one rule -- deliberately not three oversized numbers with a
-   punchline in the third slot. */
-.ledger {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
-  margin-top: 40px;
-  border-top: 1px solid var(--rule-dark);
-  border-bottom: 1px solid var(--rule-dark);
-}
-.ledger li {
-  flex: 1 1 168px;
-  padding: 20px 24px 20px 0;
-  border-right: 1px solid var(--rule-dark);
-}
-.ledger li:last-child { border-right: 0; }
-.ledger li:not(:first-child) { padding-left: 24px; }
-.ledger b {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: clamp(19px, 1.9vw, 25px);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--accent);
-}
-.ledger span {
-  display: block;
-  margin-top: 6px;
-  font-size: 12.5px;
-  line-height: 1.45;
-  color: var(--on-dark-mute);
-}
-
 /* ==========================================================================
    Languages -- led with, because 21+ languages is the thing Potbelly has that
    a video-first production partner does not.
@@ -881,6 +861,59 @@ section { scroll-margin-top: 88px; }
 
 /* The NDA fact, handled as one honest note on a rule. Not a stat, not a
    full-width mirrored statement band. */
+/* ---- Voice credits: a credit roll, read as channels on the desk ---------- */
+
+.roll { margin-top: clamp(44px, 5vw, 68px); }
+
+.roll__lede {
+  margin-top: 16px;
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.76;
+  color: var(--on-light-mute);
+  max-width: 64ch;
+}
+
+.roll__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: clamp(20px, 2.4vw, 34px);
+  margin: clamp(28px, 3vw, 40px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cred {
+  padding-top: 18px;
+  border-top: 2px solid var(--copper-glow);
+}
+
+.cred__ch {
+  display: block;
+  margin-bottom: 9px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
+  color: var(--copper);
+}
+
+/* Coconat has no bold cut: weight stays at 400. */
+.cred__name {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(21px, 1.9vw, 27px);
+  line-height: 1.15;
+}
+
+.cred__kind {
+  display: block;
+  margin-top: 9px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  color: var(--on-light-mute);
+}
+
 .nda {
   margin-top: clamp(44px, 5vw, 68px);
   padding-left: clamp(18px, 2.4vw, 30px);
@@ -1057,7 +1090,7 @@ section { scroll-margin-top: 88px; }
   align-items: center;
   min-height: 44px;
 }
-.foot__mark img { height: 22px; width: auto; opacity: 0.9; }
+.foot__mark img { height: 34px; width: auto; opacity: 0.9; }
 .foot__tag {
   margin-top: 12px;
   font-family: var(--font-mono);
@@ -1179,21 +1212,14 @@ section { scroll-margin-top: 88px; }
 }
 
 @media (max-width: 640px) {
+  .hero {padding-top: clamp(38px, 9vw, 60px);}
+  .bar__mark img { height: 54px; margin: 12px 0; }
+
   .hero__title { font-size: 11.2vw; }
   .statement { font-size: 8.6vw; }
   .link__name { font-size: 26px; }
 
   .levels { height: 54px; margin-top: 34px; }
-
-  .ledger li {
-    flex: 1 1 100%;
-    padding: 15px 0;
-    border-right: 0;
-    border-bottom: 1px solid var(--rule-dark);
-  }
-  .ledger li:not(:first-child) { padding-left: 0; }
-  .ledger li:last-child { border-bottom: 0; }
-  .ledger b { font-size: 20px; }
 
   .deck, .cue__note, .note__text, .bio__body p, .nda p { font-size: 14.5px; }
 

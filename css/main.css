@@ -721,6 +721,52 @@ main > section::after {
 
 /* ---- Statement band ----------------------------------------------------- */
 
+/* ---- Voice credits ------------------------------------------------------ */
+
+.credits { margin-top: 76px; }
+
+.credits__lede {
+  margin-top: 14px;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--on-light-mute);
+  max-width: 62ch;
+}
+
+.credits__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: clamp(20px, 2.4vw, 34px);
+  margin: 34px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.credit {
+  padding-top: 18px;
+  border-top: 2px solid var(--accent-deep);
+}
+
+.credit__name {
+  display: block;
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.credit__kind {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+}
+
 .band {
   margin-top: 76px;
   border: 1px solid var(--line-dark);

@@ -24,7 +24,8 @@
   <!-- Console rail: the persistent nav on desktop -->
   <nav class="rail" aria-label="Main">
     <a class="rail__mark" href="#top" aria-label="Potbelly Audio home">
-      <img src="imgs/logo-horizontal-dark.png" width="200" height="50" alt="Potbelly Audio" />
+      <img class="rail__icon" src="imgs/logo-icon.png" width="200" height="236" alt="" />
+      <img class="rail__word" src="imgs/logo-wordmark-dark.png" width="264" height="56" alt="" />
     </a>
 
     <div class="rail__channels">
@@ -45,7 +46,10 @@
   <!-- Mobile bar: the rail's job under 1080px -->
   <div class="bar">
     <a class="bar__mark" href="#top" aria-label="Potbelly Audio home">
-      <img src="imgs/logo-horizontal-dark.png" width="200" height="50" alt="Potbelly Audio" />
+      <picture>
+        <source media="(max-width: 640px)" srcset="imgs/logo-icon.png" width="200" height="236" />
+        <img src="imgs/logo-lockup-dark.png" width="500" height="125" alt="" />
+      </picture>
     </a>
     <span class="bar__now" id="bar-now" aria-hidden="true">Potbelly Audio</span>
     <a class="bar__wa" href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">WhatsApp</a>
@@ -80,7 +84,11 @@
               </div>
               <div class="slate__row">
                 <dt>Output</dt>
-                <dd>21+ languages, to your spec</dd>
+                <dd>Twenty-one languages, more on request</dd>
+              </div>
+              <div class="slate__row">
+                <dt>Volume</dt>
+                <dd>5,000+ projects delivered</dd>
               </div>
               <div class="slate__row">
                 <dt>Contact</dt>
@@ -89,9 +97,9 @@
             </dl>
 
             <div>
-              <h1 class="hero__title">Your content, in twenty-one languages, and <em>none of them sound dubbed.</em></h1>
-              <p class="hero__deck">Potbelly Audio is a dubbing, voiceover and localisation studio in Oshiwara, Mumbai. Translation, casting, direction, recording and mix, run by one team across three rooms. Recording
-                since August 2009.</p>
+              <h1 class="hero__title">MAKE IT SOUND
+                LIKE IT WAS<br><em>MADE HERE.</em></h1>
+              <p class="hero__deck">Dubbing, voiceovers and localisation for film, series, advertising, e-learning and corporate content.</p>
               <p class="btn-row">
                 <a class="btn btn--fill" href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">Start a project</a>
                 <a class="btn btn--line" href="#work">Hear the work</a>
@@ -100,14 +108,6 @@
             </div>
 
           </div>
-
-          <ul class="ledger">
-            <li><b>2009</b><span>Recording since August. Seventeen years in.</span></li>
-            <li><b>5,000+</b><span>Projects translated, cast, recorded and delivered.</span></li>
-            <li><b>21</b><span>Indian and international languages, more on request.</span></li>
-            <li><b>3</b><span>Studios in Oshiwara, running in parallel.</span></li>
-            <li><b>1</b><span>Number to call, from brief to final delivery.</span></li>
-          </ul>
         </div>
       </section>
 
@@ -118,9 +118,9 @@
         <div class="inner">
           <div class="head">
             <p class="tag">Where we can take it</p>
-            <h2 class="statement" id="languages-title">Twenty-one languages. Eleven of them <em>Indian.</em></h2>
+            <h2 class="statement" id="languages-title">Twenty-one languages on the list. Eleven of them <em>Indian.</em></h2>
             <p class="deck">Localisation stops being useful the moment an audience can hear the seams. Every language below is one we translate, cast, direct, record and QC in this building, rather than broker out and
-              hope for.</p>
+              hope for. If yours is not on the list, ask.</p>
           </div>
 
           <p class="tongues__label">Indian languages</p>
@@ -278,6 +278,17 @@
             </article>
           </div>
           <p class="reels__empty" hidden>No videos in this category yet.</p>
+
+          <div class="roll">
+            <p class="tag">Voice credits</p>
+            <p class="roll__lede">Not everything here is locked. Pooja Punjabi still records, and some of the characters she voices are ones you already know.</p>
+            <ul class="roll__list">
+              <li class="cred"><span class="cred__ch">CH 01</span><b class="cred__name">Naruto</b><span class="cred__kind">Anime, Japan</span></li>
+              <li class="cred"><span class="cred__ch">CH 02</span><b class="cred__name">Mrs. Maisel</b><span class="cred__kind">Live-action series</span></li>
+              <li class="cred"><span class="cred__ch">CH 03</span><b class="cred__name">Wanda Maximoff</b><span class="cred__kind">Superhero franchise</span></li>
+              <li class="cred"><span class="cred__ch">CH 04</span><b class="cred__name">Chhota Bheem</b><span class="cred__kind">Indian animation</span></li>
+            </ul>
+          </div>
 
           <div class="nda">
             <p><b>Most of what we record never carries our name.</b> Seventeen years of features, series, campaigns and corporate work sit behind NDAs signed with studios, platforms and brands. We cannot list them, and
@@ -472,18 +483,6 @@
               <p class="note__text">Experienced translators, dubbing directors, voice artists and sound engineers who work here, rather than a rotating pool of freelancers.</p>
             </div>
             <div class="note">
-              <h3 class="note__name">Room to scale</h3>
-              <p class="note__text">Three studios and the talent network to take on high volume, multi language projects without the schedule slipping.</p>
-            </div>
-            <div class="note">
-              <h3 class="note__name">One number</h3>
-              <p class="note__text">One team runs your project from script to final delivery. You brief once, and you chase nobody.</p>
-            </div>
-            <div class="note">
-              <h3 class="note__name">We read the original</h3>
-              <p class="note__text">Localisation should make content feel native, not make it feel translated. The original is the brief, not raw material.</p>
-            </div>
-            <div class="note">
               <h3 class="note__name">QC, twice</h3>
               <p class="note__text">Quality control at script level and again after recording, because small mistakes do not stay small in finished content.</p>
             </div>
@@ -507,6 +506,7 @@
               <h2 class="statement" id="about-title">Seventeen years on, still run by the person who <em>started it.</em></h2>
               <p>Potbelly Audio was founded in August 2009 by Pooja Punjabi and has grown from an audio production company into a localisation partner for content moving across languages, formats and markets.</p>
               <p>Three studios in Oshiwara, Mumbai. Seventeen years, more than five thousand projects, and a client list we are mostly not allowed to print.</p>
+              <p>Pooja still records as well as runs the place. The voice credits listed with the work are hers, which is roughly the range this studio was built for.</p>
               <p class="btn-row">
                 <a class="btn btn--ink" href="https://wa.me/919137533976?text=Hi%20Potbelly%20Audio%2C%20I%27d%20like%20to%20talk%20about%20a%20project." target="_blank" rel="noopener noreferrer">Talk to us</a>
               </p>
@@ -559,7 +559,7 @@
     <div class="foot__inner">
       <div>
         <a class="foot__mark" href="#top" aria-label="Potbelly Audio home">
-          <img src="imgs/logo-horizontal-dark.png" width="160" height="40" alt="Potbelly Audio" />
+          <img src="imgs/logo-lockup-dark.png" width="500" height="125" alt="" />
         </a>
         <p class="foot__tag">Dubbing &middot; Voiceovers &middot; Translation &middot; Localisation</p>
       </div>

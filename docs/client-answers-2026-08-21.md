@@ -37,6 +37,41 @@ paraphrased below; her own wording is quoted where it matters.
   contact section, floating WhatsApp button). No code change required; her answer confirms the
   existing state is correct rather than triggering a fix.
 
+## 4. Pooja's own voice credits (new, same day)
+
+She named the characters herself: **Naruto**, **Mrs. Maisel**, **Wanda Maximoff** and
+**Chhota Bheem** ("my favourite"). An earlier phrasing of the same point was "the real voice behind
+many cartoon characters and Hollywood actresses like Jennifer Lawrence, Emily Blunt".
+
+**Why this matters more than it looks.** It is the only *publishable, checkable, named* proof the
+site has. Everything else in the work section is either an NDA apology or seven YouTube reels. Four
+character credits also happen to span four of the eight client segments the site sells to: anime,
+live-action series, tentpole features and Indian animation.
+
+**Shipped on 2026-08-21** into both builds, in two places each:
+- Work section, a "Voice credits" block sitting above the NDA statement, so the section reads
+  "here is what we can show you, here are named credits, the rest is sealed."
+- About, one line closing the founder-credibility gap flagged in `user-personas.html`.
+
+Deliberately **not** put in the hero of either build. A voice credit at hero scale repositions the
+site from "Mumbai localisation studio" to "star dubbing artist", which is a different business.
+That is Pooja's call, not a copy decision.
+
+**Phrasing changed on purpose.** "The real voice behind Jennifer Lawrence" reads as though Lawrence
+does not voice herself, and it is checkable, so it was not used. The site credits *characters*, not
+performers, which is both accurate and the industry convention.
+
+**Open, and needed to make these credits stronger:**
+1. Which language is the dub for each? Assumed Hindi, not stated on the site because she has not
+   confirmed it. Naming the language would strengthen every one of the four.
+2. Chhota Bheem is Indian-origin animation, so it is an original voice credit, not a dub. Which
+   character, and which language version?
+3. Can she be publicly named for all four, or does any of them sit under the same NDA problem as
+   the client list?
+4. Jennifer Lawrence and Emily Blunt from the earlier phrasing: which titles? Not published yet,
+   because a credit without a title is an unverifiable boast on a site whose whole posture is
+   checkable facts.
+
 ## Still blocked on, before touching the site again
 
 1. Audio Books & Narration — add to What We Do, yes or no?
@@ -45,3 +80,5 @@ paraphrased below; her own wording is quoted where it matters.
 3. Actual reel links/titles for "more work reels."
 4. Green light + assets for the brand-logo idea (2a) — which brands, do we have logo files or do
    we source them, any she does NOT want shown even as a logo.
+5. Voice credits: dub language, the Chhota Bheem character, clearance to be named on all four, and
+   titles for the Jennifer Lawrence / Emily Blunt credits (see section 4).
