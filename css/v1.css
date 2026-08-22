@@ -221,22 +221,26 @@ section { scroll-margin-top: 88px; }
   border-left: 2px solid var(--accent);
   background: var(--ink-2);
 }
+/* 12px is the floor everywhere on this page, so the key line does not go
+   smaller to make room. The separation is carried by colour and tracking
+   instead: muted and widely tracked reads as a label, accent reads as a value. */
 .rail__now-key {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--on-dark-mute);
 }
 .rail__now-val {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.25;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--accent);
-  /* "Potbelly Audio" and "How it runs" are the long ones; let them wrap
-     rather than clip, since the rail is only 156px wide. */
+  /* "How it runs" is the longest value the readout ever shows and it fits on
+     one line at this size. Wrapping is the safety net, not the plan: a second
+     line would push the channel list down and jolt the rail mid-scroll. */
   overflow-wrap: break-word;
 }
 
