@@ -13,6 +13,27 @@
  *     in css/v1.css)
  *   - different cover ramp, different thresholds, no --cover property
  *
+ * ---- Why the scroll handler never touches the DOM for measurements -------
+ *
+ * The stutter this build had was not the effect, it was the bookkeeping. The
+ * old handler read getBoundingClientRect() twice per act and wrote --veil in
+ * between, on every frame. Each write invalidates style, so each following
+ * read forces a synchronous layout of an eleven-layer sticky stack roughly
+ * 12,000px tall: measured at ~2.9ms of forced reflow per frame on a desktop,
+ * i.e. a guaranteed dropped frame on a phone, plus a second pass of eleven
+ * more reads for the scroll spy and a full rewrite of every channel class and
+ * both readouts whether or not anything had changed.
+ *
+ * So: measure once, then derive everything from window.scrollY with closed-
+ * form arithmetic. A sticky act's viewport top is exactly
+ *
+ *     max(natural, min(stuck, limit))
+ *
+ * where natural is its flow position relative to the scroll, stuck is its pin
+ * offset, and limit is the containing block's bottom constraint. That is the
+ * whole geometry -- no rect reads, no forced layout, and writes are gated on
+ * having actually changed. The frame does reads first, writes second, always.
+ *
  * Everything else on this page -- the console rail, the level meter, the cue
  * accordion -- shares nothing with either file.
  */
@@ -22,14 +43,35 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   var mqPhone = window.matchMedia('(max-width: 640px)');
   var mqRail = window.matchMedia('(max-width: 1080px)');
+  var mqCoarse = window.matchMedia('(hover: none)');
 
   var BAR_H = 60;            // mobile top bar, for anchor landing
   var COVER_LEAD = 0.5;      // veil starts when the next sheet crosses this much of the viewport
   var COVER_MAX = 0.62;      // how dark a fully covered sheet goes
+  var LIVE_MARK = 0.45;      // a sheet is "on screen" once its top passes this much of the viewport
+  var BAR_DRIFT = 140;       // viewport height change to write off as a mobile address bar
+  var LAYER_EDGE = 90;       // slack around the ramp, so the scrim's layer exists before it moves
+
+  /* A URL opened on a #hash gets scrolled there by the browser natively,
+     before any of the sheet-stacking below has turned the acts into a sticky
+     stack. That native jump reads the plain, un-stacked layout, so it is
+     wrong the moment the stack applies, and landOnHash() further down then
+     has to correct it -- which reads as a visible snap-then-snap-again.
+     Pull the hash out of the URL immediately, before the browser gets a
+     chance to act on it, and hand it to landOnHash() once layout is ready
+     instead. One jump, not two. */
+  var pendingHash = location.hash;
+  if (pendingHash && pendingHash !== '#') {
+    history.replaceState(null, '', location.pathname + location.search);
+  }
 
   /* ---- Hero level meter ------------------------------------------------ */
   /* Bottom-anchored bars, peaks lit in accent. Inserted by script so the
-     markup stays free of 64 empty spans. */
+     markup stays free of 64 empty spans.
+     Only the per-bar numbers come from here, as custom properties: the
+     animation itself is declared in the stylesheet. An inline `animation`
+     shorthand would carry animation-play-state: running with it, and inline
+     beats any selector, so .levels.is-idle could never park the bars. */
   var levels = document.getElementById('levels');
   if (levels) {
     var BARS = 64;
@@ -39,12 +81,10 @@
       var amp = Math.min(1, 0.22 + 0.5 * Math.abs(Math.sin(i * 0.31)) + 0.26 * Math.abs(Math.sin(i * 0.11)));
       var bar = document.createElement('span');
       bar.style.height = (amp * 100).toFixed(1) + '%';
-      if (amp > 0.86) bar.style.background = 'var(--accent)';
       bar.style.opacity = (0.35 + 0.6 * amp).toFixed(2);
-      if (!reduceMotion.matches) {
-        bar.style.animation = 'pbLevel ' + (1.1 + (i % 7) * 0.13).toFixed(2) +
-          's ease-in-out ' + (i * 0.028).toFixed(2) + 's infinite alternate';
-      }
+      bar.style.setProperty('--dur', (1.1 + (i % 7) * 0.13).toFixed(2) + 's');
+      bar.style.setProperty('--lag', (i * 0.028).toFixed(2) + 's');
+      if (amp > 0.86) bar.classList.add('is-peak');
       frag.appendChild(bar);
     }
     levels.appendChild(frag);
@@ -83,43 +123,113 @@
     });
   }
 
-  /* ---- Sheet stacking -------------------------------------------------- */
+  /* ---- Geometry -------------------------------------------------------- */
+  var main = document.getElementById('main');
   var acts = Array.prototype.slice.call(document.querySelectorAll('main > .act'));
-  var flowTop = [];
+  var n = acts.length;
+
+  var vw = 0, vh = 0;        // viewport, as of the last measure()
+  var flowTop = [];          // each act's top in document flow
+  var actH = [];             // each act's height
+  var pinTop = [];           // the sticky top offset assigned to it
+  var pinned = [];           // false for the last act and for reduced motion
+  var mainEnd = 0;           // main's flow bottom: the sticky containing block
+  var maxScroll = 0;
+  var levelsEnd = -1;        // the hero meter's bottom edge, relative to the hero's top
+  var measured = false;      // false until we have a real viewport to measure in
+  var measuring = false;     // reentrancy guard for the ResizeObserver
 
   /* A pinned sheet reports its pinned position, not its position in the
      document, so anchor scrolling to one lands in the wrong place once it is
      above the viewport. Rather than reconstruct the flow by summing heights,
      drop the whole stack back to static, read it, and pin it again. Sticky
      reserves its normal flow space, so this measures true and does not move
-     the scroll position. */
-  function layout() {
-    acts.forEach(function (act) {
-      act.style.position = 'static';
-      act.style.top = '';
-    });
+     the scroll position.
+
+     This is the only function on the page that reads layout, and it runs on
+     load, on fonts, on a real resize and after a deliberate height change --
+     never on scroll. */
+  function measure() {
+    /* A page laid out before it has a viewport -- a background tab, a
+       prerender, an in-app webview that has not sized yet -- reports height 0.
+       min(0, 0 - height) is then -height for every act, which silently means
+       "nothing ever pins" for the rest of the session. Bail and wait for the
+       resize that gives us a real one. */
+    var h = window.innerHeight || document.documentElement.clientHeight || 0;
+    var w = window.innerWidth || document.documentElement.clientWidth || 0;
+    if (!h || !w) { measured = false; return; }
+
+    measuring = true;
+    vh = h;
+    vw = w;
+
+    for (var i = 0; i < n; i++) {
+      acts[i].style.position = 'static';
+      acts[i].style.top = '';
+    }
 
     var scrolled = window.scrollY;
-    flowTop = acts.map(function (act) {
-      return Math.round(act.getBoundingClientRect().top + scrolled);
-    });
+    for (i = 0; i < n; i++) {
+      var rect = acts[i].getBoundingClientRect();
+      flowTop[i] = Math.round(rect.top + scrolled);
+      actH[i] = Math.round(rect.height);
+    }
+    mainEnd = main ? Math.round(main.getBoundingClientRect().bottom + scrolled)
+                   : flowTop[n - 1] + actH[n - 1];
 
-    var vh = window.innerHeight;
-    var last = acts.length - 1;
+    /* Where the level meter's bottom edge sits inside the hero. Sixty-four
+       infinite animations are sixty-four layers the compositor keeps ticking
+       for the life of the page, and an IntersectionObserver cannot switch them
+       off: the hero is a pinned sheet, so it never actually leaves the
+       viewport -- it just gets covered. frame() parks them off this number
+       instead, the moment the sheet above has crossed the meter. */
+    levelsEnd = levels ? Math.round(levels.getBoundingClientRect().bottom + scrolled) - flowTop[0] : -1;
+    maxScroll = Math.max(0, document.documentElement.scrollHeight - vh);
 
-    acts.forEach(function (act, idx) {
+    var last = n - 1;
+    for (i = 0; i < n; i++) {
       // The final sheet scrolls away normally so the footer can follow it, and
       // reduced motion drops the whole stack. Both cases stay `relative` rather
       // than `static`: .inner is a positioned box, so a static sheet would let
       // its own content paint over the sheet before it while its background
       // stayed underneath, and the two would show through each other.
-      if (reduceMotion.matches || idx === last) {
-        act.style.position = 'relative';
-        return;
+      if (reduceMotion.matches || i === last) {
+        pinned[i] = false;
+        pinTop[i] = 0;
+        acts[i].style.position = 'relative';
+        continue;
       }
-      act.style.position = 'sticky';
-      act.style.top = Math.min(0, vh - act.offsetHeight) + 'px';
-    });
+      pinned[i] = true;
+      pinTop[i] = Math.min(0, vh - actH[i]);
+      acts[i].style.position = 'sticky';
+      acts[i].style.top = pinTop[i] + 'px';
+    }
+
+    /* Reduced motion drops the stack, so any scrim left over from before the
+       preference changed has to come off with it. */
+    if (reduceMotion.matches) {
+      for (i = 0; i < n; i++) {
+        lastVeil[i] = 0;
+        lastMoving[i] = false;
+        acts[i].style.removeProperty('--veil');
+        acts[i].classList.remove('is-veiled');
+      }
+    }
+
+    measured = true;
+    measuring = false;
+  }
+
+  /* Where act `idx` actually renders, for a given scroll offset, without
+     asking the browser. `natural` is its flow position; a sticky act cannot
+     move above that. `stuck` is the pin offset. `limit` is the sticky
+     containing block's floor: main's bottom edge, which is what releases the
+     whole stack over the last screen of the page. */
+  function topAt(idx, y) {
+    var natural = flowTop[idx] - y;
+    if (!pinned[idx]) return natural;
+    var limit = (mainEnd - y) - actH[idx];
+    return Math.max(natural, Math.min(pinTop[idx], limit));
   }
 
   /* Re-pin after a sheet changes height, without moving what the reader is
@@ -130,27 +240,21 @@
      gains runway rather than lurching out from under a thumb. */
   function relayoutHolding(act) {
     var idx = acts.indexOf(act);
-    if (idx < 0) { layout(); return; }
+    if (idx < 0 || !measured) { measure(); frame(); return; }
 
-    var before = act.getBoundingClientRect().top;
-    layout();
-    var drift = act.getBoundingClientRect().top - before;
-    if (!drift) return;                       // an unpinned sheet does not lurch
+    var before = topAt(idx, window.scrollY);
+    measure();
+    var y = Math.round(window.scrollY);
+    if (Math.round(topAt(idx, y)) === Math.round(before)) { frame(); return; }
 
     // Scroll to the position that renders the sheet exactly where it was. The
     // sheet covering it moves down by what this one gained, which is the point:
     // a taller section needs the runway, and the row under the thumb is what
     // has to stay still.
-    var y = Math.round(window.scrollY);
-    var want = Math.max(0, Math.round(flowTop[idx] - before));
+    var want = Math.max(0, Math.min(maxScroll, Math.round(flowTop[idx] - before)));
     if (want !== y) window.scrollTo({ top: want, behavior: 'auto' });
+    frame();
   }
-
-  layout();
-  window.addEventListener('load', layout);
-  window.addEventListener('resize', layout, { passive: true });
-  // Coconat changes line counts once it lands, which changes every height.
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 
   /* ---- Console rail: scroll spy, veil, mobile progress ------------------ */
   var chans = Array.prototype.slice.call(document.querySelectorAll('.chan'));
@@ -182,7 +286,6 @@
     if (chan) carry = chan;
     var label = act.getAttribute('data-nav') || 'Potbelly Audio';
     return {
-      el: act,
       chan: chan,
       lit: carry,
       label: label,
@@ -196,61 +299,161 @@
     };
   });
 
-  var ticking = false;
+  // Last written values. Every write below is gated on one of these changing,
+  // so a scroll that does not cross a threshold costs nothing but arithmetic.
+  var lastVeil = [];
+  var lastMoving = [];
+  var lastLive = -2;
+  var lastPct = -1;
+  var metersIdle = false;
 
-  function onScroll() {
-    ticking = false;
-    var vh = window.innerHeight;
+  function frame() {
+    if (!measured) return;
+    var y = window.scrollY;
+    var i;
 
     if (barProgress) {
-      var span = document.documentElement.scrollHeight - vh;
-      var pct = span > 0 ? Math.min(1, Math.max(0, window.scrollY / span)) : 0;
-      barProgress.style.transform = 'scaleX(' + pct.toFixed(4) + ')';
+      var pct = maxScroll > 0 ? Math.min(1, Math.max(0, y / maxScroll)) : 0;
+      pct = Math.round(pct * 1000) / 1000;
+      if (pct !== lastPct) {
+        lastPct = pct;
+        barProgress.style.transform = 'scaleX(' + pct + ')';
+      }
     }
 
-    // Veil: ramps up while the next sheet is crossing this one, clears once
-    // this sheet is off screen entirely.
+    /* Veil: ramps up while the next sheet is crossing this one, clears once
+       this sheet is off screen entirely.
+
+       `is-veiled` marks the sheets whose scrim is *moving*, not the ones that
+       have a scrim: a covered sheet sits at COVER_MAX for the rest of the page
+       and a sheet nothing has reached sits at 0, and a static opacity has
+       nothing to promote. The window is the ramp itself, widened by LAYER_EDGE
+       so the layer exists before the first frame that changes, which is the
+       one that would otherwise repaint. Two or three sheets hold a layer at a
+       time instead of all eleven holding one for the life of the page. */
     if (!reduceMotion.matches) {
       var lead = vh * COVER_LEAD;
-      for (var i = 0; i < acts.length - 1; i++) {
-        var act = acts[i];
-        var rect = act.getBoundingClientRect();
-        var onScreen = rect.bottom > 0 && rect.top < vh;
-        var nextTop = acts[i + 1].getBoundingClientRect().top;
-        var ramp = Math.min(1, Math.max(0, (lead - nextTop) / lead));
-        act.style.setProperty('--veil', (onScreen ? ramp * COVER_MAX : 0).toFixed(3));
+      for (i = 0; i < n - 1; i++) {
+        var top = topAt(i, y);
+        var nextTop = topAt(i + 1, y);
+        var v = 0;
+        if (top + actH[i] > 0 && top < vh) {
+          var ramp = (lead - nextTop) / lead;
+          v = ramp > 0 ? (ramp > 1 ? COVER_MAX : ramp * COVER_MAX) : 0;
+        }
+        v = Math.round(v * 1000) / 1000;
+        var changed = v !== lastVeil[i];
+        if (changed) {
+          lastVeil[i] = v;
+          acts[i].style.setProperty('--veil', v);
+        }
+
+        /* Promoted while the scrim is in its ramp -- which is only true while
+           the sheet above is still travelling, so `nextTop > pinTop[i + 1]`:
+           once that sheet parks, this one's scrim is a fixed COVER_MAX for the
+           rest of the page and there is nothing left to promote. `changed`
+           covers the one-off transitions at either end, so the invariant
+           "anything whose scrim moves is promoted" holds without keeping a
+           layer alive for it. */
+        var moving = v > 0 &&
+          (changed || (nextTop < lead + LAYER_EDGE && nextTop > pinTop[i + 1] + 1));
+        if (moving !== lastMoving[i]) {
+          lastMoving[i] = moving;
+          acts[i].classList.toggle('is-veiled', moving);
+        }
+      }
+    }
+
+    if (levels && levelsEnd >= 0 && n > 1) {
+      var covered = topAt(1, y) <= topAt(0, y) + levelsEnd;
+      if (covered !== metersIdle) {
+        metersIdle = covered;
+        levels.classList.toggle('is-idle', covered);
       }
     }
 
     // Live section = the last one whose top has passed 45% of the viewport.
-    var mark = vh * 0.45;
-    var live = null;
-    spied.forEach(function (entry) {
-      if (entry.el.getBoundingClientRect().top <= mark) live = entry;
-    });
+    var mark = vh * LIVE_MARK;
+    var live = -1;
+    for (i = 0; i < n; i++) {
+      if (topAt(i, y) <= mark) live = i; else break;
+    }
+    if (live === lastLive) return;
+    lastLive = live;
 
     chans.forEach(function (chan) {
       chan.classList.remove('is-live', 'is-past');
       chan.removeAttribute('aria-current');
     });
-    if (live) {
-      if (live.chan) {
-        live.chan.classList.add('is-live');
-        live.chan.setAttribute('aria-current', 'true');
-      } else if (live.lit) {
-        live.lit.classList.add('is-past');
+
+    var entry = live >= 0 ? spied[live] : null;
+    if (entry) {
+      if (entry.chan) {
+        entry.chan.classList.add('is-live');
+        entry.chan.setAttribute('aria-current', 'true');
+      } else if (entry.lit) {
+        entry.lit.classList.add('is-past');
       }
     }
-
-    if (barNow) barNow.textContent = live ? live.label : 'Potbelly Audio';
-    if (railNow) railNow.textContent = live ? live.read : 'Top';
+    if (barNow) barNow.textContent = entry ? entry.label : 'Potbelly Audio';
+    if (railNow) railNow.textContent = entry ? entry.read : 'Top';
   }
 
-  window.addEventListener('scroll', function () {
-    if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
-  }, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
-  onScroll();
+  var queued = false;
+  function schedule() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; frame(); });
+  }
+
+  window.addEventListener('scroll', schedule, { passive: true });
+
+  /* A resize is expensive -- it re-measures the whole stack -- and on a phone
+     it is mostly noise: scrolling shows and hides the address bar, which fires
+     resize with a changed height and an unchanged width. Re-pinning on that
+     moves every sheet mid-gesture, which is the jump this used to do on
+     mobile. Width changes always count; height changes only when they are too
+     large to be browser chrome, or when the device has a real pointer. */
+  var seenW = 0, seenH = 0;
+  var resizeTimer = 0;
+  function onResize() {
+    var w = window.innerWidth, h = window.innerHeight;
+    if (!w || !h) return;
+    if (w === seenW && Math.abs(h - seenH) < BAR_DRIFT && mqCoarse.matches) return;
+    seenW = w;
+    seenH = h;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { measure(); frame(); }, 100);
+  }
+  window.addEventListener('resize', onResize, { passive: true });
+  window.addEventListener('orientationchange', function () {
+    seenW = 0;
+    onResize();
+  });
+
+  function remeasure() { measure(); frame(); }
+
+  seenW = window.innerWidth;
+  seenH = window.innerHeight;
+  measure();
+  frame();
+  window.addEventListener('load', remeasure);
+  // Coconat changes line counts once it lands, which changes every height.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
+
+  /* Anything that changes a sheet's height without going through a handler
+     here -- a late image, a font swap we did not catch, a browser reflowing a
+     wrapped headline -- used to leave the pin offsets stale until the next
+     resize. measure() cannot change main's height (sticky reserves its flow
+     space), so watching it cannot feed back on itself. */
+  if ('ResizeObserver' in window && main) {
+    var ro = new ResizeObserver(function () {
+      if (measuring) return;
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(remeasure, 100);
+    });
+    ro.observe(main);
+  }
 
   /* ---- In-page anchors ------------------------------------------------- */
   function anchorY(id) {
@@ -260,7 +463,9 @@
     var offset = mqRail.matches ? BAR_H : 0;
     var act = el.closest('main > .act');
     var idx = acts.indexOf(act);
-    if (idx < 0) return Math.max(0, el.getBoundingClientRect().top + window.scrollY - offset);
+    if (idx < 0 || !measured) {
+      return Math.max(0, el.getBoundingClientRect().top + window.scrollY - offset);
+    }
     // Anchor targets on this page are the sections themselves, so the sheet's
     // own flow position is the landing point.
     return Math.max(0, flowTop[idx] - offset);
@@ -277,15 +482,54 @@
     });
   });
 
+  /* A URL opened with a #hash never goes through the click handler above --
+     the browser would otherwise land on it natively before this script has
+     turned the acts into a sticky stack, reading the id's plain in-flow
+     position. The hash was already pulled out of the URL above so that jump
+     never fires; land on the same spot anchorY() would give a click instead,
+     every time the flow positions get recomputed (measure() already runs at
+     each of these points), then put the hash back without re-triggering a
+     native scroll. */
+  function landOnHash(hash) {
+    hash = hash || pendingHash;
+    if (!hash || hash === '#') return;
+    var y = anchorY(hash.slice(1));
+    if (y === null) return;
+    window.scrollTo({ top: y, behavior: 'auto' });
+    if (location.hash !== hash) history.replaceState(null, '', hash);
+  }
+
+  landOnHash();
+  window.addEventListener('load', function () { landOnHash(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { landOnHash(); });
+  window.addEventListener('hashchange', function () {
+    var hash = location.hash;
+    if (hash && hash !== '#') history.replaceState(null, '', location.pathname + location.search);
+    landOnHash(hash);
+  });
+
   /* ---- Phone: cue rows collapse ---------------------------------------- */
   var cues = Array.prototype.slice.call(document.querySelectorAll('.cue'));
 
   function toggleCue(cue) {
     var open = cue.classList.toggle('is-open');
     cue.setAttribute('aria-expanded', open ? 'true' : 'false');
-    // The note takes 350ms to open, so wait for the height before re-pinning.
+
+    /* The note animates its max-height, so the sheet is not its final height
+       until that transition ends. Waiting on the transition rather than on a
+       hardcoded 400ms means the re-pin lands on the real height even if the
+       duration in the stylesheet changes; the timer is only the fallback for
+       a transition that never fires. */
     var act = cue.closest('main > .act');
-    setTimeout(function () { relayoutHolding(act); }, 400);
+    var note = cue.querySelector('.cue__note');
+    var fallback = setTimeout(function () { done(); }, 600);
+    function done(e) {
+      if (e && e.propertyName !== 'max-height') return;
+      clearTimeout(fallback);
+      if (note) note.removeEventListener('transitionend', done);
+      relayoutHolding(act);
+    }
+    if (note) note.addEventListener('transitionend', done);
   }
 
   function syncCueRoles() {
@@ -301,7 +545,7 @@
         cue.classList.remove('is-open');
       }
     });
-    layout();
+    remeasure();
   }
 
   cues.forEach(function (cue) {
@@ -319,6 +563,7 @@
 
   syncCueRoles();
   mqPhone.addEventListener('change', syncCueRoles);
+  reduceMotion.addEventListener('change', remeasure);
 
   /* ---- Work filter ----------------------------------------------------- */
   var filters = Array.prototype.slice.call(document.querySelectorAll('.filter'));
@@ -358,14 +603,16 @@
     lastFocus = trigger || null;
     viewerFrame.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1';
     viewer.classList.add('is-open');
-    if (viewerClose) viewerClose.focus();
+    // The overlay is fixed and already covers the trigger, so moving focus
+    // into it must not scroll the page out from under the reader.
+    if (viewerClose) viewerClose.focus({ preventScroll: true });
   }
 
   function closeViewer() {
     if (!viewer || !viewerFrame || !viewer.classList.contains('is-open')) return;
     viewer.classList.remove('is-open');
     viewerFrame.src = '';
-    if (lastFocus) { lastFocus.focus(); lastFocus = null; }
+    if (lastFocus) { lastFocus.focus({ preventScroll: true }); lastFocus = null; }
   }
 
   document.querySelectorAll('[data-youtube-id]').forEach(function (el) {

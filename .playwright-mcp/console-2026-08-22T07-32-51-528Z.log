@@ -1,0 +1,2 @@
+[  801747ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8787/css/v1.css:0
+[  801747ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:8787/js/v1.js:0

@@ -83,7 +83,13 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
-  scroll-behavior: smooth;
+  /* Deliberately not `smooth`. js/v1.js scrolls the in-page anchors itself,
+     with behavior:'smooth' passed per call, because a pinned sheet's landing
+     point is not the id's box. Leaving the CSS keyword on top of that made
+     every scroll the browser starts on its own -- the skip link, restoring
+     focus after the video overlay closes, a native hash jump -- animate
+     across a 12,000px document instead of landing. */
+  scroll-behavior: auto;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -153,7 +159,6 @@ section { scroll-margin-top: 88px; }
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  html { scroll-behavior: auto; }
 }
 
 /* ==========================================================================
@@ -428,9 +433,24 @@ section { scroll-margin-top: 88px; }
   opacity: var(--veil, 0);
   background: linear-gradient(180deg, rgba(9, 6, 4, 0.94), rgba(9, 6, 4, 0.46));
 }
+
+/* The scrim is a full-viewport gradient whose opacity moves every frame, and
+   an opacity change on an unpromoted box repaints the whole sheet under it --
+   the spectrogram wash and its mask included. Promoting it makes the change a
+   compositor operation instead. js/v1.js sets `is-veiled` only on the sheets
+   whose scrim is actually moving, so a couple hold a layer at a time; a scrim
+   parked at either end of its ramp has a static opacity and nothing to
+   promote. */
+.act.is-veiled::after { will-change: opacity; }
 .act--ink   { background: var(--ink);   color: var(--on-dark); }
 .act--ink-2 { background: var(--ink-2); color: var(--on-dark); }
 .act--paper { background: var(--paper); color: var(--on-light); }
+
+/* The veil above is tuned for the ink sheets, where a near-black scrim reads
+   as a cast shadow. On a paper sheet the same strength flattens the cream
+   into a grey slab as the covering sheet crosses it, which is what read as a
+   flash. Halved here so paper still darkens, but keeps its own colour. */
+.act--paper::after { opacity: calc(var(--veil, 0) * 0.5); }
 
 .inner {
   position: relative;
@@ -651,7 +671,15 @@ section { scroll-margin-top: 88px; }
   border-radius: 1px;
   background: var(--copper-dk);
   transform-origin: 50% 100%;
+  animation: pbLevel var(--dur, 1.4s) ease-in-out var(--lag, 0s) infinite alternate;
 }
+.levels span.is-peak { background: var(--accent); }
+
+/* Sixty-four infinite animations are sixty-four layers the compositor keeps
+   ticking for the whole page. The hero is a pinned sheet, so it never leaves
+   the viewport -- it only gets covered -- which is why js/v1.js sets this from
+   the stack geometry rather than from an IntersectionObserver. */
+.levels.is-idle span { animation-play-state: paused; }
 
 /* ==========================================================================
    Languages -- led with, because 21+ languages is the thing Potbelly has that
