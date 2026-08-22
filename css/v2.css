@@ -1,0 +1,1358 @@
+/* ==========================================================================
+   Potbelly Audio -- alternate build 2, served at /2.html
+
+   What this file is
+   -----------------
+   /1.html proposed a different structure AND a different visual system at the
+   same time, which makes the two proposals hard to judge separately. This
+   build isolates the second variable: the information architecture, section
+   order, markup and class vocabulary are index.html's, unchanged, and only the
+   UI is swapped to the /1.html system.
+
+   Restyled, not restructured. Every selector here is a class that already
+   exists in index.html, so the page can be diffed against the main build
+   element for element:
+
+     palette      the deeper warm ground from css/v1.css, with copper as a real
+                  second accent rather than a two-tone monochrome
+     labels       system mono, not Archivo Condensed. The condensed register was
+                  the closest thing the main build had to merakifilms.in's
+                  Anton, so it does not come along.
+     headings     Coconat at sentence case rather than uppercase, with the <em>
+                  in accent, and highlighted on paper sheets
+     seams        a timeline tick ruler across the top of each sheet, replacing
+                  .seam-down / .seam-up clip-path diagonals and .seam-round.
+                  Those three classes are still on the elements and are simply
+                  not styled: the seam is uniform now.
+     .ghost       repurposed. Same element, same job (cheap full-bleed texture
+                  that says "this is a section"), drawn as a spectrogram wash
+                  instead of an oversized outlined section word. The data-word
+                  attribute goes unread.
+     cover        the covered sheet holds its size and takes a warm scrim plus a
+                  shadow cast by the sheet covering it, rather than scaling to
+                  0.95 under a flat black --cover.
+     geometry     radii drop from 24px cards and 999px pills to 3-4px; the pill
+                  becomes a squared console button with an arrow.
+
+   Accent #ffcb00 is client-locked. Copper splits in two because #b2622a only
+   reaches 4.19:1 on paper: --copper is the AA-safe text cut (5.49:1),
+   --copper-glow is decoration only.
+
+   Coconat has no bold cut, so every --font-display rule stays at weight 400 or
+   the browser synthesises one and widens it further.
+   ========================================================================== */
+
+@font-face { font-family:"Coconat"; font-style:normal; font-weight:400; font-display:swap; src:url("../fonts/coconat-400.woff2") format("woff2"); }
+@font-face { font-family:"Manrope"; font-style:normal; font-weight:400; font-display:swap; src:url("../fonts/manrope-400.woff2") format("woff2"); }
+@font-face { font-family:"Manrope"; font-style:normal; font-weight:600; font-display:swap; src:url("../fonts/manrope-600.woff2") format("woff2"); }
+@font-face { font-family:"Manrope"; font-style:normal; font-weight:700; font-display:swap; src:url("../fonts/manrope-700.woff2") format("woff2"); }
+
+:root {
+  --ink: #120d09;
+  --ink-2: #1e1610;
+  --ink-3: #2b211a;
+  --paper: #efe9dd;
+  --paper-2: #f8f5ee;
+
+  --accent: #ffcb00;
+  --accent-hi: #ffd94d;
+
+  /* AA-safe on paper (5.49:1). Never use --copper-glow for text. */
+  --copper: #8f4a1c;
+  --copper-glow: #b2622a;
+  --copper-dk: #e08c4d;   /* 7.39:1 on --ink */
+
+  --on-dark: #f4f0e7;
+  --on-dark-mute: #a99e8d;
+  --on-light: #120d09;
+  --on-light-mute: #4a4237;
+
+  --rule-dark: rgba(244, 240, 231, 0.14);
+  --rule-light: rgba(18, 13, 9, 0.14);
+
+  --font-display: "Coconat", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --font-body: "Manrope", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+
+  --nav-h: 80px;
+  --wrap: 1440px;
+  --pad-x: clamp(20px, 5vw, 56px);
+  --pad-y: clamp(60px, 9vw, 104px);
+
+  --r-box: 4px;
+  --r-btn: 3px;
+
+  color-scheme: dark;
+}
+
+/* ---- Reset -------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  /* Deliberately not `smooth`. js/v2.js scrolls the in-page anchors itself,
+     with behavior:'smooth' passed per call, because a pinned sheet's landing
+     point is not the id's box. Leaving the CSS keyword on top of that makes
+     every scroll the browser starts on its own -- the skip link, restoring
+     focus after the video overlay closes, a native hash jump -- animate across
+     the whole document instead of landing. */
+  scroll-behavior: auto;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--on-dark);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p, figure, blockquote { margin: 0; }
+img { max-width: 100%; display: block; }
+ul { margin: 0; padding: 0; list-style: none; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; }
+
+::selection { background: var(--accent); color: var(--ink); }
+
+section { scroll-margin-top: var(--nav-h); }
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 400;
+  background: var(--accent);
+  color: var(--ink);
+  padding: 14px 22px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.skip-link:focus { left: 0; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- Keyframes ---------------------------------------------------------- */
+
+@keyframes pbWipe   { to { transform: translateY(-101%); } }
+@keyframes pbSlideIn { from { opacity: 0; transform: translateX(-26px); } to { opacity: 1; transform: none; } }
+@keyframes pbLevel  { from { transform: scaleY(0.16); } to { transform: scaleY(1); } }
+@keyframes pbPulse  { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+@keyframes pbMarq   { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes pbSlate  { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* Near-zero, not `none`: the intro wipe fills forwards and must still
+   complete or the overlay never leaves the screen. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================================================
+   Intro overlay
+   Two panels wiping up off the top. The accent panel is behind the ink one, so
+   the yellow is what the reader is left looking at last.
+   ========================================================================== */
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  pointer-events: none;
+}
+.intro__accent {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  animation: pbWipe 0.6s cubic-bezier(0.7, 0, 0.2, 1) 1.9s forwards;
+}
+.intro__ink {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pbWipe 0.6s cubic-bezier(0.7, 0, 0.2, 1) 1.6s forwards;
+}
+.intro__ink img {
+  width: clamp(180px, 26vw, 280px);
+  height: auto;
+  animation: pbSlate 0.9s cubic-bezier(0.7, 0, 0.2, 1) 0.15s both;
+}
+
+/* ==========================================================================
+   Nav
+   Same sticky top bar as the main build, in the console register: mono caps,
+   squared CTA, hairline rule instead of a soft blurred slab.
+   ========================================================================== */
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0 var(--pad-x);
+  background: rgba(18, 13, 9, 0.94);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule-dark);
+}
+
+.site-nav__logo { display: flex; align-items: center; }
+.site-nav__logo img { height: 48px; margin: 16px 0; width: auto; display: block; }
+
+.site-nav__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(14px, 2.2vw, 28px);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+}
+
+.site-nav__link {
+  color: var(--on-dark-mute);
+  padding: 11px 2px;
+  transition: color 0.25s ease;
+}
+.site-nav__link:hover { color: var(--accent); }
+
+.site-nav__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  background: var(--accent);
+  color: var(--ink);
+  padding: 12px 22px;
+  border-radius: var(--r-btn);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  transition: background 0.2s ease;
+}
+.site-nav__cta:hover { background: var(--accent-hi); }
+.site-nav__cta .icon-wa { flex: none; margin-top: -1px; }
+
+/* ==========================================================================
+   Sheets
+   ========================================================================== */
+
+.wrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: var(--pad-y) var(--pad-x);
+}
+
+.sheet { position: relative; overflow: hidden; }
+
+.sheet--dark  { background: var(--ink);   color: var(--on-dark); }
+.sheet--paper { background: var(--paper); color: var(--on-light); }
+
+/* Clients and About are adjacent paper sheets in this layout. A half step up
+   on About keeps the seam between them from reading as one long sheet without
+   changing either one's role. */
+.about { background: var(--paper-2); }
+
+/* ---- Sheet stacking -----------------------------------------------------
+   Each sheet pins once it has been read and the next slides over it.
+   position/top are assigned in js/v2.js, not here: the pin offset depends on
+   each sheet's measured height.
+
+   The covered sheet keeps its size. Depth comes from two things instead: a
+   warm scrim that is heaviest along its top edge, and a real shadow cast down
+   from the sheet doing the covering, so the stack reads as paper on paper. */
+main > section {
+  box-shadow: 0 -26px 54px -18px rgba(0, 0, 0, 0.72);
+}
+
+/* Painted over the sheet rather than fading it, so it stays opaque and nothing
+   below can show through. Opaque at the top stop, and the ink colour rather
+   than a generic black: the last thing left of an outgoing sheet is a sliver of
+   its own top edge, which is where this gradient is strongest, so at full cover
+   that sliver resolves to the same colour as the ink sheets and disappears into
+   them instead of leaving a mid-grey bar with a hard edge under it. */
+main > section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: var(--veil, 0);
+  background: linear-gradient(180deg, rgba(16, 11, 8, 1), rgba(16, 11, 8, 0.46));
+}
+
+/* The scrim is a full-viewport gradient whose opacity moves every frame, and an
+   opacity change on an unpromoted box repaints the whole sheet under it -- the
+   spectrogram wash included. Promoting it makes the change a compositor
+   operation. js/v2.js sets `is-veiled` only on the sheets whose scrim is
+   actually moving, so two or three hold a layer at a time rather than all ten
+   holding one for the life of the page. */
+main > section.is-veiled::after { will-change: opacity; }
+
+/* Timeline ruler. The seam replacement: an edge-to-edge tick rule instead of a
+   clip-path diagonal or a rounded lip. Ticks every 11px, tall ticks every 66px.
+   It sits inside the sheet's own top padding, so nothing shifts. */
+main > section:not(.hero)::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 2;
+  height: 30px;
+  border-top: 1px solid currentColor;
+  opacity: 0.34;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 11px),
+    repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 66px);
+  background-size: 100% 7px, 100% 15px;
+  background-repeat: no-repeat;
+}
+
+/* Spectrogram wash, drawn on the element that used to hold the outlined
+   section word. Two gradients at different periods so the columns do not read
+   as a plain stripe. */
+.ghost {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+  background-image:
+    repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(90deg, currentColor 0 2px, transparent 2px 54px);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 42%, #000 58%, transparent);
+          mask-image: linear-gradient(180deg, transparent, #000 42%, #000 58%, transparent);
+}
+.ghost--dark  { opacity: 0.055; }
+.ghost--light { opacity: 0.05; }
+
+/* ==========================================================================
+   Type
+   ========================================================================== */
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.eyebrow::before {
+  content: "";
+  width: 26px; height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+.eyebrow--dark  { color: var(--copper-dk); }
+.eyebrow--light { color: var(--copper); }
+
+.headline {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(32px, 4.6vw, 58px);
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+}
+.headline em { font-style: normal; color: var(--accent); }
+.sheet--paper .headline em,
+.stages .headline em {
+  color: var(--on-light);
+  background: var(--accent);
+  padding: 0 0.16em;
+  -webkit-box-decoration-break: clone;
+          box-decoration-break: clone;
+}
+
+.lede {
+  font-size: clamp(15px, 1.15vw, 17px);
+  line-height: 1.78;
+  max-width: 62ch;
+}
+.sheet--dark .lede  { color: var(--on-dark-mute); }
+.sheet--paper .lede { color: var(--on-light-mute); }
+
+/* ==========================================================================
+   Buttons
+   The pill becomes a squared console button with a travelling arrow.
+   ========================================================================== */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 14px 28px;
+  border: 1px solid transparent;
+  border-radius: var(--r-btn);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.pill::after { content: "\2192"; font-weight: 400; transition: transform 0.2s; }
+.pill:hover::after { transform: translateX(4px); }
+
+.pill--accent { background: var(--accent); color: var(--ink); }
+.pill--accent:hover { background: var(--accent-hi); }
+
+.pill--ink { background: var(--ink); color: var(--on-dark); }
+.pill--ink:hover { background: var(--ink-3); }
+
+.pill--ghost-dark { border-color: currentColor; color: var(--on-dark); }
+.pill--ghost-dark:hover { color: var(--accent); }
+
+.pill--ghost-light { border-color: currentColor; color: var(--on-light); }
+.pill--ghost-light:hover { background: rgba(18, 13, 9, 0.06); }
+
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+
+.hero { background: var(--ink); position: relative; }
+
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: clamp(40px, 6vw, 72px) var(--pad-x) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  animation: pbSlideIn 0.72s cubic-bezier(0.2, 0.7, 0.2, 1) 0.05s both;
+}
+.hero__eyebrow span:last-child {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--on-dark-mute);
+}
+.hero__dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--copper-dk);
+  flex-shrink: 0;
+  animation: pbPulse 2.4s ease-in-out infinite;
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(40px, 6.4vw, 88px);
+  line-height: 1.05;
+  letter-spacing: -0.012em;
+  animation: pbSlideIn 0.72s cubic-bezier(0.2, 0.7, 0.2, 1) 0.16s both;
+}
+.hero__title em { font-style: normal; color: var(--accent); }
+
+.hero__row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 48px;
+  flex-wrap: wrap;
+  animation: pbSlideIn 0.72s cubic-bezier(0.2, 0.7, 0.2, 1) 0.28s both;
+}
+.hero__sub {
+  font-size: clamp(15px, 1.2vw, 17.5px);
+  line-height: 1.75;
+  max-width: 56ch;
+  color: var(--on-dark-mute);
+}
+.hero__cta { display: flex; flex-wrap: wrap; gap: 12px; }
+
+/* The panel overhangs into the paper stats band below it, which is what ties
+   the two halves of the hero together. Both numbers stay as the main build had
+   them so the silhouette is unchanged. */
+.hero__panel {
+  position: relative;
+  z-index: 2;
+  margin-bottom: -130px;
+  background: var(--ink-2);
+  border: 1px solid var(--rule-dark);
+  border-radius: var(--r-box);
+  padding: clamp(24px, 4vw, 40px);
+  animation: pbSlate 0.8s cubic-bezier(0.7, 0, 0.2, 1) 0.34s both;
+}
+.hero__panel-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-dark-mute);
+  margin-bottom: 26px;
+}
+.hero__panel-label b { color: var(--accent); font-weight: 700; }
+
+/* Level meter. Bottom-anchored bars, peaks lit in accent; the bars themselves
+   are inserted by js/v2.js, and the per-bar timings arrive as custom
+   properties so the animation can stay declared here. */
+.waveform {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: clamp(90px, 16vw, 170px);
+  overflow: hidden;
+}
+.waveform span {
+  flex: 1 1 0;
+  min-width: 2px;
+  border-radius: 1px;
+  background: var(--copper-dk);
+  transform-origin: 50% 100%;
+  animation: pbLevel var(--dur, 1.4s) ease-in-out var(--lag, 0s) infinite alternate;
+}
+.waveform span.is-peak { background: var(--accent); }
+
+/* A hundred and twenty infinite animations are a hundred and twenty layers the
+   compositor keeps ticking for the whole page. The hero is a pinned sheet, so
+   it never leaves the viewport -- it only gets covered -- which is why js/v2.js
+   parks these from the stack geometry rather than from an
+   IntersectionObserver. */
+.waveform.is-idle span { animation-play-state: paused; }
+
+/* ---- Stats band --------------------------------------------------------- */
+
+/* Positioned but deliberately without a z-index. The hero panel overhangs into
+   this band by design, and .hero__inner carries z-index: 2 to land on top of
+   it; giving the band a matching 2 put it later in DOM order at the same level
+   and sliced the panel off at the paper edge. */
+.stats-band {
+  position: relative;
+  background: var(--paper);
+  color: var(--on-light);
+}
+
+.stats {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: clamp(150px, 16vw, 186px) var(--pad-x) 44px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 16px;
+}
+.stats > div { padding-top: 20px; border-top: 2px solid var(--copper-glow); }
+
+.stat__num {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(34px, 3.4vw, 46px);
+  line-height: 1;
+}
+.stat__label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--on-light-mute);
+  margin-top: 12px;
+}
+
+.marquee {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 8px var(--pad-x) 68px;
+  display: flex;
+  align-items: center;
+  gap: 44px;
+  flex-wrap: wrap;
+}
+.marquee__label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--copper);
+  flex-shrink: 0;
+}
+.marquee__mask {
+  overflow: hidden;
+  flex: 1;
+  min-width: 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+          mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+}
+.marquee__track {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  width: max-content;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  /* The muted token, not a low-alpha ink. The main build ran this at
+     rgba(18,13,9,0.45), which is 3.4:1 on paper: these are language names a
+     visitor reads, not texture, so they carry AA like any other body text. */
+  color: var(--on-light-mute);
+  animation: pbMarq 38s linear infinite;
+}
+.marquee__track span:last-child { padding-right: 48px; }
+
+/* ==========================================================================
+   Three stages
+   Dark console cards on the paper sheet, with the stage number as a timecode.
+   ========================================================================== */
+
+.stages { background: var(--paper); color: var(--on-light); position: relative; }
+
+.stages__head { max-width: 760px; margin-bottom: clamp(44px, 5vw, 64px); }
+.stages__head .headline { margin-bottom: 22px; }
+
+.stage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 1px;
+  background: var(--rule-light);
+  border: 1px solid var(--rule-light);
+  border-radius: var(--r-box);
+  overflow: hidden;
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(32px, 5vw, 60px);
+  padding: clamp(28px, 3.4vw, 40px);
+  background: var(--ink-2);
+  color: var(--on-dark);
+  transition: background 0.25s ease;
+}
+.stage:hover { background: var(--ink-3); }
+
+.stage--accent { background: var(--accent); color: var(--ink); }
+.stage--accent:hover { background: var(--accent-hi); }
+
+.stage__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+.stage__num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--copper-dk);
+}
+.stage__tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-dark-mute);
+}
+.stage--accent .stage__num,
+.stage--accent .stage__tag { color: #33270c; }
+
+.stage__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(26px, 3.2vw, 38px);
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+.stage__text {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--on-dark-mute);
+  margin-bottom: 26px;
+}
+.stage--accent .stage__text { color: rgba(18, 13, 9, 0.82); }
+
+.stage__cta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.stage--accent .stage__cta { color: var(--ink); }
+
+/* ==========================================================================
+   Split: headline half, indexed rows half
+   ========================================================================== */
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+  gap: clamp(40px, 6vw, 80px);
+}
+
+/* ---- Indexed rows, as cue sheet lines ---------------------------------- */
+
+.rows { display: flex; flex-direction: column; }
+
+.row {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 24px;
+  padding: 26px 0;
+  border-top: 1px solid var(--rule-dark);
+  transition: background 0.22s, padding-left 0.22s;
+}
+.sheet--paper .row { border-color: var(--rule-light); }
+.rows .row:last-child { border-bottom: 1px solid var(--rule-dark); }
+.sheet--paper .rows .row:last-child { border-bottom-color: var(--rule-light); }
+
+.row:hover { padding-left: 12px; }
+.sheet--dark .row:hover  { background: var(--ink-2); }
+.sheet--paper .row:hover { background: var(--paper-2); }
+
+.row__key {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+  padding-top: 4px;
+  color: var(--copper-dk);
+}
+.sheet--paper .row__key { color: var(--copper); }
+
+.row__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(19px, 1.7vw, 24px);
+  line-height: 1.2;
+  margin-bottom: 9px;
+}
+.row__text {
+  font-size: 14.5px;
+  line-height: 1.72;
+}
+.sheet--dark .row__text  { color: var(--on-dark-mute); }
+.sheet--paper .row__text { color: var(--on-light-mute); }
+
+/* ==========================================================================
+   Language chips
+   ========================================================================== */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+.chip {
+  padding: 9px 16px;
+  border: 1px solid var(--rule-dark);
+  border-radius: var(--r-btn);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--on-dark);
+  transition: border-color 0.2s, background 0.2s;
+}
+.chip:hover { border-color: var(--copper-dk); background: var(--ink-2); }
+.sheet--paper .chip { border-color: var(--rule-light); color: var(--on-light); }
+.sheet--paper .chip:hover { border-color: var(--copper-glow); background: var(--paper-2); }
+
+.chip--more {
+  padding: 0;
+  border-color: var(--copper-dk);
+  border-style: dashed;
+}
+.chip--more a {
+  display: block;
+  padding: 9px 16px;
+  color: var(--copper-dk);
+  font-weight: 700;
+}
+.sheet--paper .chip--more { border-color: var(--copper); }
+.sheet--paper .chip--more a { color: var(--copper); }
+
+.chips__label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--copper-dk);
+  margin-top: 40px;
+}
+.sheet--paper .chips__label { color: var(--copper); }
+
+/* ==========================================================================
+   Statement band
+   Left aligned on a copper rule rather than a centered rounded card: the same
+   element, without the mirrored-slab treatment.
+   ========================================================================== */
+
+.band {
+  margin-top: clamp(48px, 6vw, 76px);
+  padding-left: clamp(18px, 2.4vw, 30px);
+  border-left: 3px solid var(--copper-glow);
+  max-width: 76ch;
+}
+.band .eyebrow { margin-bottom: 18px; }
+.band__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(26px, 3.3vw, 44px);
+  line-height: 1.12;
+}
+.band__title .stroke { color: var(--accent); }
+.sheet--paper .band__title .stroke {
+  color: var(--on-light);
+  background: var(--accent);
+  padding: 0 0.14em;
+  -webkit-box-decoration-break: clone;
+          box-decoration-break: clone;
+}
+.band__text {
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.76;
+  color: var(--on-dark-mute);
+  margin-top: 20px;
+  max-width: 62ch;
+}
+.sheet--paper .band__text { color: var(--on-light-mute); }
+
+/* ==========================================================================
+   Work
+   ========================================================================== */
+
+.work__head {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+  gap: clamp(32px, 5vw, 64px);
+  margin-bottom: 48px;
+}
+.work__head > div:last-child { align-self: end; }
+.work__head .headline { margin-bottom: 20px; }
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 34px;
+}
+.filter {
+  min-height: 42px;
+  padding: 10px 20px;
+  border: 1px solid var(--rule-light);
+  border-radius: var(--r-btn);
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--on-light-mute);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.filter:hover { border-color: var(--copper-glow); color: var(--on-light); }
+.filter.is-active {
+  background: var(--on-light);
+  border-color: var(--on-light);
+  color: var(--paper);
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: clamp(18px, 2.2vw, 28px);
+}
+.work-item.is-hidden { display: none; }
+
+.work-item__thumb {
+  position: relative;
+  display: block;
+  border-radius: var(--r-btn);
+  overflow: hidden;
+  background: var(--ink-2);
+  aspect-ratio: 16 / 9;
+}
+.work-item__thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.3s;
+}
+.work-item__thumb:hover img { transform: scale(1.05); opacity: 0.72; }
+
+/* Play affordance as a timecode chip in the corner, not a circle-and-triangle
+   badge in the middle. The element is aria-hidden and empty in the markup, so
+   its label is drawn here. */
+.work-item__play {
+  position: absolute;
+  left: 12px; bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 2px;
+  background: var(--accent);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transform: translateY(4px);
+  opacity: 0.94;
+  transition: transform 0.25s, opacity 0.25s;
+}
+.work-item__play::after { content: "\25B6\00a0\00a0Play"; }
+.work-item__thumb:hover .work-item__play { transform: none; opacity: 1; }
+
+.work-item__caption {
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 1.25;
+  color: var(--on-light);
+}
+.work-item__tag {
+  margin-top: 5px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--copper);
+}
+.work__empty {
+  margin-top: 26px;
+  font-size: 14.5px;
+  color: var(--on-light-mute);
+}
+
+/* ---- Voice credits, read as channels on the desk ----------------------- */
+
+.credits { margin-top: clamp(48px, 6vw, 76px); counter-reset: credit; }
+
+.credits__lede {
+  margin-top: 16px;
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.76;
+  color: var(--on-light-mute);
+  max-width: 64ch;
+}
+
+.credits__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: clamp(20px, 2.4vw, 34px);
+  margin: clamp(28px, 3vw, 40px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.credit {
+  padding-top: 18px;
+  border-top: 2px solid var(--copper-glow);
+  counter-increment: credit;
+}
+/* Channel numbers are a property of the treatment, not of the content, so they
+   are counted here rather than typed into the markup. */
+.credit::before {
+  content: "CH 0" counter(credit);
+  display: block;
+  margin-bottom: 9px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
+  color: var(--copper);
+}
+.credit__name {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(21px, 1.9vw, 27px);
+  line-height: 1.15;
+}
+.credit__kind {
+  display: block;
+  margin-top: 9px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  color: var(--on-light-mute);
+}
+
+/* ==========================================================================
+   Client segments
+   ========================================================================== */
+
+/* Clients closes tighter than the other sheets: the grid's own top rules
+   already carry the bottom edge. */
+.segments .wrap { padding-bottom: clamp(40px, 6vw, 68px); }
+
+.segment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: clamp(20px, 2.4vw, 34px);
+  margin-top: 40px;
+}
+.segment { padding-top: 20px; border-top: 2px solid var(--copper-glow); }
+.segment__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.25;
+  margin-bottom: 9px;
+}
+.segment__text {
+  font-size: 14px;
+  line-height: 1.68;
+  color: var(--on-light-mute);
+}
+
+/* ==========================================================================
+   About
+   ========================================================================== */
+
+.about__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 190px) minmax(min(100%, 340px), 1fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+.about__portrait {
+  border-radius: var(--r-btn);
+  overflow: hidden;
+  background: var(--ink-2);
+  border: 1px solid var(--rule-light);
+}
+.about__portrait img { width: 100%; height: auto; filter: grayscale(1) contrast(1.06); }
+
+.about__caption {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--copper);
+}
+.about__lede {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(24px, 2.8vw, 34px);
+  line-height: 1.16;
+  margin-bottom: 6px;
+}
+.about__body p {
+  margin-top: 18px;
+  font-size: clamp(15px, 1.15vw, 16.5px);
+  line-height: 1.78;
+  color: var(--on-light-mute);
+  max-width: 62ch;
+}
+.about__body .pill-row { margin-top: 30px; }
+
+/* ==========================================================================
+   Contact
+   ========================================================================== */
+
+.contact .headline { margin-bottom: 22px; }
+
+.contact__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 34px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+.contact__lines a, .contact__lines span {
+  display: inline-block;
+  padding: 9px 0;
+  min-height: 40px;
+  color: var(--on-dark);
+}
+.contact__lines a:hover { color: var(--accent); }
+.contact__lines .addr { color: var(--on-dark-mute); line-height: 1.6; }
+
+/* The action column becomes one console box, so the three ways to reach the
+   studio and the referral ask read as a single panel. */
+.contact__actions {
+  align-self: start;
+  padding: clamp(24px, 2.8vw, 34px);
+  border: 1px solid var(--rule-dark);
+  border-radius: var(--r-box);
+  background: var(--ink-2);
+}
+.contact__actions .pill-row { flex-direction: column; }
+.contact__actions .pill { width: 100%; justify-content: space-between; }
+
+.refer {
+  margin-top: 30px;
+  padding-top: 26px;
+  border-top: 1px solid var(--rule-dark);
+}
+.refer__title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--copper-dk);
+  margin-bottom: 10px;
+}
+.refer__text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--on-dark-mute);
+  margin-bottom: 20px;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.site-footer {
+  position: relative;
+  background: var(--ink);
+  border-top: 1px solid var(--rule-dark);
+}
+.site-footer__inner {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: clamp(40px, 5vw, 56px) var(--pad-x);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 26px;
+  flex-wrap: wrap;
+}
+.site-footer__logo { height: 26px; width: auto; opacity: 0.9; }
+
+.site-footer__tagline {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-dark-mute);
+}
+.site-footer__social { display: flex; gap: 14px; align-items: center; }
+.site-footer__social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; height: 40px;
+  border: 1px solid var(--rule-dark);
+  border-radius: var(--r-btn);
+  transition: border-color 0.2s;
+}
+.site-footer__social a:hover { border-color: var(--accent); }
+/* The source icons are full-colour badges. Desaturate them so they sit in the
+   palette instead of fighting it. */
+.site-footer__social img {
+  width: 18px; height: 18px;
+  filter: grayscale(1) brightness(1.5);
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+.site-footer__social a:hover img { opacity: 1; }
+
+.site-footer__sign-off {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 26px;
+  color: var(--accent);
+}
+.site-footer__copyright { font-size: 12px; color: var(--on-dark-mute); }
+
+/* ==========================================================================
+   Video lightbox
+   ========================================================================== */
+
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(9, 6, 4, 0.94);
+}
+.lightbox.is-open { display: flex; }
+.lightbox__frame-wrap {
+  position: relative;
+  width: min(100%, 1000px);
+  aspect-ratio: 16 / 9;
+}
+.lightbox__frame {
+  width: 100%; height: 100%;
+  border: 0;
+  border-radius: var(--r-box);
+  background: #000;
+}
+.lightbox__close {
+  position: absolute;
+  top: -56px; right: 0;
+  width: 44px; height: 44px;
+  border: 1px solid var(--rule-dark);
+  border-radius: var(--r-btn);
+  background: transparent;
+  color: var(--on-dark);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.lightbox__close:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ==========================================================================
+   Reveal -- a left wipe, not a rise-and-scale. The class is added by js/v2.js,
+   so with scripting off nothing is hidden.
+   ========================================================================== */
+
+.rv { opacity: 0; }
+.rv.is-in { animation: pbSlideIn 0.72s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+/* ==========================================================================
+   Breakpoints
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .about__grid { grid-template-columns: 1fr; }
+  .about__portrait { max-width: 190px; }
+  .row { grid-template-columns: 46px 1fr; gap: 18px; }
+}
+
+@media (max-width: 640px) {
+  .site-nav__link { display: none; }
+
+  /* Coconat sets wider, so the phone steps drop to keep the same line count. */
+  .hero__title { font-size: 11.2vw; line-height: 1.04; }
+  .headline { font-size: 8.6vw; }
+  .hero__sub { font-size: 14.5px; }
+
+  .hero__cta { flex-direction: column; width: 100%; }
+  .hero__cta .pill { justify-content: center; }
+
+  .hero__panel { margin: 0 0 -80px; }
+  .waveform { height: 76px; }
+
+  .stats {
+    gap: 20px;
+    padding-top: 100px;
+    padding-bottom: 8px;
+  }
+  .stat__num { font-size: 34px; }
+
+  .marquee {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding-bottom: 52px;
+  }
+  .marquee__mask { flex: none; width: 100%; }
+
+  .stage__title { font-size: 26px; }
+
+  .lede,
+  .stage__text,
+  .about__body p,
+  .band__text,
+  .refer__text,
+  .credits__lede,
+  .segment__text,
+  .row__text { font-size: 14.5px; }
+
+  .band { margin-top: 44px; }
+
+  .contact__actions .pill { justify-content: center; }
+
+  .site-footer__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  /* Rows collapse: the whole row is the toggle, the description expands. */
+  .row {
+    grid-template-columns: 40px 1fr;
+    gap: 14px;
+    padding: 20px 0;
+    cursor: pointer;
+  }
+  .row:hover { padding-left: 0; }
+  .row__text { grid-column: 2; }
+
+  .row__title {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 0;
+  }
+  .row__title::after {
+    content: "+";
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 19px;
+    line-height: 1;
+    opacity: 0.55;
+  }
+  .row.is-open .row__title::after { content: "\2013"; }
+
+  .row__text {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.35s ease, opacity 0.25s ease, margin-top 0.35s ease;
+  }
+  .row.is-open .row__text { max-height: 400px; opacity: 1; margin-top: 10px; }
+}

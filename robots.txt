@@ -3,6 +3,7 @@ Allow: /
 Disallow: /seo-audit.html
 Disallow: /user-personas.html
 Disallow: /1.html
+Disallow: /2.html
 
 User-agent: GPTBot
 Disallow: /

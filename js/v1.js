@@ -47,7 +47,8 @@
 
   var BAR_H = 60;            // mobile top bar, for anchor landing
   var COVER_LEAD = 0.5;      // veil starts when the next sheet crosses this much of the viewport
-  var COVER_MAX = 0.62;      // how dark a fully covered sheet goes
+  var COVER_MAX = 1;         // a fully covered sheet goes all the way to the scrim colour
+  var COVER_DONE = 0.18;     // scrim is complete while the covering sheet is still this far off
   var LIVE_MARK = 0.45;      // a sheet is "on screen" once its top passes this much of the viewport
   var BAR_DRIFT = 140;       // viewport height change to write off as a mobile address bar
   var LAYER_EDGE = 90;       // slack around the ramp, so the scrim's layer exists before it moves
@@ -305,6 +306,7 @@
   var lastMoving = [];
   var lastLive = -2;
   var lastPct = -1;
+  var lastHidden = -2;
   var metersIdle = false;
 
   function frame() {
@@ -333,13 +335,29 @@
        time instead of all eleven holding one for the life of the page. */
     if (!reduceMotion.matches) {
       var lead = vh * COVER_LEAD;
+      var span = lead - vh * COVER_DONE;
       for (i = 0; i < n - 1; i++) {
         var top = topAt(i, y);
         var nextTop = topAt(i + 1, y);
         var v = 0;
         if (top + actH[i] > 0 && top < vh) {
-          var ramp = (lead - nextTop) / lead;
-          v = ramp > 0 ? (ramp > 1 ? COVER_MAX : ramp * COVER_MAX) : 0;
+          /* Eased, and finished early. Two separate things were wrong with the
+             linear ramp to zero:
+
+             Squaring fixes the front end. Linear had the scrim a third of the
+             way in while the covering sheet was still most of a screen away,
+             which on a cream sheet read as a flash.
+
+             COVER_DONE fixes the back end. The last thing left of an outgoing
+             sheet is a sliver of its own top edge -- ruler and heading space,
+             no content -- and finishing the ramp at the moment of contact left
+             that sliver only two thirds scrimmed: a light grey bar with a hard
+             edge under it, which is what showed on About into Contact. The
+             ramp now completes while the covering sheet is still COVER_DONE of
+             a viewport short, so by the time only the empty sliver is left it
+             has already gone to the scrim colour and reads as shadow. */
+          var ramp = (lead - nextTop) / span;
+          v = ramp > 0 ? (ramp > 1 ? COVER_MAX : ramp * ramp * COVER_MAX) : 0;
         }
         v = Math.round(v * 1000) / 1000;
         var changed = v !== lastVeil[i];
@@ -361,6 +379,54 @@
           lastMoving[i] = moving;
           acts[i].classList.toggle('is-veiled', moving);
         }
+      }
+    }
+
+    /* Take the buried sheets out of the paint tree.
+
+       A pinned sheet parks with its bottom at the foot of the viewport and
+       stays there for the rest of the page, so by the time the reader reaches
+       the last section all eleven are still live: eleven mutually overlapping
+       composited layers, each carrying a 54px blurred box-shadow and a masked
+       full-sheet wash. Chrome loses track of the paint order under that load
+       and sheets the reader passed long ago bleed up through the one on
+       screen. It shows up at the end of the page because that is where the
+       most layers are stacked, which is why About into Contact was the report.
+       index.html never hit it: same eleven-sheet stack, but no per-sheet
+       shadow and no masked overlay, so the load stays under the limit.
+
+       Anything below a sheet that covers the whole viewport is invisible, so
+       it can be skipped entirely. `visibility: hidden` drops the paint without
+       touching layout, which matters: measure() still needs real heights.
+       That takes the live count from eleven to two or three.
+
+       The test is the union of the sheets above, not any single one of them.
+       Asking for one sheet to cover the viewport on its own only works where
+       sheets are taller than the window: at 1440x900 that culled eight of
+       eleven, but at 1440x1300 only Work clears the viewport, so eight stayed
+       live and the bleed came back. The sheets are contiguous -- pinning only
+       ever pushes one down, so no gap ever opens between them -- which means
+       the union of any run of them is a single interval and can be tracked as
+       one. Walking down from the top, the first sheet whose predecessors
+       already span the viewport is buried, and so is everything under it. */
+    /* Only as far down as the stack is responsible for. At the foot of the
+       page main's bottom edge sits above the fold and the footer owns the
+       strip below it, so requiring the sheets to span the whole viewport
+       meant nothing was ever culled exactly where the load is heaviest -- on
+       a phone, where the sections are tallest, that was the entire end of the
+       page. */
+    var need = Math.min(vh, mainEnd - y);
+    var lo = Infinity, hi = -Infinity, hideUpTo = -1;
+    for (i = n - 1; i >= 0; i--) {
+      if (lo <= 0 && hi >= need) { hideUpTo = i; break; }
+      var ct = topAt(i, y);
+      if (ct < lo) lo = ct;
+      if (ct + actH[i] > hi) hi = ct + actH[i];
+    }
+    if (hideUpTo !== lastHidden) {
+      lastHidden = hideUpTo;
+      for (i = 0; i < n; i++) {
+        acts[i].style.visibility = i <= hideUpTo ? 'hidden' : '';
       }
     }
 

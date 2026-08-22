@@ -272,13 +272,25 @@ section { scroll-margin-top: 64px; }
 
 /* Depth overlay for the stacking scroll. JS raises --cover on a sheet while
    the next one slides across it. Painting a scrim on top rather than fading
-   the sheet keeps it opaque, so nothing below ever shows through. */
+   the sheet keeps it opaque, so nothing below ever shows through.
+
+   A gradient in the ink colour, opaque at the top stop, rather than flat #000
+   at a fraction. The last thing left of an outgoing sheet is a sliver of its
+   own top edge, which is where this gradient is strongest, so at full cover
+   that sliver resolves to the same colour as the dark sheets and disappears
+   into them. Flat black at 0.42 could not: on the cream sheets it bottomed
+   out around rgb(179,177,171), a light grey slab left sitting above the
+   section below. It was permanent at the foot of the page, because the
+   document ends before Contact finishes covering About. */
 main > section::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 3;
-  background: #000;
+  /* Held opaque across the top third, then falling away. The sliver that
+     survives longest is the sheet's top ~20%, so a gradient that starts
+     falling at 0% still left it around rgb(37,36,33) instead of the ink. */
+  background: linear-gradient(180deg, rgba(11, 9, 7, 1) 0 30%, rgba(11, 9, 7, 0.46) 100%);
   opacity: var(--cover, 0);
   pointer-events: none;
 }

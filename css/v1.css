@@ -431,7 +431,14 @@ section { scroll-margin-top: 88px; }
   z-index: 3;
   pointer-events: none;
   opacity: var(--veil, 0);
-  background: linear-gradient(180deg, rgba(9, 6, 4, 0.94), rgba(9, 6, 4, 0.46));
+  /* Opaque at the top stop, and the ink colour rather than a generic black.
+     The last thing left of an outgoing sheet is a sliver of its own top edge,
+     which is where this gradient is strongest; at full cover that sliver
+     therefore resolves to the same colour as the ink sheets and disappears
+     into them. At 0.94 it could not: it bottomed out around rgb(119,114,107)
+     on a cream sheet, a mid-grey bar sitting above the section below with a
+     hard edge under it. That bar was the artifact on About into Contact. */
+  background: linear-gradient(180deg, rgba(16, 11, 8, 1), rgba(16, 11, 8, 0.46));
 }
 
 /* The scrim is a full-viewport gradient whose opacity moves every frame, and
@@ -446,11 +453,16 @@ section { scroll-margin-top: 88px; }
 .act--ink-2 { background: var(--ink-2); color: var(--on-dark); }
 .act--paper { background: var(--paper); color: var(--on-light); }
 
-/* The veil above is tuned for the ink sheets, where a near-black scrim reads
-   as a cast shadow. On a paper sheet the same strength flattens the cream
-   into a grey slab as the covering sheet crosses it, which is what read as a
-   flash. Halved here so paper still darkens, but keeps its own colour. */
-.act--paper::after { opacity: calc(var(--veil, 0) * 0.5); }
+/* No per-surface override here. Halving the scrim on the paper sheets was an
+   attempt to stop a flash, and it caused the worse artifact: a cream sheet
+   stayed bright while a hard-edged dark sheet slid up over it, and the last
+   sliver of it left on screen -- the sheet's own empty top band -- read as a
+   stray light grey bar sitting above the section below. It was most obvious
+   on About into Contact, where that sliver is ~130px tall because About is
+   shorter than the viewport and so pins top-aligned.
+   The flash it was aimed at is handled in js/v1.js instead, by easing the
+   ramp rather than capping it: gentle while the covering sheet is still far
+   off, deep by the time it lands, so the last sliver goes to shadow. */
 
 .inner {
   position: relative;

@@ -4,6 +4,9 @@
 
   var EASE = 'cubic-bezier(0.2,0.7,0.2,1)';
   var NAV_H = 64;
+  var COVER_LEAD = 0.35;     // scrim starts when the next sheet crosses this much of the viewport
+  var COVER_DONE = 0.18;     // and is complete while that sheet is still this much short
+  var COVER_MAX = 1;         // a fully covered sheet goes all the way to the scrim colour
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   /* ---- Intro overlay --------------------------------------------------- */
@@ -89,7 +92,6 @@
       }
       sec.style.position = 'sticky';
       sec.style.top = Math.min(0, window.innerHeight - sec.offsetHeight) + 'px';
-      sec.style.transformOrigin = '50% 25%';
     });
   }
 
@@ -113,20 +115,36 @@
     }
 
     var vh = window.innerHeight;
+    var lead = vh * COVER_LEAD;
+    var span = lead - vh * COVER_DONE;
     for (var i = 0; i < sections.length - 1; i++) {
       var sec = sections[i];
       var rect = sec.getBoundingClientRect();
       var nextTop = sections[i + 1].getBoundingClientRect().top;
-      // Dim only while this sheet is actually being covered: start when the
-      // next sheet's top crosses 35% of the viewport, full when it reaches 0.
-      var covering = Math.min(1, Math.max(0, (vh * 0.35 - nextTop) / (vh * 0.35)));
+
+      /* Dim only while this sheet is actually being covered, and finish before
+         the covering sheet lands rather than at the moment it lands.
+
+         The sheets shorter than the viewport -- five of the ten at 1440x900 --
+         pin top-aligned, because the pin offset clamps at min(0, ...). So the
+         last thing left of them on screen is a sliver of their own top edge:
+         seam and heading space, no content. A ramp that was still only two
+         thirds in at the moment of contact left that sliver a light grey bar.
+         Squaring holds the scrim back early, where it used to read as a flash
+         on the cream sheets; COVER_DONE drives it home before the sliver is
+         all that is left, so the sliver goes to shadow instead. */
+      var ramp = (lead - nextTop) / span;
+      var covering = ramp > 0 ? (ramp > 1 ? 1 : ramp * ramp) : 0;
       var onScreen = rect.bottom > 0 && rect.top < vh;
       var progress = onScreen ? covering : 0;
+
+      /* No scale here. Shrinking a covered sheet moved it off the viewport
+         edges -- 5% of 1440px is 72px, so 36px of bare page background down
+         each side -- and the sheet visibly detached from the frame instead of
+         sitting under the next one. Depth comes from the scrim alone. */
       if (progress > 0 && !reduceMotion.matches) {
-        sec.style.transform = 'scale(' + (1 - 0.05 * progress).toFixed(4) + ')';
-        sec.style.setProperty('--cover', (0.42 * progress).toFixed(3));
+        sec.style.setProperty('--cover', (COVER_MAX * progress).toFixed(3));
       } else {
-        sec.style.transform = 'none';
         sec.style.setProperty('--cover', '0');
       }
     }
